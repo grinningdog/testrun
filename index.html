@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob's Storyboard Pro</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --save-color: #27ae60;
+            --delete-color: #e74c3c;
+            --card-bg: #ffffff;
+            --sidebar-width: 240px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Header & Nav --- */
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 20;
+        }
+
+        #project-name {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            color: white;
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        #project-name:focus { background: rgba(255,255,255,0.2); outline: none; }
+
+        nav {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 0 2rem;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 1rem 0.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .nav-btn.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+        /* --- Layout --- */
+        .app-container { display: flex; flex: 1; overflow: hidden; }
+
+        aside {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid #ddd;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+        }
+
+        aside h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #95a5a6;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .sidebar-item {
+            padding: 0.6rem;
+            background: var(--bg-color);
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        main { flex: 1; padding: 2rem; overflow-y: auto; scroll-behavior: smooth; }
+
+        /* --- Components --- */
+        .controls {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            align-items: center;
+        }
+
+        .plot-container {
+            display: flex;
+            gap: 20px;
+            padding-bottom: 20px;
+            overflow-x: auto;
+            align-items: flex-start;
+        }
+
+        .plot-beat {
+            min-width: 220px;
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            border-top: 6px solid var(--accent-color);
+            box-shadow: var(--shadow);
+            cursor: grab;
+            transition: var(--transition);
+        }
+
+        .plot-beat:hover { transform: translateY(-4px); }
+
+        .list-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .btn-edit { background: #ecf0f1; color: var(--primary-color); margin-right: 5px; }
+        .btn-edit:hover { background: #dde4e6; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(44, 62, 80, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .modal-content label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
+        .modal-content input, .modal-content textarea, .modal-content select { width: 100%; box-sizing: border-box; font-family: inherit; }
+
+        .char-notes-text { color: #636e72; font-size: 0.9rem; margin-top: 5px; border-left: 2px solid #dfe6e9; padding-left: 10px; }
+
+        .dragging { opacity: 0.4; scale: 1.05; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; align-items: center; gap: 15px;">
+        <h1 style="margin:0; font-size: 1.4rem;">Storyboard Pro</h1>
+        <input type="text" id="project-name" placeholder="Untitled Story">
+    </div>
+    <div style="display:flex; gap:10px;">
+        <button class="btn-save" onclick="exportProject()">Export HTML</button>
+        <label class="btn-load" style="background:#8e44ad; color:white; padding: 8px 16px; border-radius:4px; cursor:pointer; font-weight:bold;">
+            Import <input type="file" id="load-input" hidden onchange="importProject(event)">
+        </label>
+    </div>
+</header>
+
+<nav id="main-nav">
+    <button class="nav-btn active" data-tab="plot">Plot Outline</button>
+    <button class="nav-btn" data-tab="timeline">Timeline</button>
+    <button class="nav-btn" data-tab="characters">Characters</button>
+</nav>
+
+<div class="app-container">
+    <aside>
+        <h3>Cast</h3>
+        <div id="sidebar-names-list"></div>
+        <h3>Chronology</h3>
+        <div id="sidebar-timeline-list"></div>
+    </aside>
+
+    <main>
+        <section id="plot-section" class="tab-content active">
+            <div class="controls">
+                <input type="text" id="plot-title-in" placeholder="Beat Title">
+                <input type="text" id="plot-desc-in" placeholder="Plot details...">
+                <button class="btn-add" onclick="addItem('plot')">Add Beat</button>
+            </div>
+            <div id="plot-list" class="plot-container"></div>
+        </section>
+
+        <section id="timeline-section" class="tab-content">
+            <div class="controls">
+                <input type="text" id="time-val-in" placeholder="Era/Time">
+                <input type="text" id="time-event-in" placeholder="What happens?">
+                <button class="btn-add" onclick="addItem('timeline')">Add Event</button>
+            </div>
+            <div id="timeline-list"></div>
+        </section>
+
+        <section id="characters-section" class="tab-content">
+            <div class="controls">
+                <input type="text" id="char-name-in" placeholder="Character Name">
+                <select id="char-role-in">
+                    <option value="Main">Main</option>
+                    <option value="Supporting">Supporting</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button class="btn-add" onclick="addItem('char')">Add Character</button>
+            </div>
+            <div id="char-groups-container">
+                <!-- Groups generated by JS -->
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="edit-modal">
+    <div class="modal-content">
+        <h2 id="modal-title" style="margin-top:0">Edit Item</h2>
+        <label id="l1">Field 1</label>
+        <input type="text" id="mf1">
+        
+        <label id="l2">Field 2</label>
+        <textarea id="mf2" rows="3"></textarea>
+        <select id="mf-role-select" style="display:none">
+            <option value="Main">Main</option>
+            <option value="Supporting">Supporting</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <div id="notes-group" style="display:none">
+            <label>Notes</label>
+            <textarea id="mf3" rows="3"></textarea>
+        </div>
+
+        <div style="margin-top:25px; display:flex; justify-content:flex-end; gap:10px;">
+            <button onclick="closeModal()" style="background:#eee">Cancel</button>
+            <button class="btn-save" id="modal-save-btn">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+
+   <script>
+    // --- 1. State Management & Data ---
+    let state = {
+        projectName: "My Awesome Story",
+        plot: [],
+        timeline: [],
+        characters: []
+    };
+
+    const ROLES = ['Main', 'Supporting', 'Other', 'Uncategorised'];
+
+    // --- 2. Initialization ---
+    window.onload = () => {
+        // Load saved data from browser memory
+        const saved = localStorage.getItem('storyboard_data');
+        if (saved) state = JSON.parse(saved);
+        
+        // Render the UI
+        renderAll();
+        setupDragAndDrop();
+
+        // Listener for the Project Name auto-save
+        document.getElementById('project-name').addEventListener('input', saveState);
+    };
+
+    function saveState() {
+        state.projectName = document.getElementById('project-name').value;
+        localStorage.setItem('storyboard_data', JSON.stringify(state));
+        renderSidebar();
+    }
+
+    // --- 3. Rendering Logic ---
+    function renderAll() {
+        document.getElementById('project-name').value = state.projectName;
+        renderPlot();
+        renderTimeline();
+        renderCharacters();
+        renderSidebar();
+    }
+
+    function renderPlot() {
+        const list = document.getElementById('plot-list');
+        list.innerHTML = state.plot.length ? '' : '<p style="color:#bdc3c7">No plot beats yet...</p>';
+        state.plot.forEach((beat, index) => {
+            const el = document.createElement('div');
+            el.className = 'plot-beat';
+            el.draggable = true;
+            el.innerHTML = `
+                <div class="beat-name">${beat.title}</div>
+                <div class="beat-details-pop">${beat.desc}</div>
+                <div class="beat-actions">
+                    <button class="btn-edit" onclick="editItem('plot', ${index})">Edit</button>
+                    <button class="btn-del" onclick="deleteItem('plot', ${index})">Delete</button>
+                </div>
+            `;
+            // Add drag listeners to each new item
+            el.addEventListener('dragstart', () => el.classList.add('dragging'));
+            el.addEventListener('dragend', () => el.classList.remove('dragging'));
+            list.appendChild(el);
+        });
+    }
+
+    function renderCharacters() {
+        const container = document.getElementById('char-groups-container');
+        container.innerHTML = '';
+        
+        ROLES.forEach(role => {
+            const filtered = state.characters.filter(c => (c.role || 'Uncategorised') === role);
+            if (filtered.length === 0 && role === 'Uncategorised') return;
+
+            const section = document.createElement('div');
+            section.innerHTML = `<h3 class="role-section-header">${role} Characters</h3><hr>`;
+            const subList = document.createElement('div');
+            subList.className = 'char-sub-list';
+            
+            filtered.forEach((char) => {
+                const globalIndex = state.characters.indexOf(char);
+                const el = document.createElement('div');
+                el.className = 'list-item';
+                el.draggable = true;
+                el.innerHTML = `
+                    <div class="item-info">
+                        <strong>${char.name}</strong> — <i>${char.role}</i>
+                        <div class="char-notes-text">${char.notes || ''}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="editItem('char', ${globalIndex})">Edit</button>
+                        <button class="btn-del" onclick="deleteItem('char', ${globalIndex})">Delete</button>
+                    </div>
+                `;
+                el.addEventListener('dragstart', () => el.classList.add('dragging'));
+                el.addEventListener('dragend', () => el.classList.remove('dragging'));
+                subList.appendChild(el);
+            });
+            section.appendChild(subList);
+            container.appendChild(section);
+        });
+    }
+
+    function renderTimeline() {
+        const list = document.getElementById('timeline-list');
+        list.innerHTML = '';
+        state.timeline.forEach((item, index) => {
+            const el = document.createElement('div');
+            el.className = 'list-item';
+            el.draggable = true;
+            el.innerHTML = `
+                <div class="item-info"><strong>${item.time}</strong>: ${item.event}</div>
+                <div class="item-actions">
+                    <button class="btn-edit" onclick="editItem('timeline', ${index})">Edit</button>
+                    <button class="btn-del" onclick="deleteItem('timeline', ${index})">Delete</button>
+                </div>
+            `;
+            el.addEventListener('dragstart', () => el.classList.add('dragging'));
+            el.addEventListener('dragend', () => el.classList.remove('dragging'));
+            list.appendChild(el);
+        });
+    }
+
+    function renderSidebar() {
+        const charSide = document.getElementById('sidebar-names-list');
+        const timeSide = document.getElementById('sidebar-timeline-list');
+        charSide.innerHTML = state.characters.map(c => `<div class="sidebar-item">${c.name}</div>`).join('');
+        timeSide.innerHTML = state.timeline.map(t => `<div class="sidebar-item"><small>${t.time}</small><br>${t.event}</div>`).join('');
+    }
+
+    // --- 4. CRUD Actions ---
+    function addItem(type) {
+        if (type === 'plot') {
+            const t = document.getElementById('plot-title-in');
+            const d = document.getElementById('plot-desc-in');
+            if (!t.value) return;
+            state.plot.push({ title: t.value, desc: d.value });
+            t.value = d.value = '';
+        } else if (type === 'timeline') {
+            const v = document.getElementById('time-val-in');
+            const e = document.getElementById('time-event-in');
+            if (!e.value) return;
+            state.timeline.push({ time: v.value, event: e.value });
+            v.value = e.value = '';
+        } else if (type === 'char') {
+            const n = document.getElementById('char-name-in');
+            const r = document.getElementById('char-role-in');
+            if (!n.value) return;
+            state.characters.push({ name: n.value, role: r.value, notes: "" });
+            n.value = "";
+        }
+        saveState();
+        renderAll();
+    }
+
+    function deleteItem(type, index) {
+        if (confirm("Delete this item forever?")) {
+            state[type === 'char' ? 'characters' : type].splice(index, 1);
+            saveState();
+            renderAll();
+        }
+    }
+
+    // --- 5. Modal Management ---
+    let currentEditing = null;
+
+    function editItem(type, index) {
+        currentEditing = { type, index };
+        const modal = document.getElementById('edit-modal');
+        const f1 = document.getElementById('mf1'), f2 = document.getElementById('mf2');
+        const sel = document.getElementById('mf-role-select'), nGrp = document.getElementById('notes-group');
+        
+        if (type === 'plot') {
+            const data = state.plot[index];
+            setLabels("Title", "Details", false, false);
+            f1.value = data.title; f2.value = data.desc;
+        } else if (type === 'timeline') {
+            const data = state.timeline[index];
+            setLabels("Time", "Event", false, false);
+            f1.value = data.time; f2.value = data.event;
+        } else if (type === 'char') {
+            const data = state.characters[index];
+            setLabels("Name", "Role", true, true);
+            f1.value = data.name; sel.value = data.role; document.getElementById('mf3').value = data.notes;
+        }
+        modal.style.display = 'flex';
+    }
+
+    function setLabels(l1, l2, showSelect, showNotes) {
+        document.getElementById('l1').innerText = l1;
+        document.getElementById('l2').innerText = l2;
+        document.getElementById('mf2').style.display = showSelect ? 'none' : 'block';
+        document.getElementById('mf-role-select').style.display = showSelect ? 'block' : 'none';
+        document.getElementById('notes-group').style.display = showNotes ? 'block' : 'none';
+    }
+
+    document.getElementById('modal-save-btn').onclick = () => {
+        const { type, index } = currentEditing;
+        if (type === 'plot') {
+            state.plot[index] = { title: document.getElementById('mf1').value, desc: document.getElementById('mf2').value };
+        } else if (type === 'timeline') {
+            state.timeline[index] = { time: document.getElementById('mf1').value, event: document.getElementById('mf2').value };
+        } else if (type === 'char') {
+            state.characters[index] = { 
+                name: document.getElementById('mf1').value, 
+                role: document.getElementById('mf-role-select').value,
+                notes: document.getElementById('mf3').value 
+            };
+        }
+        saveState();
+        renderAll();
+        closeModal();
+    };
+
+    function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
+    window.onclick = (e) => { if (e.target.className === 'modal-overlay') closeModal(); };
+
+    // --- 6. Navigation & Tabs ---
+    document.getElementById('main-nav').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('nav-btn')) return;
+        document.querySelectorAll('.nav-btn, .tab-content').forEach(el => el.classList.remove('active'));
+        e.target.classList.add('active');
+        document.getElementById(e.target.dataset.tab + '-section').classList.add('active');
+    });
+
+    // --- 7. Working Import/Export ---
+    function exportProject() {
+        state.projectName = document.getElementById('project-name').value;
+        // Inject state as a hidden script tag into the HTML string
+        const dataScript = `<script id="project-data" type="application/json">${JSON.stringify(state)}<\/script>`;
+        let finalHTML = document.documentElement.outerHTML.replace(/<script id="project-data".*?<\/script>/, "");
+        finalHTML = finalHTML.replace('</body>', dataScript + '</body>');
+
+        const blob = new Blob([finalHTML], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${state.projectName}.html`;
+        a.click();
+    }
+
+    function importProject(e) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(ev.target.result, 'text/html');
+            const dataTag = doc.querySelector('script#project-data');
+            
+            if (dataTag) {
+                state = JSON.parse(dataTag.textContent);
+                saveState();
+                renderAll();
+                alert("Story loaded!");
+            } else {
+                alert("Error: No story data found in this file.");
+            }
+        };
+        reader.readAsText(e.target.files[0]);
+    }
+
+    // --- 8. Drag and Drop Implementation ---
+    function setupDragAndDrop() {
+        const containers = ['.plot-container', '#timeline-list', '.char-sub-list'];
+        
+        containers.forEach(selector => {
+            // We use document.body for event delegation because containers are dynamic
+            document.body.addEventListener('dragover', e => {
+                const container = e.target.closest(selector);
+                if (!container) return;
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging');
+                const afterElement = getDragAfterElement(container, e.clientX, e.clientY, selector);
+                if (afterElement == null) {
+                    container.appendChild(dragging);
+                } else {
+                    container.insertBefore(dragging, afterElement);
+                }
+            });
+
+            document.body.addEventListener('dragend', (e) => {
+                if (e.target.classList.contains('plot-beat') || e.target.classList.contains('list-item')) {
+                    syncStateAfterDrag();
+                }
+            });
+        });
+    }
+
+    function getDragAfterElement(container, x, y, selector) {
+        const draggableElements = [...container.querySelectorAll(`${selector === '.plot-container' ? '.plot-beat' : '.list-item'}:not(.dragging)`)];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = selector === '.plot-container' ? x - box.left - box.width / 2 : y - box.top - box.height / 2;
+            
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function syncStateAfterDrag() {
+        // Sync Plot
+        state.plot = [...document.querySelectorAll('.plot-beat')].map(el => ({
+            title: el.querySelector('.beat-name').innerText,
+            desc: el.querySelector('.beat-details-pop').innerText
+        }));
+
+        // Sync Timeline
+        state.timeline = [...document.querySelectorAll('#timeline-section .list-item')].map(el => {
+            const info = el.querySelector('.item-info').innerText.split(': ');
+            return { time: info[0], event: info[1] };
+        });
+
+        // Sync Characters
+        state.characters = [...document.querySelectorAll('#characters-section .list-item')].map(el => {
+            const info = el.querySelector('.item-info');
+            return {
+                name: info.querySelector('strong').innerText,
+                role: info.querySelector('i').innerText,
+                notes: info.querySelector('.char-notes-text').innerText
+            };
+        });
+
+        saveState();
+        renderSidebar();
+    }
+</script>
+
+</body>
+</html>
