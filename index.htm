@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robert Chester | Official Website</title>
     
+    <!-- OPEN GRAPH SOCIAL MEDIA METRICS -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://grinningdog.github.io/testrun/">
     <meta property="og:title" content="Robert Chester | Official Author Website">
@@ -49,7 +50,7 @@
             min-height: 100vh;
         }
 
-        /* --- DESKTOP HEADER & NAV (STAYS SIDE-BY-SIDE) --- */
+        /* --- DESKTOP HEADER & NAV --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -160,7 +161,7 @@
             border-left: 4px solid var(--accent-color);
             padding-left: 14px;
             gap: 1.5rem;
-            flex-wrap: nowrap; /* Prevents container row layout from splitting */
+            flex-wrap: nowrap;
         }
 
         .section-title {
@@ -207,8 +208,8 @@
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 1px solid #FFFFFF !important;
-            padding: 0.55rem 1.6rem !important; /* Trimmed height with generous side-margins */
-            font-size: 0.76rem !important;       /* Scaled down font sizing for strict single-row conformity */
+            padding: 0.55rem 1.6rem !important; 
+            font-size: 0.76rem !important;       
             font-weight: 800 !important;
             text-transform: uppercase !important;
             letter-spacing: 1.5px !important;
@@ -233,7 +234,7 @@
         .add-book-btn-container {
             display: none;
             gap: 0.5rem;
-            flex-wrap: nowrap; /* Forces layout dashboard buttons to occupy one single row line */
+            flex-wrap: nowrap; 
             align-items: center;
         }
 
@@ -274,7 +275,6 @@
                 font-size: 0.8rem;
             }
 
-            /* Maintains single row alignment for section headers on small Viewports */
             .section-header {
                 flex-direction: row;
                 align-items: center;
@@ -283,7 +283,7 @@
             }
 
             .section-title {
-                font-size: 1.1rem; /* Compact layout sizing for mobile row validation */
+                font-size: 1.1rem; 
             }
 
             .add-book-btn-container {
@@ -293,7 +293,7 @@
             }
 
             .btn-admin-panel {
-                padding: 0.45rem 0.85rem !important; /* Scale buttons down on mobile to guarantee a perfect row fit */
+                padding: 0.45rem 0.85rem !important; 
                 font-size: 0.65rem !important;
                 letter-spacing: 1px !important;
             }
@@ -363,7 +363,7 @@
             font-size: 1.05rem;
         }
 
-        /* --- CONTACT CARD --- */
+        /* --- CONTACT & SUBSCRIBE CARDS --- */
         .contact-card {
             background: rgba(10, 10, 12, 0.5); 
             backdrop-filter: blur(10px);
@@ -473,24 +473,29 @@
 </head>
 <body>
 
+    <!-- NAVBAR module -->
     <header>
         <div class="logo">Robert Chester</div>
         <nav>
             <a href="#">Home</a>
             <a href="#books">Books</a>
+            <a href="#subscribe">Mailing List</a>
             <a href="#contact">Contact</a>
             <a id="admin-nav-link" onclick="handleAdminNavClick()">Admin Panel</a>
         </nav>
     </header>
 
+    <!-- INTRO STATEMENT -->
     <section class="hero">
         <h1>The Inspector Griffin Mysteries</h1>
         <p>When Adam Griffin, grandson of one of the world's greatest detective authors, meets Finn Williams, one of the world's greatest hackers, sparks fly - both physically and emotionally.</p>
         <p>And their world is suddenly beset with intrigue and mystery.</p>
     </section>
 
+    <!-- MAIN DATA VIEWPORT -->
     <main class="container" id="books">
         
+        <!-- SECTION 1: INSPECTOR GRIFFIN SERIES -->
         <div class="section-header">
             <h2 class="section-title">The Inspector Griffin Series</h2>
             <div id="add-book-btn-container" class="add-book-btn-container">
@@ -500,18 +505,45 @@
             </div>
         </div>
         <div class="books-grid" id="books-container">
-            </div>
+            <!-- Programmatic Griffin books render here -->
+        </div>
 
+        <!-- SECTION 2: OTHER WORKS -->
         <div id="other-works-section" style="margin-top: 6rem; display: none;">
             <div class="section-header">
                 <h2 class="section-title">Other Works</h2>
             </div>
             <div class="books-grid" id="other-works-container">
-                </div>
+                <!-- Programmatic standalone works render here -->
+            </div>
         </div>
 
     </main>
 
+    <!-- SECTION 3: MAILING LIST SUBSCRIPTION -->
+    <section class="container" id="subscribe">
+        <div class="section-header">
+            <h2 class="section-title">Join the Mailing List</h2>
+        </div>
+        <div class="contact-card">
+            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; text-align: center;">
+                Subscribe to receive updates on new Inspector Griffin releases, coming soon notifications, and exclusive standalone updates.
+            </p>
+            <form id="subscribe-form" onsubmit="handleSubscribeSubmit(event)">
+                <div class="form-group">
+                    <label for="subscriber-name">Full Name</label>
+                    <input type="text" id="subscriber-name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="subscriber-email">Email Address</label>
+                    <input type="email" id="subscriber-email" placeholder="you@example.com" required>
+                </div>
+                <button type="submit" class="btn-block">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SECTION 4: CONTACT FORM -->
     <section class="container" id="contact">
         <div class="section-header">
             <h2 class="section-title">Get in Touch</h2>
@@ -535,6 +567,7 @@
         </div>
     </section>
 
+    <!-- SUBMODAL INTERFACES -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
@@ -608,6 +641,7 @@
         </div>
     </div>
 
+    <!-- RUNTIME LOGIC ENGINE LINK WITH CACHE BUSTER -->
     <script src="app.js?v=3.1"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to v3.1 to clear old Firefox memories.
+// Stepped up version identifier to v3.1 to configure dual-form modules.
 // =========================================================================
-const SITE_VERSION = "3.1"; 
+const SITE_VERSION = "3.0"; 
 
 const defaultBooks = [
     {
@@ -31,21 +31,12 @@ const defaultBooks = [
         "amazonUrl": "",
         "goodreadsUrl": "",
         "synopsis": "COMING SOON!\n\nAn exciting new adventure with a tangled web of murder, MI5 agents, Mexican Cartels and Big Pharma.\n\nWill a former child movie star escape them all and will Adam and Finn find the serial killer?"
-    },
-    {
-        "title": "A New Romance",
-        "meta": "How Not to Marry a Millionaire",
-        "category": "other",
-        "coverUrl": "the choirboy killer.jpg",
-        "amazonUrl": "https://www.amazon.co.uk/No-Ladies-Detective-Agency-Book/dp/034911675X",
-        "goodreadsUrl": "",
-        "synopsis": "When you want to marry a miillionaire but accidentally fall in love."
     }
 ];
 
 let isLoggedIn = false;
 let editingIndex = null; 
-let memoryFallbackCache = null; // Memory-resident backup cache array
+let memoryFallbackCache = null; 
 
 /* --- XSS TEXT SANITIZER FILTER --- */
 function escapeHTML(str) {
@@ -55,10 +46,9 @@ function escapeHTML(str) {
     );
 }
 
-/* --- IMMUNIZED HARDENED STORAGE ENGINE --- */
+/* --- HARDENED STORAGE ENGINE --- */
 function getBooks() {
     try {
-        // Execute dynamic authorization verification probe
         const testKey = '__firefox_probe__';
         localStorage.setItem(testKey, testKey);
         localStorage.removeItem(testKey);
@@ -78,7 +68,6 @@ function getBooks() {
 
         return JSON.parse(stored);
     } catch (error) {
-        // If security barriers block local cookies, fall back to transient memory
         if (!memoryFallbackCache) {
             console.warn("Storage restricted. Fallback activated safely.");
             memoryFallbackCache = JSON.parse(JSON.stringify(defaultBooks));
@@ -91,7 +80,6 @@ function saveBooks(books) {
     try {
         localStorage.setItem('author_books', JSON.stringify(books));
     } catch (error) {
-        // Keeps user operations live even if device disk writes are locked down
         memoryFallbackCache = books;
     }
     renderBooks();
@@ -245,6 +233,7 @@ function clearSystemMemory() {
     }
 }
 
+/* --- PIPELINE 1: CONTACT ROUTER FOR BOB@WESTWIGHT.NET --- */
 async function handleContactSubmit(event) {
     event.preventDefault();
     
@@ -266,7 +255,7 @@ async function handleContactSubmit(event) {
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                access_key: "PASTE_YOUR_WEB3FORMS_KEY_HERE",
+                access_key: "199893c8-b1b4-464e-8a6a-4c30dca92931",
                 name: name,
                 email: email,
                 message: comment,
@@ -284,6 +273,51 @@ async function handleContactSubmit(event) {
         }
     } catch (error) {
         alert("Connection error. The network background handshake timed out.");
+    } finally {
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+/* --- PIPELINE 2: SUBSCRIPTION ROUTER FOR GRIFFINMAILINGLIST@WESTWIGHT.NET --- */
+async function handleSubscribeSubmit(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('subscriber-name').value;
+    const email = document.getElementById('subscriber-email').value;
+    
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerText;
+    
+    submitBtn.innerText = "TRANSMITTING...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                access_key: "10273041-54af-48f6-a152-3560099fc314",
+                name: name,
+                email: email,
+                message: `${name} has requested immediate enrollment into your reader subscriber registry list.`,
+                subject: `New Mailing List Enrollment Request: ${name}`
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert("Subscription successful! You have been successfully added to the mailing list.");
+            document.getElementById('subscribe-form').reset();
+        } else {
+            alert("Subscription error: " + result.message);
+        }
+    } catch (error) {
+        alert("Connection error. The background subscriber registry handshake timed out.");
     } finally {
         submitBtn.innerText = originalText;
         submitBtn.disabled = false;
@@ -361,6 +395,7 @@ function handleLogout() {
     renderBooks();
 }
 
+// Ensure the application completely binds form submittal parameters
 function handleBookFormSubmit(event) {
     event.preventDefault();
     const title = document.getElementById('book-title').value;
