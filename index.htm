@@ -160,6 +160,7 @@
             border-left: 4px solid var(--accent-color);
             padding-left: 14px;
             gap: 1.5rem;
+            flex-wrap: nowrap; /* Prevents container row layout from splitting */
         }
 
         .section-title {
@@ -167,6 +168,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 800;
+            white-space: nowrap;
         }
 
         .books-grid {
@@ -197,8 +199,7 @@
             flex-wrap: wrap;
         }
 
-        /* --- UNIFIED GLOBAL BUTTON MATRIX CONFIGURATION ---
-           Converts every system trigger into a white-on-black rounded module */
+        /* --- COMPACT HIGH-SPACING GLOBAL CAPSULE BUTTON MATRIX --- */
         .btn-admin-panel, .btn-admin-action, .btn-link-accent, .btn-link-subtle, button.btn-block {
             display: inline-flex;
             align-items: center;
@@ -206,12 +207,12 @@
             background: #FFFFFF !important;
             color: #000000 !important;
             border: 1px solid #FFFFFF !important;
-            padding: 0.9rem 2.5rem !important; /* Expanded height with massive side spacing margins */
-            font-size: 0.82rem !important;
+            padding: 0.55rem 1.6rem !important; /* Trimmed height with generous side-margins */
+            font-size: 0.76rem !important;       /* Scaled down font sizing for strict single-row conformity */
             font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 2px !important;
-            border-radius: 50px !important;   /* Maximum corner radius (Capsule parameters) */
+            letter-spacing: 1.5px !important;
+            border-radius: 50px !important;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s ease-in-out;
@@ -224,7 +225,6 @@
             transform: translateY(-1px);
         }
 
-        /* Framework override definitions for block alignments */
         button.btn-block {
             width: 100%;
             white-space: normal;
@@ -232,13 +232,14 @@
 
         .add-book-btn-container {
             display: none;
-            gap: 0.75rem;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            flex-wrap: nowrap; /* Forces layout dashboard buttons to occupy one single row line */
+            align-items: center;
         }
 
         .admin-actions {
             display: none; 
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
             margin-top: 1.5rem;
             border-top: 1px solid var(--border-color);
@@ -273,22 +274,28 @@
                 font-size: 0.8rem;
             }
 
+            /* Maintains single row alignment for section headers on small Viewports */
             .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1.5rem;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem; /* Compact layout sizing for mobile row validation */
             }
 
             .add-book-btn-container {
-                width: 100%;
-                justify-content: flex-start;
-                gap: 0.75rem;
+                width: auto;
+                justify-content: flex-end;
+                gap: 0.35rem;
             }
 
             .btn-admin-panel {
-                flex: 1;
-                text-align: center;
-                padding: 0.9rem 1.5rem !important; /* Slightly optimized width layout for smaller screens */
+                padding: 0.45rem 0.85rem !important; /* Scale buttons down on mobile to guarantee a perfect row fit */
+                font-size: 0.65rem !important;
+                letter-spacing: 1px !important;
             }
 
             .book-card {
@@ -601,6 +608,6 @@
         </div>
     </div>
 
-    <script src="app.js?v=2.6"></script>
+    <script src="app.js?v=2.7"></script>
 </body>
 </html>
