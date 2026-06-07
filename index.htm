@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,33 +26,21 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
+        /* --- SIMPLIFIED DIRECT BACKGROUND SETUP --- */
         body {
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle, transparent 30%, rgba(10, 10, 12, 0.2) 65%, rgba(10, 10, 12, 0.75) 100%),
+                url('bg.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.6;
             padding-bottom: 60px;
             scroll-behavior: smooth;
-            position: relative;
             min-height: 100vh;
-        }
-
-        /* --- BACKGROUND LAYER (WITH SPACE ENCODING FIX) --- */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                /* Cinematic Vignette Overlay */
-                radial-gradient(circle, transparent 30%, rgba(10, 10, 12, 0.2) 65%, rgba(10, 10, 12, 0.75) 100%),
-                /* Space characters encoded as %20 for strict browser compatibility */
-                url('Blood%20Relatives%202a.jpg');
-            background-size: cover;
-            background-position: center bottom;
-            z-index: -2;
-            opacity: 0.95; 
         }
 
         /* --- HEADER & NAV --- */
@@ -308,6 +298,7 @@
 
         #add-book-btn-container {
             display: none;
+            gap: 0.5rem;
         }
 
         /* --- MODALS --- */
@@ -435,7 +426,6 @@
 </head>
 <body>
 
-    <!-- NAV BAR -->
     <header>
         <div class="logo">Robert Chester</div>
         <nav>
@@ -446,28 +436,26 @@
         </nav>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
         <h1>The Inspector Griffin Mysteries</h1>
         <p>When Adam Griffin, grandson of one of the world's greatest detective authors, meets Finn Williams, one of the world's greatest hackers, sparks fly - both physically and emotionally.</p>
         <p>And their world is suddenly beset with intrigue and mystery.</p>
     </section>
 
-    <!-- MAIN CONTENT: BOOKS -->
     <main class="container" id="books">
         <div class="section-header">
             <h2 class="section-title">The Series</h2>
-            <div id="add-book-btn-container">
+            <div id="add-book-btn-container" style="display: none;">
                 <button onclick="openBookModal()" class="btn-sm" style="background: var(--accent-color); border: none;">+ Add New Book</button>
+                <button onclick="openExportModal()" class="btn-sm" style="background: #1a1a24; border-color: var(--accent-color);">💾 Export Code</button>
+                <button onclick="clearSystemMemory()" class="btn-sm" style="background: rgba(255,0,0,0.1); border-color: var(--danger-color); color: var(--danger-color);">🔄 Reset Cache</button>
             </div>
         </div>
         
         <div class="books-grid" id="books-container">
-            <!-- Dynamic Books Will Load Here -->
-        </div>
+            </div>
     </main>
 
-    <!-- CONTACT SECTION -->
     <section class="container" id="contact">
         <div class="section-header">
             <h2 class="section-title">Get in Touch</h2>
@@ -491,7 +479,6 @@
         </div>
     </section>
 
-    <!-- MODAL 1: LOGIN -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
@@ -511,7 +498,6 @@
         </div>
     </div>
 
-    <!-- MODAL 2: ADD / EDIT CONTENT -->
     <div id="book-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('book-modal')">&times;</span>
@@ -528,7 +514,7 @@
                 <div class="form-group">
                     <label for="book-cover-file">Upload Book Cover Image</label>
                     <input type="file" id="book-cover-file" accept="image/*">
-                    <span class="storage-hint" id="file-hint">Leave blank to retain asset or use placeholder.</span>
+                    <span class="storage-hint" id="file-hint">Select file from your local folder.</span>
                 </div>
                 <div class="form-group">
                     <label for="book-synopsis-input">Plot Synopsis</label>
@@ -539,16 +525,34 @@
         </div>
     </div>
 
-    <!-- --- JAVASCRIPT ENGINE --- -->
+    <div id="export-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn" onclick="closeModal('export-modal')">&times;</span>
+            <h2 style="text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Export Data Block</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Copy the array string below and use it to replace your internal source template code:</p>
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <textarea id="export-textarea" rows="12" style="font-family: monospace; font-size: 0.85rem; background: #050507; color: #39ff14;" readonly onclick="this.select()"></textarea>
+            </div>
+            <button onclick="copyExportedCode()" class="btn-block" id="copy-btn" style="margin-top: 1rem;">Copy to Clipboard</button>
+        </div>
+    </div>
+
     <script>
-        const defaultBooks = [
-            {
-                title: "Code of Conduct",
-                meta: "Book 1 — Featuring Adam & Finn (Age 21)",
-                coverUrl: "", 
-                synopsis: "At twenty-one, Adam Griffin wants absolutely nothing to do with his grandfather's famous legacy. But when a cryptic message is left at a crime scene addressed directly to him, he's dragged straight into a dangerous puzzle.\n\nEnter Finn Williams—a brilliant hacker with a sharp tongue and an even sharper mind. Forced together to decipher a web of dangerous secrets, the friction between them quickly catches fire. As threats close in around them, they must figure out who to trust in a game where one bad keystroke could mean the end."
-            }
-        ];
+        // --- PASTE YOUR EXPORTED DATA BLOCK HERE ---
+        const defaultBooks = [[
+    {
+        "title": "Blood Relatives",
+        "meta": "An Inspector Griffin Mystery",
+        "coverUrl": "Blood Relatives.jpg",
+        "synopsis": "A near-miss with a speeding van at Waterloo Station is just the opening move in a deadly new game for Adam Griffin. Reunited with his old school friend, Finn Williams—now an elite white-hat hacker—Adam thinks his biggest challenge is navigating a sudden romance and managing his grandmother's massive literary estate.\n\nBut when a high-profile stabbing at the London School of Economics strikes a terrifyingly familiar chord, the investigation takes a deeply personal turn. Hidden behind a web of cyber-scams, stolen identities, and black-market weapons is a ghost from Adam's past: a woman he had never met, driven by a lifetime of bitter envy and a desperate hunger for his fortune.\n\nIn this 21st-century mystery, Adam and Finn must use every ounce of financial logic and hacking prowess to track a killer who is rapidly unravelling—before her final, desperate strike hits home."
+    },
+    {
+        "title": "The Crypto Mystery Weekend",
+        "meta": "An Inspector Griffin Mystery",
+        "coverUrl": "A Crypto Mystery Weekend3.jpg",
+        "synopsis": "An exclusive Murder Mystery weekend at a luxury Oxfordshire estate turns deadly when a real body is found bludgeoned in the garden.\n\nFor independently wealthy Adam Griffin and his partner Finn, a top-tier ethical hacker, the investigation quickly morphs from a cozy whodunit into a high-stakes cyber chase.\n\nAt the centre of it all? A fastidiously arrogant guest, a manipulative psychic medium and a hidden USB drive holding a secret. A secret worth killing for.\n\nTo catch a killer who has played everyone for a fool, they must follow the money—before the digital trail goes cold forever."
+    }
+];
 
         let isLoggedIn = false;
         let editingIndex = null; 
@@ -563,12 +567,8 @@
         }
 
         function saveBooks(books) {
-            try {
-                localStorage.setItem('author_books', JSON.stringify(books));
-                renderBooks();
-            } catch (error) {
-                alert("Error: Storage space full. Image allocation payload is too large. Please supply a compressed image format.");
-            }
+            localStorage.setItem('author_books', JSON.stringify(books));
+            renderBooks();
         }
 
         function renderBooks() {
@@ -581,7 +581,7 @@
                 bookCard.className = 'book-card';
 
                 let coverHTML = `<div class="placeholder-text">Cover Art<br>Classification Pending</div>`;
-                if(book.coverUrl && book.coverUrl.trim() !== "") {
+                if(book.coverUrl && book.coverUrl.trim() !== "" && !book.coverUrl.startsWith("data:image")) {
                     coverHTML = `<img src="${book.coverUrl}" alt="${book.title} Cover">`;
                 }
 
@@ -608,7 +608,49 @@
                 container.appendChild(bookCard);
             });
 
-            document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'block' : 'none';
+            document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'flex' : 'none';
+        }
+
+        /* --- EXPORTER OPERATIONS WITH AUTOMATIC BASE64 SANITIZER FILTER --- */
+        function openExportModal() {
+            const currentBooks = getBooks();
+            
+            // AGGRESSIVE SAFETY LAYER: Slices out any old hidden text strings automatically
+            const sanitizedBooks = currentBooks.map((book, idx) => {
+                let accurateFilename = book.coverUrl;
+                
+                if (!accurateFilename || accurateFilename.trim() === "" || accurateFilename.startsWith("data:image")) {
+                    // Fallback to a readable structured placeholder format matching the title index
+                    accurateFilename = "cover" + (idx + 1) + ".jpg";
+                }
+                
+                return {
+                    title: book.title,
+                    meta: book.meta,
+                    coverUrl: accurateFilename,
+                    synopsis: book.synopsis
+                };
+            });
+
+            const exportTextarea = document.getElementById('export-textarea');
+            exportTextarea.value = JSON.stringify(sanitizedBooks, null, 4);
+            document.getElementById('export-modal').style.display = 'flex';
+            document.getElementById('copy-btn').innerText = "Copy to Clipboard";
+        }
+
+        function copyExportedCode() {
+            const textArea = document.getElementById('export-textarea');
+            textArea.select();
+            document.execCommand('copy');
+            document.getElementById('copy-btn').innerText = "✔ Code Copied!";
+        }
+
+        /* --- INSTANT SYSTEM CACHE RESET --- */
+        function clearSystemMemory() {
+            if (confirm("Reset layout system and clear browser ghost memories? This restores your default settings.")) {
+                localStorage.removeItem('author_books');
+                location.reload();
+            }
         }
 
         function handleContactSubmit(event) {
@@ -644,7 +686,7 @@
                 const book = getBooks()[editingIndex];
                 document.getElementById('modal-form-title').innerText = "Modify Book Entry";
                 document.getElementById('modal-submit-btn').innerText = "Commit Changes";
-                document.getElementById('file-hint').innerText = "Leave clear to preserve active image data layer.";
+                document.getElementById('file-hint').innerText = "Select a file or leave clear to preserve settings.";
                 
                 document.getElementById('book-title').value = book.title;
                 document.getElementById('book-meta').value = book.meta;
@@ -652,7 +694,7 @@
             } else {
                 document.getElementById('modal-form-title').innerText = "Create System Entry";
                 document.getElementById('modal-submit-btn').innerText = "Publish Entry";
-                document.getElementById('file-hint').innerText = "Leave clear to fall back to generic placeholder frame.";
+                document.getElementById('file-hint').innerText = "Select file matching your target cover folder asset.";
                 form.reset();
             }
             modal.style.display = 'flex';
@@ -697,8 +739,8 @@
             const synopsis = document.getElementById('book-synopsis-input').value;
             const books = getBooks();
 
-            const finalizeSave = (coverDataUrl) => {
-                const bookData = { title, meta, coverUrl: coverDataUrl, synopsis };
+            const finalizeSave = (coverFilename) => {
+                const bookData = { title, meta, coverUrl: coverFilename, synopsis };
                 if (editingIndex !== null) {
                     books[editingIndex] = bookData;
                 } else {
@@ -710,9 +752,7 @@
             };
 
             if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { finalizeSave(e.target.result); };
-                reader.readAsDataURL(fileInput.files[0]);
+                finalizeSave(fileInput.files[0].name); 
             } else {
                 const fallbackCover = (editingIndex !== null) ? books[editingIndex].coverUrl : "";
                 finalizeSave(fallbackCover);
