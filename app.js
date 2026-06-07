@@ -1,6 +1,6 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to v2.9 to clear old Firefox memories.
+// Stepped up version identifier to v3.0 to clear old Firefox memories.
 // =========================================================================
 const SITE_VERSION = "3.0"; 
 
