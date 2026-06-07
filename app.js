@@ -1,13 +1,14 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to ensure clean reload cycles.
+// Stepped up version identifier to v2.5 to force clean memory updates.
 // =========================================================================
-const SITE_VERSION = "2.4"; 
+const SITE_VERSION = "2.5"; 
 
 const defaultBooks = [
     {
         "title": "Blood Relatives",
         "meta": "An Inspector Griffin Mystery",
+        "category": "griffin",
         "coverUrl": "Blood Relatives.jpg",
         "amazonUrl": "",
         "goodreadsUrl": "",
@@ -16,6 +17,7 @@ const defaultBooks = [
     {
         "title": "The Crypto Mystery Weekend",
         "meta": "An Inspector Griffin Mystery",
+        "category": "griffin",
         "coverUrl": "A Crypto Mystery Weekend3.jpg",
         "amazonUrl": "",
         "goodreadsUrl": "",
@@ -24,10 +26,11 @@ const defaultBooks = [
     {
         "title": "The Choirboy Killer",
         "meta": "An Inspector Griffin Mystery",
+        "category": "griffin",
         "coverUrl": "the choirboy killer.jpg",
         "amazonUrl": "",
         "goodreadsUrl": "",
-        "synopsis": "COMING SOON!\n\nAn exciting new adventure with a tangled web of murder,  MI5 agents, Mexican Cartels and Big Pharma.\n\nWill a former child movie star escape them all and will Adam and Finn find the serial killer?"
+        "synopsis": "COMING SOON!\n\nAn exciting new adventure with a tangled web of murder, MI5 agents, Mexican Cartels and Big Pharma.\n\nWill a former child movie star escape them all and will Adam and Finn find the serial killer?"
     }
 ];
 
@@ -42,7 +45,7 @@ function escapeHTML(str) {
     );
 }
 
-/* --- UPGRADED VERSION-CONTROLLED DOMAIN ENGINE --- */
+/* --- VERSION-CONTROLLED STORAGE ENGINE --- */
 function getBooks() {
     try {
         const currentVersion = localStorage.getItem('site_version');
@@ -79,12 +82,12 @@ function renderBooks() {
     griffinContainer.innerHTML = '';
     otherContainer.innerHTML = '';
     
-    let otherWorksCount = 0;
+    // Create sectioned arrays tracking their true indices in the master database
+    const griffinBooks = books.map((b, idx) => ({ ...b, masterIndex: idx })).filter(b => b.category !== 'other');
+    const otherBooks = books.map((b, idx) => ({ ...b, masterIndex: idx })).filter(b => b.category === 'other');
 
-    books.forEach((book, index) => {
-        const bookCard = document.createElement('div');
-        bookCard.className = 'book-card';
-
+    // Helper function to handle HTML string generation for each card
+    const generateCardHTML = (book, sectionIndex, sectionLength) => {
         let coverHTML = `<div class="placeholder-text">Cover Art<br>Classification Pending</div>`;
         if(book.coverUrl && book.coverUrl.trim() !== "" && !book.coverUrl.startsWith("data:image")) {
             coverHTML = `<img src="${escapeHTML(book.coverUrl)}" alt="${escapeHTML(book.title)} Cover">`;
@@ -98,10 +101,10 @@ function renderBooks() {
             purchasePathwaysHTML += `<a href="${escapeHTML(book.goodreadsUrl)}" target="_blank" class="btn-link-subtle">📖 Goodreads</a>`;
         }
 
-        const upDisabled = index === 0 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
-        const downDisabled = index === books.length - 1 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
+        const upDisabled = sectionIndex === 0 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
+        const downDisabled = sectionIndex === sectionLength - 1 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
 
-        bookCard.innerHTML = `
+        return `
             <div class="book-cover">
                 ${coverHTML}
             </div>
@@ -113,29 +116,58 @@ function renderBooks() {
                 ${purchasePathwaysHTML ? `<div class="book-links">${purchasePathwaysHTML}</div>` : ''}
                 
                 <div class="admin-actions" style="display: ${isLoggedIn ? 'flex' : 'none'}">
-                    <button class="btn-sm" onclick="moveBook(${index}, -1)" ${upDisabled}>▲ Move Up</button>
-                    <button class="btn-sm" onclick="moveBook(${index}, 1)" ${downDisabled}>▼ Move Down</button>
-                    <button class="btn-sm" onclick="openBookModal(${index})" style="border-color: var(--accent-color)">Edit Parameters</button>
-                    <button class="btn-sm btn-danger" onclick="deleteBook(${index})">Delete</button>
+                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, -1)" ${upDisabled}>▲ Move Up</button>
+                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, 1)" ${downDisabled}>▼ Move Down</button>
+                    <button class="btn-admin-action btn-admin-edit" onclick="openBookModal(${book.masterIndex})">Edit Parameters</button>
+                    <button class="btn-admin-action btn-admin-delete" onclick="deleteBook(${book.masterIndex})">Delete</button>
                 </div>
             </div>
         `;
-        
-        if (book.category === 'other') {
-            otherContainer.appendChild(bookCard);
-            otherWorksCount++;
-        } else {
-            griffinContainer.appendChild(bookCard);
-        }
+    };
+
+    // Render Inspector Griffin books
+    griffinBooks.forEach((book, sIdx) => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = generateCardHTML(book, sIdx, griffinBooks.length);
+        griffinContainer.appendChild(card);
     });
 
-    if (otherWorksCount > 0) {
-        otherSection.style.display = 'block';
-    } else {
-        otherSection.style.display = 'none';
-    }
+    // Render Other Works standalone books
+    otherBooks.forEach((book, sIdx) => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.innerHTML = generateCardHTML(book, sIdx, otherBooks.length);
+        otherContainer.appendChild(card);
+    });
 
+    // Toggle Visibility gate for "Other Works" header block
+    otherSection.style.display = otherBooks.length > 0 ? 'block' : 'none';
     document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'flex' : 'none';
+}
+
+/* --- SECTION-AWARE REORDERING ENGINE --- */
+function moveBook(masterIndex, direction) {
+    const books = getBooks();
+    const targetBook = books[masterIndex];
+    const category = targetBook.category || 'griffin';
+    
+    // Map out items in this specific section along with their original array indices
+    const sectionBooks = books
+        .map((b, idx) => ({ ...b, originalIndex: idx }))
+        .filter(b => (b.category || 'griffin') === category);
+        
+    const relativeIndex = sectionBooks.findIndex(b => b.originalIndex === masterIndex);
+    const targetRelativeIndex = relativeIndex + direction;
+    
+    // Execute a secure index swap within the bounds of this category
+    if (targetRelativeIndex >= 0 && targetRelativeIndex < sectionBooks.length) {
+        const currentMasterIdx = masterIndex;
+        const targetMasterIdx = sectionBooks[targetRelativeIndex].originalIndex;
+        
+        [books[currentMasterIdx], books[targetMasterIdx]] = [books[targetMasterIdx], books[currentMasterIdx]];
+        saveBooks(books);
+    }
 }
 
 function openExportModal() {
@@ -194,7 +226,7 @@ function handleContactSubmit(event) {
     const subject = encodeURIComponent("Inquiry for Robert Chester from " + name);
     const body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nMessage Payload:\n" + comment);
     
-    window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "&body=" + body;
+    window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "?body=" + body;
     document.getElementById('contact-form').reset();
 }
 
@@ -209,6 +241,7 @@ function handleAdminNavClick() {
 }
 
 function openBookModal(index) {
+    // Verifies data formats; handles empty launcher commands safely
     editingIndex = (typeof index === 'number') ? index : null;
     
     const modal = document.getElementById('book-modal');
@@ -297,19 +330,10 @@ function handleBookFormSubmit(event) {
     }
 }
 
-function moveBook(index, direction) {
+function deleteBook(masterIndex) {
     const books = getBooks();
-    const targetIndex = index + direction;
-    if (targetIndex >= 0 && targetIndex < books.length) {
-        [books[index], books[targetIndex]] = [books[targetIndex], books[index]];
-        saveBooks(books);
-    }
-}
-
-function deleteBook(index) {
-    const books = getBooks();
-    if (confirm("Purge entry payload data for \"" + books[index].title + "\"?")) {
-        books.splice(index, 1);
+    if (confirm("Purge entry payload data for \"" + books[masterIndex].title + "\"?")) {
+        books.splice(masterIndex, 1);
         saveBooks(books);
     }
 }

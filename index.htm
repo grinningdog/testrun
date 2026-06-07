@@ -241,10 +241,101 @@
             border-color: var(--text-muted) !important;
         }
 
+        /* --- UNIFIED ADMIN CONTROL COMPONENT CSS --- */
         .add-book-btn-container {
             display: none;
             gap: 0.5rem;
             flex-wrap: wrap;
+        }
+
+        .btn-admin-panel {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-admin-add {
+            background: var(--accent-color);
+            color: var(--text-main);
+            border-color: var(--accent-color);
+        }
+        .btn-admin-add:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.4);
+        }
+
+        .btn-admin-export {
+            background: #1a1a24;
+            border-color: var(--accent-color);
+            color: var(--text-main);
+        }
+        .btn-admin-export:hover {
+            background: #222230;
+            border-color: var(--accent-hover);
+        }
+
+        .btn-admin-reset {
+            background: rgba(255, 0, 60, 0.08);
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+        .btn-admin-reset:hover {
+            background: var(--danger-color);
+            color: var(--text-main);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.45);
+        }
+
+        /* Book Item Action Button Classes */
+        .admin-actions {
+            display: none; 
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .btn-admin-action {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: #16161a;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+        .btn-admin-action:hover:not(:disabled) {
+            background: #222228;
+            border-color: var(--text-muted);
+        }
+
+        .btn-admin-edit {
+            border-color: var(--accent-color);
+        }
+        .btn-admin-edit:hover {
+            background: rgba(255,0,60,0.05);
+            color: var(--accent-hover);
+        }
+
+        .btn-admin-delete {
+            background: rgba(255, 0, 60, 0.05);
+            color: var(--danger-color);
+            border-color: rgba(255, 0, 60, 0.2);
+        }
+        .btn-admin-delete:hover {
+            background: var(--danger-color) !important;
+            color: var(--text-main) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.45);
         }
 
         /* --- STACKED MOBILE BREAKPOINT MODULE --- */
@@ -284,6 +375,13 @@
             .add-book-btn-container {
                 width: 100%;
                 justify-content: flex-start;
+                gap: 0.6rem;
+            }
+
+            .btn-admin-panel {
+                flex: 1;
+                text-align: center;
+                min-width: 110px;
             }
 
             .book-card {
@@ -361,16 +459,6 @@
             max-width: 650px;
             margin: 0 auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        /* --- ADMIN CARD CONTROLS --- */
-        .admin-actions {
-            display: none; 
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
         }
 
         /* --- MODALS --- */
@@ -519,9 +607,9 @@
         <div class="section-header">
             <h2 class="section-title">The Inspector Griffin Series</h2>
             <div id="add-book-btn-container" class="add-book-btn-container">
-                <button onclick="openBookModal(null)" class="btn-sm" style="background: var(--accent-color); border: none;">+ Add New Book</button>
-                <button onclick="openExportModal()" class="btn-sm" style="background: #1a1a24; border-color: var(--accent-color);">💾 Export Code</button>
-                <button onclick="clearSystemMemory()" class="btn-sm" style="background: rgba(255,0,0,0.1); border-color: var(--danger-color); color: var(--danger-color);">🔄 Reset Cache</button>
+                <button onclick="openBookModal(null)" class="btn-admin-panel btn-admin-add">+ Add New Book</button>
+                <button onclick="openExportModal()" class="btn-admin-panel btn-admin-export">💾 Export Code</button>
+                <button onclick="clearSystemMemory()" class="btn-admin-panel btn-admin-reset">🔄 Reset Cache</button>
             </div>
         </div>
         <div class="books-grid" id="books-container">
@@ -633,6 +721,6 @@
         </div>
     </div>
 
-    <script src="app.js?v=2.4"></script>
+    <script src="app.js?v=2.5"></script>
 </body>
 </html>
