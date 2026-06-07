@@ -424,6 +424,7 @@
 </head>
 <body>
 
+    <!-- NAVBAR module -->
     <header>
         <div class="logo">Robert Chester</div>
         <nav>
@@ -434,12 +435,14 @@
         </nav>
     </header>
 
+    <!-- INTRO STATEMENT -->
     <section class="hero">
         <h1>The Inspector Griffin Mysteries</h1>
         <p>When Adam Griffin, grandson of one of the world's greatest detective authors, meets Finn Williams, one of the world's greatest hackers, sparks fly - both physically and emotionally.</p>
         <p>And their world is suddenly beset with intrigue and mystery.</p>
     </section>
 
+    <!-- MAIN DATA VIEWPORT -->
     <main class="container" id="books">
         <div class="section-header">
             <h2 class="section-title">The Series</h2>
@@ -451,9 +454,11 @@
         </div>
         
         <div class="books-grid" id="books-container">
-            </div>
+            <!-- Programmatic objects hook internally here -->
+        </div>
     </main>
 
+    <!-- INBOUND COMMUNICATIONS LAYOVER -->
     <section class="container" id="contact">
         <div class="section-header">
             <h2 class="section-title">Get in Touch</h2>
@@ -477,6 +482,7 @@
         </div>
     </section>
 
+    <!-- SUBMODAL INTERFACES -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
@@ -535,6 +541,7 @@
         </div>
     </div>
 
+    <!-- RUNTIME LOGIC ENGINE -->
     <script>
         // --- DATA HARDCODING SLOT ---
         const defaultBooks = [
@@ -555,13 +562,27 @@
         let isLoggedIn = false;
         let editingIndex = null; 
 
+        /* --- AUTO-HEALING DOMAIN ENGINE --- */
         function getBooks() {
-            const stored = localStorage.getItem('author_books');
-            if (!stored) {
+            try {
+                const stored = localStorage.getItem('author_books');
+                if (!stored) {
+                    localStorage.setItem('author_books', JSON.stringify(defaultBooks));
+                    return defaultBooks;
+                }
+                
+                // If it finds any trace of an ancient corrupted base64 string, force an auto-heal reset
+                if (stored.includes("data:image")) {
+                    localStorage.setItem('author_books', JSON.stringify(defaultBooks));
+                    return defaultBooks;
+                }
+
+                return JSON.parse(stored);
+            } catch (error) {
+                // Circuit breaker: Wipes the isolated memory block clear if anything throws an error
                 localStorage.setItem('author_books', JSON.stringify(defaultBooks));
                 return defaultBooks;
             }
-            return JSON.parse(stored);
         }
 
         function saveBooks(books) {
@@ -654,7 +675,7 @@
             const subject = encodeURIComponent("Inquiry for Robert Chester from " + name);
             const body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nMessage Payload:\n" + comment);
             
-            window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "&body=" + body;
+            window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "?body=" + body;
             document.getElementById('contact-form').reset();
         }
 
