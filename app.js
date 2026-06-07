@@ -1,8 +1,8 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to v2.6 to force clean memory updates.
+// Stepped up version identifier to v2.8 to force clean memory updates.
 // =========================================================================
-const SITE_VERSION = "2.7"; 
+const SITE_VERSION = "2.8"; 
 
 const defaultBooks = [
     {
@@ -209,18 +209,52 @@ function clearSystemMemory() {
     }
 }
 
-function handleContactSubmit(event) {
+/* --- SECURE ASYNCHRONOUS FORM ROUTER (NO POPUPS) --- */
+async function handleContactSubmit(event) {
     event.preventDefault();
+    
     const name = document.getElementById('contact-name').value;
     const email = document.getElementById('contact-email').value;
     const comment = document.getElementById('contact-comment').value;
     
-    const emailRecipient = "bob@westwight.net";
-    const subject = encodeURIComponent("Inquiry for Robert Chester from " + name);
-    const body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nMessage Payload:\n" + comment);
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerText;
     
-    window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "&body=" + body;
-    document.getElementById('contact-form').reset();
+    // Give immediate visual feedback that transmission has begun
+    submitBtn.innerText = "TRANSMITTING...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                access_key: "199893c8-b1b4-464e-8a6a-4c30dca92931",
+                name: name,
+                email: email,
+                message: comment,
+                subject: `New Reader Message from ${name}`
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert("Message sent successfully! It has been routed securely to your inbox.");
+            document.getElementById('contact-form').reset();
+        } else {
+            alert("Submission error: " + result.message);
+        }
+    } catch (error) {
+        alert("Connection error. The network background handshake timed out.");
+    } finally {
+        // Reset the button appearance back to the white rounded style
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+    }
 }
 
 function handleAdminNavClick() {
