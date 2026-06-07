@@ -1,8 +1,8 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to v2.8 to force clean memory updates.
+// Stepped up version identifier to v2.9 to clear old Firefox memories.
 // =========================================================================
-const SITE_VERSION = "2.8"; 
+const SITE_VERSION = "2.9"; 
 
 const defaultBooks = [
     {
@@ -36,6 +36,7 @@ const defaultBooks = [
 
 let isLoggedIn = false;
 let editingIndex = null; 
+let memoryFallbackCache = null; // Memory-resident backup cache array
 
 /* --- XSS TEXT SANITIZER FILTER --- */
 function escapeHTML(str) {
@@ -45,9 +46,14 @@ function escapeHTML(str) {
     );
 }
 
-/* --- VERSION-CONTROLLED STORAGE ENGINE --- */
+/* --- IMMUNIZED HARDENED STORAGE ENGINE --- */
 function getBooks() {
     try {
+        // Execute dynamic authorization verification probe
+        const testKey = '__firefox_probe__';
+        localStorage.setItem(testKey, testKey);
+        localStorage.removeItem(testKey);
+
         const currentVersion = localStorage.getItem('site_version');
         if (currentVersion !== SITE_VERSION) {
             localStorage.setItem('site_version', SITE_VERSION);
@@ -63,13 +69,22 @@ function getBooks() {
 
         return JSON.parse(stored);
     } catch (error) {
-        localStorage.setItem('author_books', JSON.stringify(defaultBooks));
-        return defaultBooks;
+        // If security barriers block local cookies, fall back to transient memory
+        if (!memoryFallbackCache) {
+            console.warn("Storage restricted. Fallback activated safely.");
+            memoryFallbackCache = JSON.parse(JSON.stringify(defaultBooks));
+        }
+        return memoryFallbackCache;
     }
 }
 
 function saveBooks(books) {
-    localStorage.setItem('author_books', JSON.stringify(books));
+    try {
+        localStorage.setItem('author_books', JSON.stringify(books));
+    } catch (error) {
+        // Keeps user operations live even if device disk writes are locked down
+        memoryFallbackCache = books;
+    }
     renderBooks();
 }
 
@@ -78,6 +93,8 @@ function renderBooks() {
     const griffinContainer = document.getElementById('books-container');
     const otherContainer = document.getElementById('other-works-container');
     const otherSection = document.getElementById('other-works-section');
+    
+    if (!griffinContainer || !otherContainer) return;
     
     griffinContainer.innerHTML = '';
     otherContainer.innerHTML = '';
@@ -115,7 +132,7 @@ function renderBooks() {
                 
                 <div class="admin-actions" style="display: ${isLoggedIn ? 'flex' : 'none'}">
                     <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, -1)" ${upDisabled}>Move Up</button>
-                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, 1)" ${downDisabled}>Move Down</button>
+                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, 1)" ${downDisabled}>▼ Move Down</button>
                     <button class="btn-admin-action btn-admin-edit" onclick="openBookModal(${book.masterIndex})">Edit Parameters</button>
                     <button class="btn-admin-action btn-admin-delete" onclick="deleteBook(${book.masterIndex})">Delete</button>
                 </div>
@@ -137,11 +154,15 @@ function renderBooks() {
         otherContainer.appendChild(card);
     });
 
-    otherSection.style.display = otherBooks.length > 0 ? 'block' : 'none';
-    document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'flex' : 'none';
+    if (otherSection) {
+        otherSection.style.display = otherBooks.length > 0 ? 'block' : 'none';
+    }
+    const panelControl = document.getElementById('add-book-btn-container');
+    if (panelControl) {
+        panelControl.style.display = isLoggedIn ? 'flex' : 'none';
+    }
 }
 
-/* --- SECTION-AWARE REORDERING ENGINE --- */
 function moveBook(masterIndex, direction) {
     const books = getBooks();
     const targetBook = books[masterIndex];
@@ -182,9 +203,11 @@ function openExportModal() {
     });
 
     const exportTextarea = document.getElementById('export-textarea');
-    exportTextarea.value = JSON.stringify(sanitizedBooks, null, 4);
-    document.getElementById('export-modal').style.display = 'flex';
-    document.getElementById('copy-btn').innerText = "Copy to Clipboard";
+    if (exportTextarea) {
+        exportTextarea.value = JSON.stringify(sanitizedBooks, null, 4);
+        document.getElementById('export-modal').style.display = 'flex';
+        document.getElementById('copy-btn').innerText = "Copy to Clipboard";
+    }
 }
 
 async function copyExportedCode() {
@@ -195,21 +218,24 @@ async function copyExportedCode() {
         copyBtn.innerText = "Code Copied";
     } catch (err) {
         const textArea = document.getElementById('export-textarea');
-        textArea.select();
-        document.execCommand('copy');
-        copyBtn.innerText = "Code Copied";
+        if (textArea) {
+            textArea.select();
+            document.execCommand('copy');
+            copyBtn.innerText = "Code Copied";
+        }
     }
 }
 
 function clearSystemMemory() {
     if (confirm("Reset layout system and clear browser memories? This restores your default settings.")) {
-        localStorage.removeItem('author_books');
-        localStorage.removeItem('site_version');
+        try {
+            localStorage.removeItem('author_books');
+            localStorage.removeItem('site_version');
+        } catch(e) {}
         location.reload();
     }
 }
 
-/* --- SECURE ASYNCHRONOUS FORM ROUTER (NO POPUPS) --- */
 async function handleContactSubmit(event) {
     event.preventDefault();
     
@@ -220,7 +246,6 @@ async function handleContactSubmit(event) {
     const submitBtn = event.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerText;
     
-    // Give immediate visual feedback that transmission has begun
     submitBtn.innerText = "TRANSMITTING...";
     submitBtn.disabled = true;
 
@@ -232,7 +257,7 @@ async function handleContactSubmit(event) {
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                access_key: "199893c8-b1b4-464e-8a6a-4c30dca92931",
+                access_key: "PASTE_YOUR_WEB3FORMS_KEY_HERE",
                 name: name,
                 email: email,
                 message: comment,
@@ -251,7 +276,6 @@ async function handleContactSubmit(event) {
     } catch (error) {
         alert("Connection error. The network background handshake timed out.");
     } finally {
-        // Reset the button appearance back to the white rounded style
         submitBtn.innerText = originalText;
         submitBtn.disabled = false;
     }
@@ -272,6 +296,7 @@ function openBookModal(index) {
     
     const modal = document.getElementById('book-modal');
     const form = document.getElementById('book-form');
+    if (!modal) return;
     
     if (editingIndex !== null) {
         const book = getBooks()[editingIndex];
@@ -289,16 +314,18 @@ function openBookModal(index) {
         document.getElementById('modal-form-title').innerText = "Create System Entry";
         document.getElementById('modal-submit-btn').innerText = "Publish Entry";
         document.getElementById('file-hint').innerText = "Select file matching your target cover folder asset.";
-        form.reset();
+        if (form) form.reset();
     }
     modal.style.display = 'flex';
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
+    const target = document.getElementById(modalId);
+    if (target) target.style.display = 'none';
     if(modalId === 'login-modal') {
         document.getElementById('login-error').style.display = 'none';
-        document.getElementById('login-form').reset();
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) loginForm.reset();
     }
 }
 
@@ -310,12 +337,12 @@ function handleLogin(event) {
 
     if (user === 'admin123' && pass === 'admin123') {
         isLoggedIn = true;
-        errorMsg.style.display = 'none';
+        if (errorMsg) errorMsg.style.display = 'none';
         closeModal('login-modal');
         document.getElementById('admin-nav-link').innerText = "Terminal (Logged In)";
         renderBooks();
     } else {
-        errorMsg.style.display = 'block';
+        if (errorMsg) errorMsg.style.display = 'block';
     }
 }
 
@@ -345,10 +372,11 @@ function handleBookFormSubmit(event) {
         }
         saveBooks(books);
         closeModal('book-modal');
-        document.getElementById('book-form').reset();
+        const bookForm = document.getElementById('book-form');
+        if (bookForm) bookForm.reset();
     };
 
-    if (fileInput.files && fileInput.files[0]) {
+    if (fileInput && fileInput.files && fileInput.files[0]) {
         finalizeSave(fileInput.files[0].name); 
     } else {
         const fallbackCover = (editingIndex !== null) ? books[editingIndex].coverUrl : "";
