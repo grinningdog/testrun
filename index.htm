@@ -24,7 +24,7 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* --- SIMPLIFIED DIRECT BACKGROUND SETUP --- */
+        /* --- DIRECT REFINED BACKGROUND CONFIGURATION --- */
         body {
             background-color: var(--bg-color);
             background-image: 
@@ -184,15 +184,15 @@
         /* --- STACKED MOBILE BREAKPOINT MODULE --- */
         @media (max-width: 768px) {
             header {
-                flex-direction: column;   /* Changes side-by-side layout into vertical stacks */
-                gap: 1.25rem;             /* Creates vertical breathing room */
-                padding: 1.5rem 1rem;     /* Optimizes spatial mapping on compact device glass */
+                flex-direction: column;   
+                gap: 1.25rem;             
+                padding: 1.5rem 1rem;     
                 text-align: center;
             }
 
             .logo {
                 border-left: none;
-                border-bottom: 3px solid var(--accent-color); /* Shifts sidebar border to a centered underline */
+                border-bottom: 3px solid var(--accent-color); 
                 padding-left: 0;
                 padding-bottom: 6px;
                 display: inline-block;
@@ -200,12 +200,12 @@
 
             nav {
                 justify-content: center;
-                flex-wrap: wrap;          /* Forces smooth layout wrapping on small devices */
+                flex-wrap: wrap;          
                 gap: 1.2rem;
             }
 
             nav a {
-                margin-left: 0;           /* Wipes out desktop layout margins to center items */
+                margin-left: 0;           
                 font-size: 0.8rem;
             }
 
@@ -569,7 +569,15 @@
     </div>
 
     <script>
-        // --- DATA HARDCODING SLOT ---
+        // =========================================================================
+        // 🚨 CRUCIAL COMPLIANCE STEP FOR FUTURE UPDATES:
+        // Every single time you update this defaultBooks array below with new books,
+        // you MUST change the SITE_VERSION string right underneath it (e.g. "1.0" to "1.1").
+        // This forces returning readers' browsers to pull down your new books!
+        // =========================================================================
+        
+        const SITE_VERSION = "1.0"; 
+
         const defaultBooks = [
             {
                 "title": "Blood Relatives",
@@ -582,7 +590,8 @@
                 "meta": "An Inspector Griffin Mystery",
                 "coverUrl": "A Crypto Mystery Weekend3.jpg",
                 "synopsis": "An exclusive Murder Mystery weekend at a luxury Oxfordshire estate turns deadly when a real body is found bludgeoned in the garden.\n\nFor independently wealthy Adam Griffin and his partner Finn, a top-tier ethical hacker, the investigation quickly morphs from a cozy whodunit into a high-stakes cyber chase.\n\nAt the centre of it all? A fastidiously arrogant guest, a manipulative psychic medium and a hidden USB drive holding a secret. A secret worth killing for.\n\nTo catch a killer who has played everyone for a fool, they must follow the money—before the digital trail goes cold forever."
-            }
+            },
+
         ];
 
         let isLoggedIn = false;
@@ -596,16 +605,20 @@
             );
         }
 
-        /* --- AUTO-HEALING DOMAIN ENGINE --- */
+        /* --- UPGRADED VERSION-CONTROLLED DOMAIN ENGINE --- */
         function getBooks() {
             try {
-                const stored = localStorage.getItem('author_books');
-                if (!stored) {
+                const currentVersion = localStorage.getItem('site_version');
+                
+                // FORCE CACHE BREAK: Clears browser memory if you bumped the SITE_VERSION string
+                if (currentVersion !== SITE_VERSION) {
+                    localStorage.setItem('site_version', SITE_VERSION);
                     localStorage.setItem('author_books', JSON.stringify(defaultBooks));
                     return defaultBooks;
                 }
-                
-                if (stored.includes("data:image")) {
+
+                const stored = localStorage.getItem('author_books');
+                if (!stored || stored.includes("data:image")) {
                     localStorage.setItem('author_books', JSON.stringify(defaultBooks));
                     return defaultBooks;
                 }
@@ -699,8 +712,9 @@
         }
 
         function clearSystemMemory() {
-            if (confirm("Reset layout system and clear browser ghost memories? This restores your default settings.")) {
+            if (confirm("Reset layout system and clear browser memories? This restores your default settings.")) {
                 localStorage.removeItem('author_books');
+                localStorage.removeItem('site_version');
                 location.reload();
             }
         }
