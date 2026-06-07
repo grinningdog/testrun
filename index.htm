@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robert Chester | Official Website</title>
@@ -10,9 +9,9 @@
     <meta property="og:url" content="https://grinningdog.github.io/testrun/">
     <meta property="og:title" content="Robert Chester | Official Author Website">
     <meta property="og:description" content="Explore the Inspector Griffin Thriller Series by Robert Chester.">
-    <meta property="og:image" content="https://grinningdog.github.io/testrun/Blood Relatives.jpg">   
+    <meta property="og:image" content="https://grinningdog.github.io/testrun/Blood Relatives.jpg">
 
- <style>
+    <style>
         /* --- CSS VARIABLES & TECH-NOIR PALETTE --- */
         :root {
             --bg-color: #0a0a0c;       
@@ -426,7 +425,7 @@
             font-weight: 700;
         }
 
-        input, textarea {
+        input, textarea, select {
             background: rgba(5, 5, 7, 0.45); 
             backdrop-filter: blur(4px);      
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -438,7 +437,7 @@
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
 
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             background: rgba(5, 5, 7, 0.7);   
             border-color: var(--accent-color);
             box-shadow: 0 0 8px rgba(255, 0, 60, 0.25);
@@ -486,7 +485,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR module -->
     <header>
         <div class="logo">Robert Chester</div>
         <nav>
@@ -497,30 +495,35 @@
         </nav>
     </header>
 
-    <!-- INTRO STATEMENT -->
     <section class="hero">
         <h1>The Inspector Griffin Mysteries</h1>
         <p>When Adam Griffin, grandson of one of the world's greatest detective authors, meets Finn Williams, one of the world's greatest hackers, sparks fly - both physically and emotionally.</p>
         <p>And their world is suddenly beset with intrigue and mystery.</p>
     </section>
 
-    <!-- MAIN DATA VIEWPORT -->
     <main class="container" id="books">
+        
         <div class="section-header">
-            <h2 class="section-title">The Series</h2>
+            <h2 class="section-title">The Inspector Griffin Series</h2>
             <div id="add-book-btn-container" class="add-book-btn-container">
                 <button onclick="openBookModal()" class="btn-sm" style="background: var(--accent-color); border: none;">+ Add New Book</button>
                 <button onclick="openExportModal()" class="btn-sm" style="background: #1a1a24; border-color: var(--accent-color);">💾 Export Code</button>
                 <button onclick="clearSystemMemory()" class="btn-sm" style="background: rgba(255,0,0,0.1); border-color: var(--danger-color); color: var(--danger-color);">🔄 Reset Cache</button>
             </div>
         </div>
-        
         <div class="books-grid" id="books-container">
-            <!-- Programmatic objects hook internally here -->
+            </div>
+
+        <div id="other-works-section" style="margin-top: 6rem; display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Other Works</h2>
+            </div>
+            <div class="books-grid" id="other-works-container">
+                </div>
         </div>
+
     </main>
 
-    <!-- INBOUND COMMUNICATIONS LAYOVER -->
     <section class="container" id="contact">
         <div class="section-header">
             <h2 class="section-title">Get in Touch</h2>
@@ -544,7 +547,6 @@
         </div>
     </section>
 
-    <!-- SUBMODAL INTERFACES -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
@@ -576,6 +578,13 @@
                 <div class="form-group">
                     <label for="book-meta">Sub-heading / Characters</label>
                     <input type="text" id="book-meta" placeholder="Book 1 — Featuring Adam & Finn (Age 21)" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-category">Placement Category</label>
+                    <select id="book-category">
+                        <option value="griffin">The Inspector Griffin Series</option>
+                        <option value="other">Other Works</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="book-cover-file">Upload Book Cover Image</label>
@@ -611,15 +620,10 @@
         </div>
     </div>
 
-    <!-- RUNTIME LOGIC ENGINE -->
     <script>
-        // =========================================================================
-        // 🚨 VERSION CONTROL HIGHLIGHT:
-        // Stepped up to version "1.2" to forcefully discard old layout memories.
-        // =========================================================================
-        const SITE_VERSION = "2.2"; 
+        const SITE_VERSION = "2.4"; 
 
-        const defaultBooks =[
+        const defaultBooks = [
     {
         "title": "Blood Relatives",
         "meta": "An Inspector Griffin Mystery",
@@ -687,8 +691,14 @@
 
         function renderBooks() {
             const books = getBooks();
-            const container = document.getElementById('books-container');
-            container.innerHTML = '';
+            const griffinContainer = document.getElementById('books-container');
+            const otherContainer = document.getElementById('other-works-container');
+            const otherSection = document.getElementById('other-works-section');
+            
+            griffinContainer.innerHTML = '';
+            otherContainer.innerHTML = '';
+            
+            let otherWorksCount = 0;
 
             books.forEach((book, index) => {
                 const bookCard = document.createElement('div');
@@ -729,8 +739,22 @@
                         </div>
                     </div>
                 `;
-                container.appendChild(bookCard);
+                
+                // Route books dynamically into their respective viewport targets
+                if (book.category === 'other') {
+                    otherContainer.appendChild(bookCard);
+                    otherWorksCount++;
+                } else {
+                    griffinContainer.appendChild(bookCard);
+                }
             });
+
+            // Automated gate switch: Hides the "Other Works" header and panel completely if empty
+            if (otherWorksCount > 0) {
+                otherSection.style.display = 'block';
+            } else {
+                otherSection.style.display = 'none';
+            }
 
             document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'flex' : 'none';
         }
@@ -745,6 +769,7 @@
                 return {
                     title: book.title,
                     meta: book.meta,
+                    category: book.category || "griffin",
                     coverUrl: accurateFilename,
                     amazonUrl: book.amazonUrl || "",
                     goodreadsUrl: book.goodreadsUrl || "",
@@ -817,6 +842,7 @@
                 
                 document.getElementById('book-title').value = book.title;
                 document.getElementById('book-meta').value = book.meta;
+                document.getElementById('book-category').value = book.category || "griffin";
                 document.getElementById('book-amazon').value = book.amazonUrl || "";
                 document.getElementById('book-goodreads').value = book.goodreadsUrl || "";
                 document.getElementById('book-synopsis-input').value = book.synopsis;
@@ -864,6 +890,7 @@
             event.preventDefault();
             const title = document.getElementById('book-title').value;
             const meta = document.getElementById('book-meta').value;
+            const category = document.getElementById('book-category').value;
             const fileInput = document.getElementById('book-cover-file');
             const amazonUrl = document.getElementById('book-amazon').value;
             const goodreadsUrl = document.getElementById('book-goodreads').value;
@@ -871,7 +898,7 @@
             const books = getBooks();
 
             const finalizeSave = (coverFilename) => {
-                const bookData = { title, meta, coverUrl: coverFilename, amazonUrl, goodreadsUrl, synopsis };
+                const bookData = { title, meta, category, coverUrl: coverFilename, amazonUrl, goodreadsUrl, synopsis };
                 if (editingIndex !== null) {
                     books[editingIndex] = bookData;
                 } else {
