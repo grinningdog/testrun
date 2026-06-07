@@ -2,7 +2,7 @@
 // 🚨 VERSION CONTROL HIGHLIGHT:
 // Stepped up version identifier to v2.9 to clear old Firefox memories.
 // =========================================================================
-const SITE_VERSION = "2.9"; 
+const SITE_VERSION = "3.0"; 
 
 const defaultBooks = [
     {
@@ -31,6 +31,15 @@ const defaultBooks = [
         "amazonUrl": "",
         "goodreadsUrl": "",
         "synopsis": "COMING SOON!\n\nAn exciting new adventure with a tangled web of murder, MI5 agents, Mexican Cartels and Big Pharma.\n\nWill a former child movie star escape them all and will Adam and Finn find the serial killer?"
+    },
+    {
+        "title": "A new Romance",
+        "meta": "How Not to Marry a Millionaire",
+        "category": "other",
+        "coverUrl": "the choirboy killer.jpg",
+        "amazonUrl": "https://www.amazon.co.uk/No-Ladies-Detective-Agency-Book/dp/034911675X",
+        "goodreadsUrl": "",
+        "synopsis": "When you want to marry a miillionaire but accidentally fall in love."
     }
 ];
 
