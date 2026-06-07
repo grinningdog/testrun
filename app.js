@@ -2,7 +2,7 @@
 // 🚨 VERSION CONTROL HIGHLIGHT:
 // Stepped up version identifier to v2.6 to force clean memory updates.
 // =========================================================================
-const SITE_VERSION = "2.6"; 
+const SITE_VERSION = "2.7"; 
 
 const defaultBooks = [
     {
