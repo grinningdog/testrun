@@ -1,8 +1,8 @@
 // =========================================================================
 // 🚨 VERSION CONTROL HIGHLIGHT:
-// Stepped up version identifier to v2.5 to force clean memory updates.
+// Stepped up version identifier to v2.6 to force clean memory updates.
 // =========================================================================
-const SITE_VERSION = "2.5"; 
+const SITE_VERSION = "2.6"; 
 
 const defaultBooks = [
     {
@@ -82,11 +82,9 @@ function renderBooks() {
     griffinContainer.innerHTML = '';
     otherContainer.innerHTML = '';
     
-    // Create sectioned arrays tracking their true indices in the master database
     const griffinBooks = books.map((b, idx) => ({ ...b, masterIndex: idx })).filter(b => b.category !== 'other');
     const otherBooks = books.map((b, idx) => ({ ...b, masterIndex: idx })).filter(b => b.category === 'other');
 
-    // Helper function to handle HTML string generation for each card
     const generateCardHTML = (book, sectionIndex, sectionLength) => {
         let coverHTML = `<div class="placeholder-text">Cover Art<br>Classification Pending</div>`;
         if(book.coverUrl && book.coverUrl.trim() !== "" && !book.coverUrl.startsWith("data:image")) {
@@ -95,14 +93,14 @@ function renderBooks() {
 
         let purchasePathwaysHTML = '';
         if(book.amazonUrl && book.amazonUrl.trim() !== '') {
-            purchasePathwaysHTML += `<a href="${escapeHTML(book.amazonUrl)}" target="_blank" class="btn-link-accent">🛒 Buy on Amazon</a>`;
+            purchasePathwaysHTML += `<a href="${escapeHTML(book.amazonUrl)}" target="_blank" class="btn-link-accent">Buy on Amazon</a>`;
         }
         if(book.goodreadsUrl && book.goodreadsUrl.trim() !== '') {
-            purchasePathwaysHTML += `<a href="${escapeHTML(book.goodreadsUrl)}" target="_blank" class="btn-link-subtle">📖 Goodreads</a>`;
+            purchasePathwaysHTML += `<a href="${escapeHTML(book.goodreadsUrl)}" target="_blank" class="btn-link-subtle">Goodreads</a>`;
         }
 
-        const upDisabled = sectionIndex === 0 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
-        const downDisabled = sectionIndex === sectionLength - 1 ? 'style="opacity: 0.2; cursor: not-allowed;" disabled' : '';
+        const upDisabled = sectionIndex === 0 ? 'style="opacity: 0.15; cursor: not-allowed; pointer-events: none;" disabled' : '';
+        const downDisabled = sectionIndex === sectionLength - 1 ? 'style="opacity: 0.15; cursor: not-allowed; pointer-events: none;" disabled' : '';
 
         return `
             <div class="book-cover">
@@ -116,8 +114,8 @@ function renderBooks() {
                 ${purchasePathwaysHTML ? `<div class="book-links">${purchasePathwaysHTML}</div>` : ''}
                 
                 <div class="admin-actions" style="display: ${isLoggedIn ? 'flex' : 'none'}">
-                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, -1)" ${upDisabled}>▲ Move Up</button>
-                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, 1)" ${downDisabled}>▼ Move Down</button>
+                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, -1)" ${upDisabled}>Move Up</button>
+                    <button class="btn-admin-action" onclick="moveBook(${book.masterIndex}, 1)" ${downDisabled}>Move Down</button>
                     <button class="btn-admin-action btn-admin-edit" onclick="openBookModal(${book.masterIndex})">Edit Parameters</button>
                     <button class="btn-admin-action btn-admin-delete" onclick="deleteBook(${book.masterIndex})">Delete</button>
                 </div>
@@ -125,7 +123,6 @@ function renderBooks() {
         `;
     };
 
-    // Render Inspector Griffin books
     griffinBooks.forEach((book, sIdx) => {
         const card = document.createElement('div');
         card.className = 'book-card';
@@ -133,7 +130,6 @@ function renderBooks() {
         griffinContainer.appendChild(card);
     });
 
-    // Render Other Works standalone books
     otherBooks.forEach((book, sIdx) => {
         const card = document.createElement('div');
         card.className = 'book-card';
@@ -141,7 +137,6 @@ function renderBooks() {
         otherContainer.appendChild(card);
     });
 
-    // Toggle Visibility gate for "Other Works" header block
     otherSection.style.display = otherBooks.length > 0 ? 'block' : 'none';
     document.getElementById('add-book-btn-container').style.display = isLoggedIn ? 'flex' : 'none';
 }
@@ -152,7 +147,6 @@ function moveBook(masterIndex, direction) {
     const targetBook = books[masterIndex];
     const category = targetBook.category || 'griffin';
     
-    // Map out items in this specific section along with their original array indices
     const sectionBooks = books
         .map((b, idx) => ({ ...b, originalIndex: idx }))
         .filter(b => (b.category || 'griffin') === category);
@@ -160,7 +154,6 @@ function moveBook(masterIndex, direction) {
     const relativeIndex = sectionBooks.findIndex(b => b.originalIndex === masterIndex);
     const targetRelativeIndex = relativeIndex + direction;
     
-    // Execute a secure index swap within the bounds of this category
     if (targetRelativeIndex >= 0 && targetRelativeIndex < sectionBooks.length) {
         const currentMasterIdx = masterIndex;
         const targetMasterIdx = sectionBooks[targetRelativeIndex].originalIndex;
@@ -199,12 +192,12 @@ async function copyExportedCode() {
     const copyBtn = document.getElementById('copy-btn');
     try {
         await navigator.clipboard.writeText(textToCopy);
-        copyBtn.innerText = "✔ Code Copied!";
+        copyBtn.innerText = "Code Copied";
     } catch (err) {
         const textArea = document.getElementById('export-textarea');
         textArea.select();
         document.execCommand('copy');
-        copyBtn.innerText = "✔ Code Copied!";
+        copyBtn.innerText = "Code Copied";
     }
 }
 
@@ -226,7 +219,7 @@ function handleContactSubmit(event) {
     const subject = encodeURIComponent("Inquiry for Robert Chester from " + name);
     const body = encodeURIComponent("Name: " + name + "\nEmail: " + email + "\n\nMessage Payload:\n" + comment);
     
-    window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "?body=" + body;
+    window.location.href = "mailto:" + emailRecipient + "?subject=" + subject + "&body=" + body;
     document.getElementById('contact-form').reset();
 }
 
@@ -241,7 +234,6 @@ function handleAdminNavClick() {
 }
 
 function openBookModal(index) {
-    // Verifies data formats; handles empty launcher commands safely
     editingIndex = (typeof index === 'number') ? index : null;
     
     const modal = document.getElementById('book-modal');
