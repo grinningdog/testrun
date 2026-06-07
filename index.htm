@@ -24,7 +24,7 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* --- DIRECT REFINED BACKGROUND CONFIGURATION --- */
+        /* --- SIMPLIFIED DIRECT BACKGROUND SETUP --- */
         body {
             background-color: var(--bg-color);
             background-image: 
@@ -41,7 +41,7 @@
             min-height: 100vh;
         }
 
-        /* --- HEADER & NAV --- */
+        /* --- DESKTOP HEADER & NAV (STAYS SIDE-BY-SIDE) --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -63,6 +63,12 @@
             color: var(--text-main);
             border-left: 3px solid var(--accent-color);
             padding-left: 12px;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
         }
 
         nav a {
@@ -175,7 +181,34 @@
             position: relative;
         }
 
+        /* --- STACKED MOBILE BREAKPOINT MODULE --- */
         @media (max-width: 768px) {
+            header {
+                flex-direction: column;   /* Changes side-by-side layout into vertical stacks */
+                gap: 1.25rem;             /* Creates vertical breathing room */
+                padding: 1.5rem 1rem;     /* Optimizes spatial mapping on compact device glass */
+                text-align: center;
+            }
+
+            .logo {
+                border-left: none;
+                border-bottom: 3px solid var(--accent-color); /* Shifts sidebar border to a centered underline */
+                padding-left: 0;
+                padding-bottom: 6px;
+                display: inline-block;
+            }
+
+            nav {
+                justify-content: center;
+                flex-wrap: wrap;          /* Forces smooth layout wrapping on small devices */
+                gap: 1.2rem;
+            }
+
+            nav a {
+                margin-left: 0;           /* Wipes out desktop layout margins to center items */
+                font-size: 0.8rem;
+            }
+
             .book-card {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -538,25 +571,19 @@
     <script>
         // --- DATA HARDCODING SLOT ---
         const defaultBooks = [
-    {
-        "title": "Blood Relatives",
-        "meta": "An Inspector Griffin Mystery",
-        "coverUrl": "Blood Relatives.jpg",
-        "synopsis": "A near-miss with a speeding van at Waterloo Station is just the opening move in a deadly new game for Adam Griffin. Reunited with his old school friend, Finn Williams—now an elite white-hat hacker—Adam thinks his biggest challenge is navigating a sudden romance and managing his grandmother's massive literary estate.\n\nBut when a high-profile stabbing at the London School of Economics strikes a terrifyingly familiar chord, the investigation takes a deeply personal turn. Hidden behind a web of cyber-scams, stolen identities, and black-market weapons is a ghost from Adam's past: a woman he had never met, driven by a lifetime of bitter envy and a desperate hunger for his fortune.\n\nIn this 21st-century mystery, Adam and Finn must use every ounce of financial logic and hacking prowess to track a killer who is rapidly unravelling—before her final, desperate strike hits home."
-    },
-    {
-        "title": "The Crypto Mystery Weekend",
-        "meta": "An Inspector Griffin Mystery",
-        "coverUrl": "A Crypto Mystery Weekend3.jpg",
-        "synopsis": "An exclusive Murder Mystery weekend at a luxury Oxfordshire estate turns deadly when a real body is found bludgeoned in the garden.\n\nFor independently wealthy Adam Griffin and his partner Finn, a top-tier ethical hacker, the investigation quickly morphs from a cozy whodunit into a high-stakes cyber chase.\n\nAt the centre of it all? A fastidiously arrogant guest, a manipulative psychic medium and a hidden USB drive holding a secret. A secret worth killing for.\n\nTo catch a killer who has played everyone for a fool, they must follow the money—before the digital trail goes cold forever."
-    },
-    {
-        "title": "The Choirboy Killer",
-        "meta": "An Inspector Griffin Mystery",
-        "coverUrl": "the choirboy killer.jpg",
-        "synopsis": "COMING SOON!\n\nAn exciting new adventure with a tangled web of murder,  MI5 agents, Mexican Cartels and Big Pharma.\n\nWill a former child movie star escape them all and will Adam and Finn find the serial killer?"
-    }
-];
+            {
+                "title": "Blood Relatives",
+                "meta": "An Inspector Griffin Mystery",
+                "coverUrl": "Blood Relatives.jpg",
+                "synopsis": "A near-miss with a speeding van at Waterloo Station is just the opening move in a deadly new game for Adam Griffin. Reunited with his old school friend, Finn Williams—now an elite white-hat hacker—Adam thinks his biggest challenge is navigating a sudden romance and managing his grandmother's massive literary estate.\n\nBut when a high-profile stabbing at the London School of Economics strikes a terrifyingly familiar chord, the investigation takes a deeply personal turn. Hidden behind a web of cyber-scams, stolen identities, and black-market weapons is a ghost from Adam's past: a woman he had never met, driven by a lifetime of bitter envy and a desperate hunger for his fortune.\n\nIn this 21st-century mystery, Adam and Finn must use every ounce of financial logic and hacking prowess to track a killer who is rapidly unravelling—before her final, desperate strike hits home."
+            },
+            {
+                "title": "The Crypto Mystery Weekend",
+                "meta": "An Inspector Griffin Mystery",
+                "coverUrl": "A Crypto Mystery Weekend3.jpg",
+                "synopsis": "An exclusive Murder Mystery weekend at a luxury Oxfordshire estate turns deadly when a real body is found bludgeoned in the garden.\n\nFor independently wealthy Adam Griffin and his partner Finn, a top-tier ethical hacker, the investigation quickly morphs from a cozy whodunit into a high-stakes cyber chase.\n\nAt the centre of it all? A fastidiously arrogant guest, a manipulative psychic medium and a hidden USB drive holding a secret. A secret worth killing for.\n\nTo catch a killer who has played everyone for a fool, they must follow the money—before the digital trail goes cold forever."
+            }
+        ];
 
         let isLoggedIn = false;
         let editingIndex = null; 
@@ -664,7 +691,6 @@
                 await navigator.clipboard.writeText(textToCopy);
                 copyBtn.innerText = "✔ Code Copied!";
             } catch (err) {
-                // Fallback mechanics for older strict client profiles
                 const textArea = document.getElementById('export-textarea');
                 textArea.select();
                 document.execCommand('copy');
