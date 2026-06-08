@@ -2,39 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Robert Chester</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robert Chester | Official Website</title>
     <style>
-        .hidden-item { border: 2px dashed #FF003C; padding: 10px; margin: 10px 0; }
+        :root { --bg-color: #0a0a0c; --accent-color: #FF003C; --text-main: #FFFFFF; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Segoe UI', sans-serif; padding: 2rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+        .hidden-card { border: 2px dashed var(--accent-color); }
+        .section-title { font-size: 2rem; text-transform: uppercase; border-left: 4px solid var(--accent-color); padding-left: 14px; margin: 3rem 0 2rem; }
+        h3 { color: var(--accent-color); margin-top: 0; }
     </style>
 </head>
 <body>
-    <div id="display"></div>
+    <main class="container">
+        <div id="display"></div>
+    </main>
 
-    <script src="database.js?v=1002"></script>
+    <script src="database.js?v=1004"></script>
     <script>
         function render() {
-            // Check URL for ?admin=true
             const urlParams = new URLSearchParams(window.location.search);
             const isAdmin = urlParams.has('admin');
-            
+            const display = document.getElementById('display');
             const data = HARDCODED_BACKUP_DATA;
-            let html = "<h1>Books</h1>";
             
+            let html = '<h2 class="section-title">The Inspector Griffin Series</h2>';
             data.booksData.forEach(b => {
                 if (!b.hidden || isAdmin) {
-                    html += `<div class="${b.hidden ? 'hidden-item' : ''}">
+                    html += `<div class="card ${b.hidden ? 'hidden-card' : ''}">
                         <h3>${b.title} ${b.hidden ? '(HIDDEN)' : ''}</h3>
                         <p>${b.synopsis}</p>
                     </div>`;
                 }
             });
 
-            html += "<h1>Characters</h1>";
+            html += '<h2 class="section-title">Character Dossiers</h2>';
             data.charactersData.forEach(c => {
                 if (!c.hidden || isAdmin) {
-                    html += `<div class="${c.hidden ? 'hidden-item' : ''}">
+                    html += `<div class="card ${c.hidden ? 'hidden-card' : ''}">
                         <h3>${c.name} ${c.hidden ? '(HIDDEN)' : ''}</h3>
                         <p>${c.bio}</p>
+                    </div>`;
+                }
+            });
+
+            display.innerHTML = html;
+        }
+        window.onload = render;
+    </script>
+</body>
+</html>                       <p>${c.bio}</p>
                     </div>`;
                 }
             });
