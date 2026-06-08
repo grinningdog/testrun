@@ -2,7 +2,7 @@
 // 🚨 NO. 5: DATA PAYLOAD SELF-HEALING UPGRADE
 // Bumping version control to v4.1 to force-clear corrupted browser states.
 // =========================================================================
-const SITE_VERSION = "4.1"; 
+const SITE_VERSION = "4.2"; 
 
 const defaultBooks = [
     {
