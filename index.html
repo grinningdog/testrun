@@ -6,7 +6,7 @@
     <title>Robert Chester | Official Website</title>
     <style>
         body { 
-            background-image: url('bg.jpg'); 
+            background-image: url('big.jpg'); 
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -36,12 +36,18 @@
 
     <script src="database.js"></script>
     <script>
-        // Simple test to see if layout and data load together
         const data = HARDCODED_BACKUP_DATA;
         let html = "<h2>The Inspector Griffin Series</h2>";
+        
         data.booksData.forEach(b => {
             html += `<div class="card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
         });
+
+        html += "<h2>Character Dossiers</h2>";
+        data.charactersData.forEach(c => {
+            html += `<div class="card"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
+        });
+        
         document.getElementById('display').innerHTML = html;
     </script>
 </body>
