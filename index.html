@@ -2,31 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robert Chester | Official Website</title>
+    <style>
+        :root { --bg-color: #0a0a0c; --panel-bg: #111114; --accent-color: #FF003C; --text-main: #FFFFFF; --text-muted: #a0a0ab; --border-color: #222226; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Segoe UI', sans-serif; padding-bottom: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .hero { text-align: center; padding: 3.5rem; border-bottom: 1px solid var(--border-color); }
+        .book-card, .character-card { background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255, 0, 60, 0.12); border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; }
+        .section-title { font-size: 2rem; text-transform: uppercase; border-left: 4px solid var(--accent-color); padding-left: 14px; margin-bottom: 2rem; }
+        h3 { color: var(--accent-color); margin-bottom: 1rem; }
+        footer { text-align: center; color: #000; background: #fff; border-radius: 50px; padding: 1rem; max-width: 200px; margin: 4rem auto; font-weight: 800; text-transform: uppercase; }
+    </style>
 </head>
 <body>
-    <div id="display-area"></div>
+    <div class="hero"><h1>Robert Chester</h1></div>
+
+    <main class="container">
+        <h2 class="section-title">The Inspector Griffin Series</h2>
+        <div id="books-container"></div>
+
+        <h2 class="section-title">Character Dossiers</h2>
+        <div id="dossiers-container"></div>
+    </main>
+
+    <footer>&copy; Robert Chester</footer>
 
     <script src="database.js?v=999"></script>
     <script>
-        function loadData() {
-            let html = "<h1>My Books</h1>";
-            
-            // Loop for Books
-            HARDCODED_BACKUP_DATA.booksData.forEach(book => {
-                html += `<h2>${book.title}</h2><p>${book.synopsis}</p>`;
+        function render() {
+            // Render Books
+            const bc = document.getElementById('books-container');
+            bc.innerHTML = '';
+            HARDCODED_BACKUP_DATA.booksData.forEach(b => {
+                bc.innerHTML += `<div class="book-card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
             });
 
-            html += "<hr><h1>Characters</h1>";
-
-            // Loop for Characters
-            HARDCODED_BACKUP_DATA.charactersData.forEach(char => {
-                html += `<h3>${char.name}</h3><p>${char.bio}</p>`;
+            // Render Characters
+            const dc = document.getElementById('dossiers-container');
+            dc.innerHTML = '';
+            HARDCODED_BACKUP_DATA.charactersData.forEach(c => {
+                dc.innerHTML += `<div class="character-card"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
             });
-
-            document.getElementById('display-area').innerHTML = html;
         }
-        window.onload = loadData;
+        window.onload = render;
     </script>
 </body>
 </html>
