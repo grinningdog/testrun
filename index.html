@@ -20,6 +20,7 @@
         header { text-align: center; padding: 3.5rem; border-bottom: 1px solid #222226; }
         footer { text-align: center; color: #000; background: #fff; border-radius: 50px; padding: 1rem; max-width: 200px; margin: 4rem auto; font-weight: 800; text-transform: uppercase; }
         .card { background: rgba(0, 0, 0, 0.6); border: 1px solid #333; border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; }
+        .hidden-card { border: 2px dashed #FF003C; }
         h3 { color: #FF003C; margin-top: 0; }
     </style>
 </head>
@@ -36,19 +37,33 @@
 
     <script src="database.js"></script>
     <script>
-        const data = HARDCODED_BACKUP_DATA;
-        let html = "<h2>The Inspector Griffin Series</h2>";
-        
-        data.booksData.forEach(b => {
-            html += `<div class="card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
-        });
+        function render() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.has('admin');
+            const data = HARDCODED_BACKUP_DATA;
+            let html = "<h2>The Inspector Griffin Series</h2>";
+            
+            data.booksData.forEach(b => {
+                if (!b.hidden || isAdmin) {
+                    html += `<div class="card ${b.hidden ? 'hidden-card' : ''}">
+                        <h3>${b.title} ${b.hidden ? '(HIDDEN)' : ''}</h3>
+                        <p>${b.synopsis}</p>
+                    </div>`;
+                }
+            });
 
-        html += "<h2>Character Dossiers</h2>";
-        data.charactersData.forEach(c => {
-            html += `<div class="card"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
-        });
-        
-        document.getElementById('display').innerHTML = html;
+            html += "<h2>Character Dossiers</h2>";
+            data.charactersData.forEach(c => {
+                if (!c.hidden || isAdmin) {
+                    html += `<div class="card ${c.hidden ? 'hidden-card' : ''}">
+                        <h3>${c.name} ${c.hidden ? '(HIDDEN)' : ''}</h3>
+                        <p>${c.bio}</p>
+                    </div>`;
+                }
+            });
+            document.getElementById('display').innerHTML = html;
+        }
+        window.onload = render;
     </script>
 </body>
 </html>
