@@ -28,58 +28,44 @@
         <div id="books-container"></div>
         
         <h2 class="section-title">Character Dossiers</h2>
-        <div id="dossiers-container"></div>
-    </main>
-
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <form onsubmit="handleLogin(event)">
-                <input type="text" id="username" placeholder="User">
-                <input type="password" id="password" placeholder="Pass">
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robert Chester | Official Website</title>
+    <style>
+        body { background: #0a0a0c; color: #fff; font-family: sans-serif; padding: 2rem; }
+        .card { background: #1a1a1a; padding: 2rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #333; }
+        .hidden { border-left: 5px solid #FF003C; }
+    </style>
+</head>
+<body>
+    <div id="display"></div>
 
     <script src="database.js?v=999"></script>
     <script>
-        let isLoggedIn = false;
-
         function render() {
-            const bc = document.getElementById('books-container');
-            const dc = document.getElementById('dossiers-container');
-            bc.innerHTML = ''; 
-            dc.innerHTML = '';
+            // Check the URL for "?admin=true"
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.has('admin');
+            const display = document.getElementById('display');
+            display.innerHTML = '<h1>Robert Chester</h1>';
 
             // Render Books
             HARDCODED_BACKUP_DATA.booksData.forEach(b => {
-                if (!b.hidden || isLoggedIn) {
-                    bc.innerHTML += `<div class="book-card"><h3>${b.title} ${b.hidden ? '<span class="hidden-badge">HIDDEN</span>' : ''}</h3><p>${b.synopsis}</p></div>`;
+                if (!b.hidden || isAdmin) {
+                    display.innerHTML += `<div class="card ${b.hidden ? 'hidden' : ''}"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
                 }
             });
 
             // Render Characters
             HARDCODED_BACKUP_DATA.charactersData.forEach(c => {
-                if (!c.hidden || isLoggedIn) {
-                    dc.innerHTML += `<div class="character-card"><h3>${c.name} ${c.hidden ? '<span class="hidden-badge">HIDDEN</span>' : ''}</h3><p>${c.bio}</p></div>`;
+                if (!c.hidden || isAdmin) {
+                    display.innerHTML += `<div class="card ${c.hidden ? 'hidden' : ''}"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
                 }
             });
         }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            
-            if (u === 'admin' && p === 'admin123') {
-                isLoggedIn = true;
-                document.getElementById('login-modal').style.display = 'none';
-                render(); // Re-render everything to show hidden items
-            } else {
-                alert("Access Denied.");
-            }
-        }
-
         window.onload = render;
     </script>
 </body>
