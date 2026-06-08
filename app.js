@@ -2,7 +2,7 @@
 // 🚨 VERSION CONTROL HIGHLIGHT:
 // Stepped up version identifier to v3.1 to configure dual-form modules.
 // =========================================================================
-const SITE_VERSION = "3.0"; 
+const SITE_VERSION = "3.1"; 
 
 const defaultBooks = [
     {
