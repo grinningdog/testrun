@@ -2,21 +2,14 @@ const HARDCODED_BACKUP_DATA = {
     "booksData": [
         {
             "title": "Blood Relatives",
-            "meta": "An Inspector Griffin Mystery",
-            "category": "griffin",
-            "coverUrl": "Blood Relatives.jpg",
-            "amazonUrl": "",
-            "goodreadsUrl": "",
-            "hidden": false,
-            "synopsis": "A near-miss with a speeding van at Waterloo Station is just the opening move in a deadly new game for Adam Griffin..."
+            "hidden": false, // This will always show
+            "synopsis": "A near-miss with a speeding van..."
         }
     ],
     "charactersData": [
         {
             "name": "Adam Griffin",
-            "role": "The Analytical Investigator",
-            "traits": "Grandson of a mystery icon, hyper-logical.",
-            "hidden": false,
+            "hidden": true, // This is now HIDDEN
             "bio": "Managing his grandmother's massive literary estate..."
         }
     ]
