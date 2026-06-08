@@ -64,22 +64,4 @@
         window.onload = render;
     </script>
 </body>
-</html>               }
-            });
-
-            html += '<h2 class="section-title">Character Dossiers</h2>';
-            data.charactersData.forEach(c => {
-                if (!c.hidden || isAdmin) {
-                    html += `<div class="card ${c.hidden ? 'hidden-card' : ''}">
-                        <h3>${c.name} ${c.hidden ? '(HIDDEN)' : ''}</h3>
-                        <p>${c.bio}</p>
-                    </div>`;
-                }
-            });
-
-            display.innerHTML = html;
-        }
-        window.onload = render;
-    </script>
-</body>
 </html>
