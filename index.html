@@ -48,10 +48,10 @@
     <section class="container" id="dossiers" style="display:none;"><div class="section-header"><h2 class="section-title">Character Dossiers</h2></div><div class="dossier-grid" id="dossiers-container"></div></section>
     <footer>&copy; <span id="copyright-year"></span><span class="accent-code">//</span>Robert Chester<span class="accent-code">//</span>All Rights Reserved.</footer>
     
-    <!-- Modals and Scripts remain as previous, just ensure script src="data.js?v=4.7" is linked at the bottom -->
-    <script src="data.js?v=5.0"></script>
+    <!-- Modals and Scripts remain as previous, just ensure script src="database.js?v=5.1" is linked at the bottom -->
+    <script src="database.js?v=5.1"></script>
     <script>
-        const SITE_VERSION = "5.0";
+        const SITE_VERSION = "5.1";
         let isLoggedIn = false;
         // ... (Include your existing render/modal/submit logic functions here)
         async function handleLogin(e) { e.preventDefault(); const p = document.getElementById('password').value; const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p)); const hash = Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join(''); if (document.getElementById('username').value === 'admin' && hash === 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f') { isLoggedIn = true; renderBooks(); renderCharacters(); closeModal('login-modal'); } else { alert("Access Denied."); } }
