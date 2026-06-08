@@ -3,23 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Robert Chester</title>
+    <style>
+        .hidden-item { border: 2px dashed #FF003C; padding: 10px; margin: 10px 0; }
+    </style>
 </head>
 <body>
     <div id="display"></div>
 
-    <script src="database.js?v=1001"></script>
+    <script src="database.js?v=1002"></script>
     <script>
         function render() {
+            // Check URL for ?admin=true
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.has('admin');
+            
             const data = HARDCODED_BACKUP_DATA;
             let html = "<h1>Books</h1>";
             
             data.booksData.forEach(b => {
-                html += `<div><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
+                if (!b.hidden || isAdmin) {
+                    html += `<div class="${b.hidden ? 'hidden-item' : ''}">
+                        <h3>${b.title} ${b.hidden ? '(HIDDEN)' : ''}</h3>
+                        <p>${b.synopsis}</p>
+                    </div>`;
+                }
             });
 
             html += "<h1>Characters</h1>";
             data.charactersData.forEach(c => {
-                html += `<div><h3>${c.name}</h3><p>${c.bio}</p></div>`;
+                if (!c.hidden || isAdmin) {
+                    html += `<div class="${c.hidden ? 'hidden-item' : ''}">
+                        <h3>${c.name} ${c.hidden ? '(HIDDEN)' : ''}</h3>
+                        <p>${c.bio}</p>
+                    </div>`;
+                }
             });
 
             document.getElementById('display').innerHTML = html;
