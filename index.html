@@ -10,12 +10,20 @@
     <script src="database.js?v=999"></script>
     <script>
         function loadData() {
-            // This force-loads the data from database.js directly
-            const data = HARDCODED_BACKUP_DATA.booksData;
             let html = "<h1>My Books</h1>";
-            data.forEach(book => {
+            
+            // Loop for Books
+            HARDCODED_BACKUP_DATA.booksData.forEach(book => {
                 html += `<h2>${book.title}</h2><p>${book.synopsis}</p>`;
             });
+
+            html += "<hr><h1>Characters</h1>";
+
+            // Loop for Characters
+            HARDCODED_BACKUP_DATA.charactersData.forEach(char => {
+                html += `<h3>${char.name}</h3><p>${char.bio}</p>`;
+            });
+
             document.getElementById('display-area').innerHTML = html;
         }
         window.onload = loadData;
