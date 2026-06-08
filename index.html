@@ -2,32 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Robert Chester</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robert Chester | Official Website</title>
     <style>
-        body { background-color: #0a0a0c; color: #fff; font-family: sans-serif; padding: 2rem; }
-        .card { background: #1a1a1a; padding: 2rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #333; }
+        body { 
+            background-image: url('BG.jpg'); 
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-color: #0a0a0c;
+            color: #ffffff; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding-bottom: 40px; 
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; padding: 3.5rem; border-bottom: 1px solid #222226; }
+        footer { text-align: center; color: #000; background: #fff; border-radius: 50px; padding: 1rem; max-width: 200px; margin: 4rem auto; font-weight: 800; text-transform: uppercase; }
+        .card { background: rgba(0, 0, 0, 0.6); border: 1px solid #333; border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; }
+        h3 { color: #FF003C; margin-top: 0; }
     </style>
 </head>
 <body>
-    <h1>Robert Chester</h1>
-    <div id="display"></div>
+    <header>
+        <h1>Robert Chester</h1>
+    </header>
+
+    <main class="container">
+        <div id="display"></div>
+    </main>
+
+    <footer>&copy; Robert Chester</footer>
 
     <script src="database.js"></script>
     <script>
-        function render() {
-            const data = HARDCODED_BACKUP_DATA;
-            let html = "<h2>Books</h2>";
-            data.booksData.forEach(b => {
-                html += `<div class="card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
-            });
-
-            html += "<h2>Characters</h2>";
-            data.charactersData.forEach(c => {
-                html += `<div class="card"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
-            });
-            document.getElementById('display').innerHTML = html;
-        }
-        window.onload = render;
+        // Simple test to see if layout and data load together
+        const data = HARDCODED_BACKUP_DATA;
+        let html = "<h2>The Inspector Griffin Series</h2>";
+        data.booksData.forEach(b => {
+            html += `<div class="card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
+        });
+        document.getElementById('display').innerHTML = html;
     </script>
 </body>
 </html>
