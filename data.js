@@ -4,7 +4,7 @@
 const HARDCODED_BACKUP_DATA = {
     "booksData": [
        {
-    "siteVersion": "4.7",
+    "siteVersion": "5.0",
     "booksData": [
         {
             "title": "Blood Relatives",
