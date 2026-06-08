@@ -2,64 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robert Chester | Official Website</title>
+    <title>Robert Chester</title>
     <style>
-        :root { --bg-color: #0a0a0c; --panel-bg: #111114; --accent-color: #FF003C; --text-main: #FFFFFF; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 40px; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        
-        /* Header & Footer */
-        header { text-align: center; padding: 3.5rem; border-bottom: 1px solid #222226; }
-        footer { text-align: center; color: #000; background: #fff; border-radius: 50px; padding: 1rem; max-width: 200px; margin: 4rem auto; font-weight: 800; text-transform: uppercase; }
-        
-        /* Content */
-        .card { background: rgba(255, 255, 255, 0.05); border: 1px solid #333; border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; }
-        .hidden-card { border: 2px dashed var(--accent-color); }
-        .section-title { font-size: 2rem; text-transform: uppercase; border-left: 4px solid var(--accent-color); padding-left: 14px; margin: 3rem 0 2rem; }
-        h3 { color: var(--accent-color); margin-top: 0; }
+        body { background-color: #0a0a0c; color: #fff; font-family: sans-serif; padding: 2rem; }
+        .card { background: #1a1a1a; padding: 2rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #333; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Robert Chester</h1>
-    </header>
+    <h1>Robert Chester</h1>
+    <div id="display"></div>
 
-    <main class="container">
-        <div id="display"></div>
-    </main>
-
-    <footer>&copy; Robert Chester</footer>
-
-    <script src="database.js?v=1005"></script>
+    <script src="database.js"></script>
     <script>
         function render() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const isAdmin = urlParams.has('admin');
-            const display = document.getElementById('display');
             const data = HARDCODED_BACKUP_DATA;
-            
-            let html = '<h2 class="section-title">The Inspector Griffin Series</h2>';
+            let html = "<h2>Books</h2>";
             data.booksData.forEach(b => {
-                if (!b.hidden || isAdmin) {
-                    html += `<div class="card ${b.hidden ? 'hidden-card' : ''}">
-                        <h3>${b.title} ${b.hidden ? '(HIDDEN)' : ''}</h3>
-                        <p>${b.synopsis}</p>
-                    </div>`;
-                }
+                html += `<div class="card"><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
             });
 
-            html += '<h2 class="section-title">Character Dossiers</h2>';
+            html += "<h2>Characters</h2>";
             data.charactersData.forEach(c => {
-                if (!c.hidden || isAdmin) {
-                    html += `<div class="card ${c.hidden ? 'hidden-card' : ''}">
-                        <h3>${c.name} ${c.hidden ? '(HIDDEN)' : ''}</h3>
-                        <p>${c.bio}</p>
-                    </div>`;
-                }
+                html += `<div class="card"><h3>${c.name}</h3><p>${c.bio}</p></div>`;
             });
-
-            display.innerHTML = html;
+            document.getElementById('display').innerHTML = html;
         }
         window.onload = render;
     </script>
