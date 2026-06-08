@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robert Chester</title>
+</head>
 <body>
-    <div id="content"></div>
-    <script src="database.js?v=1000"></script>
+    <div id="display"></div>
+
+    <script src="database.js?v=1001"></script>
     <script>
-        document.getElementById('content').innerHTML = 
-            "<h1>Books: " + HARDCODED_BACKUP_DATA.booksData.length + "</h1>" +
-            "<h1>Chars: " + HARDCODED_BACKUP_DATA.charactersData.length + "</h1>";
+        function render() {
+            const data = HARDCODED_BACKUP_DATA;
+            let html = "<h1>Books</h1>";
+            
+            data.booksData.forEach(b => {
+                html += `<div><h3>${b.title}</h3><p>${b.synopsis}</p></div>`;
+            });
+
+            html += "<h1>Characters</h1>";
+            data.charactersData.forEach(c => {
+                html += `<div><h3>${c.name}</h3><p>${c.bio}</p></div>`;
+            });
+
+            document.getElementById('display').innerHTML = html;
+        }
+        window.onload = render;
     </script>
 </body>
 </html>
