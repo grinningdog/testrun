@@ -18,7 +18,7 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, input, textarea, select { font-family: 'Segoe UI', Roboto, sans-serif; }
-        h1, h2, h3, .logo, .btn-admin-panel, .btn-admin-action, .btn-link-accent, .btn-link-subtle, button.btn-block, .character-role, .character-traits, .btn-toggle-visibility, footer { font-family: 'Space Grotesk', sans-serif !important; }
+        h1, h2, h3, .logo, .btn-admin-panel, .btn-admin-action, .btn-link-accent, .btn-link-subtle, button.btn-block, .btn-toggle-visibility, footer { font-family: 'Space Grotesk', sans-serif !important; }
         body {
             background-color: var(--bg-color);
             background-image: radial-gradient(circle, transparent 30%, rgba(10, 10, 12, 0.2) 65%, rgba(10, 10, 12, 0.75) 100%), url('bg.jpg');
@@ -58,7 +58,6 @@
         button.btn-block { width: 100%; white-space: normal; }
         .add-book-btn-container { display: none; gap: 0.5rem; flex-wrap: nowrap; align-items: center; }
         .admin-actions { display: none; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
-        
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 1.25rem; padding: 1.5rem 1rem; text-align: center; }
             .logo { border-left: none; border-bottom: 3px solid var(--accent-color); padding-left: 0; padding-bottom: 6px; display: inline-block; }
@@ -74,6 +73,7 @@
             .book-synopsis, .character-bio { font-size: 1.05rem !important; line-height: 1.8 !important; letter-spacing: 0.2px; }
             .book-cover { margin: 0 auto; }
             .admin-actions, .book-links { justify-content: center; }
+            footer { padding: 0.65rem 1.25rem !important; font-size: 0.7rem !important; letter-spacing: 1px !important; }
         }
         .book-cover { width: 250px; height: 375px; background: #121216; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
         .book-cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -92,7 +92,16 @@
         input:focus, textarea:focus, select:focus { background: rgba(5, 5, 7, 0.7); border-color: var(--accent-color); box-shadow: 0 0 8px rgba(255, 0, 60, 0.25); }
         input[type="file"] { padding: 0.6rem; cursor: pointer; font-size: 0.85rem; }
         .storage-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: -2px; }
-        footer { text-align: center; padding: 2rem 0; font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; border-top: 1px solid var(--border-color); margin-top: 4rem; }
+        
+        /* 🛠️ UPGRADED CAPSULE ASSET FOOTER ENGINE (WHITE BOX / DARK TEXT) */
+        footer { 
+            text-align: center; padding: 0.65rem 2.2rem; font-size: 0.76rem; 
+            color: #000000 !important; background: #FFFFFF !important; border: 1px solid #FFFFFF !important;
+            border-radius: 50px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; 
+            max-width: max-content; margin: 6rem auto 2rem auto; display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.15);
+        }
+        footer span.accent-code { color: var(--accent-color) !important; margin: 0 10px; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -162,7 +171,7 @@
     </section>
 
     <footer>
-        &copy; <span id="copyright-year"></span> Robert Chester. All Rights Reserved.
+        &copy; <span id="copyright-year"></span><span class="accent-code">//</span>Robert Chester<span class="accent-code">//</span>All Rights Reserved.
     </footer>
 
     <div id="login-modal" class="modal">
@@ -220,7 +229,7 @@
         </div>
     </div>
 
-    <script src="data.js"></script>
+    <script src="data.js?v=4.7"></script>
 
     <script>
         const SITE_VERSION = "4.7"; 
@@ -332,6 +341,7 @@
             });
         }
 
+        // SWAP MECHANICS & ARRANGEMENT CONTROL
         function moveBook(mIdx, dir) {
             const b = getBooks(); const cat = b[mIdx].category || 'griffin';
             const sb = b.map((x, i) => ({ ...x, oIdx: i })).filter(x => (x.category || 'griffin') === cat);
@@ -388,7 +398,7 @@
             if (editingCharIndex !== null) c[editingCharIndex] = data; else c.push(data); saveCharacters(c); closeModal('character-modal');
         }
 
-        function deleteBook(mIdx) { const b = getBooks(); if (confirm("Delete structural data for \"" + b[mIdx].title + "\"?")) { b.splice(mIdx, 1); saveBooks(b); } }
+        function deleteBook(mIdx) { const b = getBooks(); if (confirm("Delete data for \"" + b[mIdx].title + "\"?")) { b.splice(mIdx, 1); saveBooks(b); } }
         function deleteCharacter(idx) { const c = getCharacters(); if (confirm("Delete profile for \"" + c[idx].name + "\"?")) { c.splice(idx, 1); saveCharacters(c); } }
 
         function openExportModal() {
@@ -404,6 +414,7 @@
 
         function clearSystemMemory() { if (confirm("Reset layout system and clear browser cache?")) { try { localStorage.clear(); } catch(e) {} location.reload(); } }
 
+        // OUTBOUND SECURE API ENDPOINTS
         async function handleContactSubmit(e) {
             e.preventDefault(); const btn = e.target.querySelector('button[type="submit"]'); const orig = btn.innerText; btn.innerText = "TRANSMITTING..."; btn.disabled = true;
             try {
@@ -420,7 +431,7 @@
             try {
                 const res = await fetch("https://api.web3forms.com/submit", {
                     method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                    body: JSON.stringify({ access_key: "10273041-54af-48f6-a152-3560099fc314", from_name: "Griffin Mailing List System", name: document.getElementById('subscriber-name').value, email: document.getElementById('subscriber-email').value, message: `${document.getElementById('subscriber-name').value} has requested list enrollment.`, subject: `New Enrollment Request` })
+                    body: JSON.stringify({ access_key: "10273041-54af-48f6-a152-3560099fc314", from_name: "Griffin Mailing List System", name: document.getElementById('subscriber-name').value, email: document.getElementById('subscriber-email').value, message: `${document.getElementById('subscriber-name').value} enrolled.`, subject: `New Enrollment Request` })
                 });
                 const r = await res.json(); if (r.success) { alert("Subscription successful!"); document.getElementById('subscribe-form').reset(); } else { alert("Error: " + r.message); }
             } catch (err) { alert("Handshake error."); } finally { btn.innerText = orig; btn.disabled = false; }
@@ -431,10 +442,8 @@
         function handleLogout() { isLoggedIn = false; document.getElementById('admin-nav-link').innerText = "Admin Panel"; renderBooks(); renderCharacters(); }
 
         window.onload = function() {
-            // DYNAMICALLY RENDER CALENDAR COPYRIGHT STAMP
             const yearSpan = document.getElementById('copyright-year');
             if (yearSpan) yearSpan.innerText = new Date().getFullYear();
-            
             renderBooks(); 
             renderCharacters(); 
         };
