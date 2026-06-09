@@ -1,0 +1,13 @@
+ 
+[
+  {
+    "title": "The Silent Archive",
+    "synopsis": "A mystery set in the deepest wings of a university library.",
+    "cover": "assets/book1.jpg"
+  },
+  {
+    "title": "Shadows of Oxford",
+    "synopsis": "When an ancient manuscript is stolen, one student takes the blame.",
+    "cover": "assets/book2.jpg"
+  }
+]
