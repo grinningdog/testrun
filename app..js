@@ -469,17 +469,15 @@ function handleLogout() {
     renderCharacters();
 }
 
-// Global invocation ensures clean bootstrap loading patterns
-window.onload = function() {
+// Clean Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render content
     renderBooks();
     renderCharacters();
 
-// Add this line inside your existing load function:
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-
-
-    }
+    // 2. Set Footer Year
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    
+    console.log("System Initialized Successfully");
 });
-};
