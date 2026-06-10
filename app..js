@@ -1,45 +1,38 @@
-// Data Payload
 const defaultBooks = [
-    { "title": "Blood Relatives", "meta": "An Inspector Griffin Mystery", "category": "griffin", "coverUrl": "Blood Relatives.jpg", "synopsis": "Adam Griffin meets Finn Williams..." },
-    { "title": "The Crypto Mystery Weekend", "meta": "An Inspector Griffin Mystery", "category": "griffin", "coverUrl": "A Crypto Mystery Weekend3.jpg", "synopsis": "A murder at a luxury estate..." },
-    { "title": "The Choirboy Killer", "meta": "An Inspector Griffin Mystery", "category": "griffin", "coverUrl": "the choirboy killer.jpg", "synopsis": "Coming soon..." }
+    { "title": "Blood Relatives", "meta": "Inspector Griffin Mystery", "coverUrl": "Blood Relatives.jpg", "synopsis": "Adam Griffin meets Finn Williams..." },
+    { "title": "The Crypto Mystery Weekend", "meta": "Inspector Griffin Mystery", "coverUrl": "A Crypto Mystery Weekend3.jpg", "synopsis": "A murder at a luxury estate..." }
 ];
 
 const defaultCharacters = [
-    { "name": "Adam Griffin", "role": "The Analytical Investigator", "bio": "Managing his grandmother's estate..." },
-    { "name": "Finn Williams", "role": "The Elite White-Hat Hacker", "bio": "An absolute wizard within the digital underworld." }
+    { "name": "Adam Griffin", "role": "The Analytical Investigator", "bio": "Managing his grandmother's estate..." }
 ];
 
 let isLoggedIn = false;
 
-// Initialization
 document.addEventListener('DOMContentLoaded', () => {
     renderBooks();
     renderCharacters();
-    
-    // Set Footer Year
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 });
 
-// Logic
 function renderBooks() {
     const container = document.getElementById('books-container');
-    if (!container) return;
-    container.innerHTML = defaultBooks.map(b => `
+    container.innerHTML = defaultBooks.map((b, i) => `
         <div class="book-card">
             <div class="book-cover"><img src="${b.coverUrl}" style="width:100%;"></div>
-            <div class="book-details"><h3>${b.title}</h3><p>${b.meta}</p><p>${b.synopsis}</p></div>
+            <div>
+                <h3>${b.title}</h3><p>${b.meta}</p><p>${b.synopsis}</p>
+                ${isLoggedIn ? `<button onclick="alert('Delete ${b.title}')" style="margin-top:10px; background:red; color:white;">Delete</button>` : ''}
+            </div>
         </div>
     `).join('');
 }
 
 function renderCharacters() {
     const container = document.getElementById('dossiers-container');
-    if (!container) return;
     container.innerHTML = defaultCharacters.map(c => `
         <div class="character-card">
-            <div><h3>${c.name}</h3><p><b>${c.role}</b></p></div>
+            <div><h3>${c.name}</h3><p>${c.role}</p></div>
             <div><p>${c.bio}</p></div>
         </div>
     `).join('');
@@ -58,7 +51,10 @@ function handleLogin(event) {
     if (document.getElementById('username').value === 'admin123' && document.getElementById('password').value === 'admin123') {
         isLoggedIn = true;
         closeModal('login-modal');
-        alert("Logged In");
+        // RE-RENDER to show admin tools
+        renderBooks();
+        renderCharacters();
+        alert("Logged In Successfully");
     } else {
         alert("Invalid credentials.");
     }
