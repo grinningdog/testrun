@@ -5,40 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robert Chester | Official Website</title>
     <style>
-        :root { --bg-color: #0a0a0c; --accent-color: #FF003C; --text-main: #FFFFFF; --border-color: #222226; }
+        :root { --bg-color: #0a0a0c; --accent-color: #FF003C; --text-main: #FFFFFF; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
-        
-        /* Header CSS - Restored and Sticky */
-        header { 
-            display: flex; justify-content: space-between; align-items: center; padding: 2rem 5%; 
-            border-bottom: 1px solid var(--border-color); background: rgba(10, 10, 12, 0.8) !important; 
-            backdrop-filter: blur(12px) !important; position: sticky; top: 0; z-index: 100; 
-        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 2rem 5%; background: rgba(10, 10, 12, 0.8) !important; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
         .logo { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; border-left: 3px solid var(--accent-color); padding-left: 12px; }
         nav a { color: var(--text-main); margin-left: 2rem; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; text-decoration: none; }
-
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
         .books-grid { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
-        
-        /* Responsive Card Layout */
-        .book-card, .character-card { 
-            display: grid; grid-template-columns: 250px 1fr; gap: 2rem; background: #111114; 
-            padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); 
-        }
-        @media (max-width: 768px) {
-            .book-card, .character-card { grid-template-columns: 1fr; text-align: center; }
-            .book-cover img { margin: 0 auto; }
-        }
-
-        .site-footer { display: flex; justify-content: center; align-items: center; gap: 15px; background: #ffffff; color: #000000; padding: 1rem; margin: 4rem auto; max-width: 650px; border-radius: 50px; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; }
+        .book-card, .character-card { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; background: #111114; padding: 2rem; border-radius: 12px; border: 1px solid #222; }
+        @media (max-width: 768px) { .book-card, .character-card { grid-template-columns: 1fr; text-align: center; } }
+        .site-footer { display: flex; justify-content: center; align-items: center; gap: 15px; background: #ffffff; color: #000000; padding: 1rem; margin: 4rem auto; max-width: 650px; border-radius: 50px; font-weight: 800; font-size: 0.7rem; }
         .modal { display: none; position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">Robert Chester</div>
-        <nav><a href="#" onclick="location.reload()">Home</a><a id="admin-nav-link" onclick="handleAdminNavClick()">Admin Panel</a></nav>
+        <nav><a href="#">Home</a><a id="admin-nav-link" onclick="handleAdminNavClick()">Admin Panel</a></nav>
     </header>
 
     <main class="container">
@@ -53,13 +37,13 @@
     <div id="login-modal" class="modal">
         <div style="background:#111; padding:2rem; width:90%; max-width:400px; border:1px solid #FF003C;">
             <h2 style="color:white; margin-bottom:1rem;">Admin Access</h2>
-            <form id="login-form" onsubmit="handleLogin(event)">
+            <form onsubmit="handleLogin(event)">
                 <input type="text" id="username" placeholder="Username" style="width:100%; padding:10px; margin-bottom:10px;">
                 <input type="password" id="password" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
                 <button type="submit" style="width:100%; padding:10px; background:#FF003C; color:white; border:none;">Login</button>
             </form>
         </div>
     </div>
-    <script src="app.js?v=3.9"></script>
+    <script src="app.js?v=4.0"></script>
 </body>
 </html>

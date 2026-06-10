@@ -7,13 +7,20 @@ const defaultCharacters = [
     { "name": "Adam Griffin", "role": "The Analytical Investigator", "bio": "Managing his grandmother's estate..." }
 ];
 
-let isLoggedIn = false;
+// Check localStorage for existing session
+let isLoggedIn = localStorage.getItem('isAdmin') === 'true';
 
 document.addEventListener('DOMContentLoaded', () => {
+    updateAdminButton();
     renderBooks();
     renderCharacters();
     document.getElementById('year').textContent = new Date().getFullYear();
 });
+
+function updateAdminButton() {
+    const btn = document.getElementById('admin-nav-link');
+    if (btn) btn.innerText = isLoggedIn ? "Terminal (Active)" : "Admin Panel";
+}
 
 function renderBooks() {
     const container = document.getElementById('books-container');
@@ -23,7 +30,7 @@ function renderBooks() {
             <div class="book-cover"><img src="${b.coverUrl}" style="width:100%;"></div>
             <div>
                 <h3>${b.title}</h3><p>${b.meta}</p><p>${b.synopsis}</p>
-                ${isLoggedIn ? `<button style="margin-top:10px; background:red; color:white; border:none; padding:5px 10px;">Delete Entry</button>` : ''}
+                ${isLoggedIn ? `<button onclick="alert('Delete ${b.title}')" style="margin-top:10px; background:red; color:white; border:none; padding:5px;">Delete</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -41,7 +48,17 @@ function renderCharacters() {
 }
 
 function handleAdminNavClick() {
-    document.getElementById('login-modal').style.display = 'flex';
+    if (isLoggedIn) {
+        if (confirm("Terminate admin terminal session?")) {
+            isLoggedIn = false;
+            localStorage.removeItem('isAdmin');
+            updateAdminButton();
+            renderBooks();
+            renderCharacters();
+        }
+    } else {
+        document.getElementById('login-modal').style.display = 'flex';
+    }
 }
 
 function closeModal(id) {
@@ -52,8 +69,9 @@ function handleLogin(event) {
     event.preventDefault();
     if (document.getElementById('username').value === 'admin123' && document.getElementById('password').value === 'admin123') {
         isLoggedIn = true;
+        localStorage.setItem('isAdmin', 'true');
         closeModal('login-modal');
-        // RE-RENDER immediately after login to inject admin buttons[cite: 5]
+        updateAdminButton();
         renderBooks();
         renderCharacters();
         alert("Logged In Successfully");
