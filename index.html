@@ -11,16 +11,15 @@
             --text-main: #FFFFFF; --text-muted: #a0a0ab; --border-color: #222226;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
         body {
             background-color: var(--bg-color);
             background-image: radial-gradient(circle, transparent 30%, rgba(10, 10, 12, 0.2) 65%, rgba(10, 10, 12, 0.75) 100%), url('bg.jpg');
             background-size: cover; background-position: center bottom; background-attachment: fixed;
-            color: var(--text-main); min-height: 100vh; padding-bottom: 60px;
+            color: var(--text-main); min-height: 100vh;
         }
 
-        /* Frosted Glass Header */
         header {
             display: flex; justify-content: space-between; align-items: center; padding: 2rem 5%;
             border-bottom: 1px solid var(--border-color); background: rgba(10, 10, 12, 0.8) !important;
@@ -32,10 +31,8 @@
         nav a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-        .hero { text-align: center; padding: 3.5rem 2.5rem; max-width: 850px; margin: 5rem auto; background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255, 0, 60, 0.15); border-radius: 12px; }
-        
         .books-grid { display: flex; flex-direction: column; gap: 3.5rem; margin-top: 2rem; }
-        .book-card { display: grid; grid-template-columns: 250px 1fr; gap: 3rem; background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255, 0, 60, 0.15); border-radius: 12px; padding: 2.5rem; }
+        .book-card, .character-card { display: grid; grid-template-columns: 250px 1fr; gap: 3rem; background: rgba(10, 10, 12, 0.5); border: 1px solid rgba(255, 0, 60, 0.15); border-radius: 12px; padding: 2.5rem; }
 
         /* Unified Footer Pill */
         .site-footer {
@@ -47,8 +44,9 @@
         }
         .footer-red-line { width: 30px; height: 2px; background: var(--accent-color); flex-shrink: 0; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 7, 0.9); z-index: 1000; }
-        .modal-content { background: var(--panel-bg); border: 1px solid var(--accent-color); padding: 3rem; margin: 10% auto; max-width: 500px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 7, 0.9); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--panel-bg); border: 1px solid var(--accent-color); padding: 3rem; max-width: 500px; width: 90%; }
+        .btn-block { width: 100%; padding: 1rem; background: #FF003C; color: #fff; font-weight: 800; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -59,11 +57,6 @@
             <a href="#">Home</a><a href="#books">Books</a><a id="admin-nav-link" onclick="handleAdminNavClick()">Admin Panel</a>
         </nav>
     </header>
-
-    <section class="hero">
-        <h1>The Inspector Griffin Mysteries</h1>
-        <p>When Adam Griffin meets Finn Williams, the world changes.</p>
-    </section>
 
     <main class="container">
         <div id="books-container" class="books-grid"></div>
@@ -76,8 +69,18 @@
         <div class="footer-red-line"></div>
     </footer>
 
-    <div id="login-modal" class="modal"><div class="modal-content"><span onclick="closeModal('login-modal')" style="cursor:pointer; float:right;">&times;</span><h2>Admin</h2></div></div>
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span onclick="closeModal('login-modal')" style="cursor:pointer; float:right; color:white;">&times;</span>
+            <h2 style="color:white; margin-bottom:1rem;">Admin Access</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="text" id="username" placeholder="Username" style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="password" id="password" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
+                <button type="submit" class="btn-block">Login</button>
+            </form>
+        </div>
+    </div>
 
-    <script src="app.js?v=3.4"></script>
+    <script src="app.js?v=3.6"></script>
 </body>
 </html>
