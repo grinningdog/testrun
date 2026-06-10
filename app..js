@@ -474,6 +474,10 @@ window.onload = function() {
     renderBooks();
     renderCharacters();
 
+// Add this line inside your existing load function:
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
 
 
     }
