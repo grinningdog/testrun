@@ -17,12 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderBooks() {
     const container = document.getElementById('books-container');
-    container.innerHTML = defaultBooks.map((b, i) => `
+    if (!container) return;
+    container.innerHTML = defaultBooks.map(b => `
         <div class="book-card">
             <div class="book-cover"><img src="${b.coverUrl}" style="width:100%;"></div>
             <div>
                 <h3>${b.title}</h3><p>${b.meta}</p><p>${b.synopsis}</p>
-                ${isLoggedIn ? `<button onclick="alert('Delete ${b.title}')" style="margin-top:10px; background:red; color:white;">Delete</button>` : ''}
+                ${isLoggedIn ? `<button style="margin-top:10px; background:red; color:white; border:none; padding:5px 10px;">Delete Entry</button>` : ''}
             </div>
         </div>
     `).join('');
@@ -30,6 +31,7 @@ function renderBooks() {
 
 function renderCharacters() {
     const container = document.getElementById('dossiers-container');
+    if (!container) return;
     container.innerHTML = defaultCharacters.map(c => `
         <div class="character-card">
             <div><h3>${c.name}</h3><p>${c.role}</p></div>
@@ -51,7 +53,7 @@ function handleLogin(event) {
     if (document.getElementById('username').value === 'admin123' && document.getElementById('password').value === 'admin123') {
         isLoggedIn = true;
         closeModal('login-modal');
-        // RE-RENDER to show admin tools
+        // RE-RENDER immediately after login to inject admin buttons[cite: 5]
         renderBooks();
         renderCharacters();
         alert("Logged In Successfully");
