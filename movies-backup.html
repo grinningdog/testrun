@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movie Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444444;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ffffff;
+        }
+
+        .btn {
+            background: #e50914;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: #f40612;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        .btn-secondary {
+            background: #333333;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: #444444;
+        }
+
+        .btn-success {
+            background: #2e7d32;
+        }
+
+        .btn-success:hover {
+            background: #1b5e20;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls {
+            margin-bottom: 30px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #searchInput {
+            flex: 1;
+            max-width: 500px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #333333;
+            border-radius: 30px;
+            background: #1a1a1a;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #e50914;
+            background: #222222;
+        }
+
+        #searchInput::placeholder {
+            color: #888888;
+        }
+
+        #sortSelect {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #333333;
+            border-radius: 30px;
+            background: #1a1a1a;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            min-width: 200px;
+        }
+
+        #sortSelect:focus {
+            outline: none;
+            border-color: #e50914;
+            background: #222222;
+        }
+
+        #sortSelect option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1200px) {
+            .movie-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .movie-card {
+            position: relative;
+            cursor: pointer;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3);
+            z-index: 10;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            border: 1px solid #333333;
+            color: #ffffff;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #333333;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: #e50914;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #cccccc;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #888888;
+            margin-top: 5px;
+        }
+
+        /* Search Results */
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000000;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .search-result-item:hover {
+            border-color: #e50914;
+            transform: scale(1.02);
+        }
+
+        .search-result-item img {
+            width: 100%;
+            height: 225px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .search-result-info {
+            padding: 10px;
+            background: #000000;
+        }
+
+        .search-result-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-year {
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .add-btn-small {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .search-result-item:hover .add-btn-small {
+            opacity: 1;
+        }
+
+        .add-btn-small:hover {
+            background: #f40612;
+        }
+
+        .add-btn-small.added {
+            background: #2e7d32;
+            opacity: 1;
+            cursor: default;
+        }
+
+        .search-loading {
+            text-align: center;
+            padding: 40px;
+            color: #888888;
+        }
+
+        .search-no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888888;
+        }
+
+        /* Person Search Results */
+        .person-results {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .person-result-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            background: #000000;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .person-result-item:hover {
+            border-color: #e50914;
+            background: #222222;
+        }
+
+        .person-result-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .person-result-info {
+            flex: 1;
+        }
+
+        .person-result-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .person-result-known {
+            font-size: 12px;
+            color: #888888;
+        }
+
+        .person-movies-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 10px 0;
+            padding: 10px;
+            background: #000000;
+            border-radius: 8px;
+        }
+
+        .person-movies-header h3 {
+            color: #e50914;
+            font-size: 18px;
+        }
+
+        .add-all-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .add-all-btn:hover {
+            background: #1b5e20;
+        }
+
+        .add-all-btn:disabled {
+            background: #333333;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Movie Details Modal */
+        .movie-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .movie-details img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            align-self: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .movie-details h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #e50914;
+        }
+
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            color: #cccccc;
+            font-size: 14px;
+        }
+
+        .movie-rating {
+            color: #ffd700;
+        }
+
+        .movie-synopsis {
+            line-height: 1.6;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .delete-btn {
+            background: #333333;
+            color: #ff6b6b;
+            border: 1px solid #444444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+            color: #ffffff;
+            border-color: #d32f2f;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888888;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333333;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            color: #888888;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #e50914;
+            border-bottom-color: #e50914;
+        }
+
+        .tab:hover {
+            color: #ffffff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            #searchInput, #sortSelect {
+                max-width: 100%;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .movie-card img {
+                height: 225px;
+            }
+
+            .search-results {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .search-result-item img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 My Movie Collection</h1>
+            <div class="header-buttons">
+                <button class="btn" onclick="openAddModal()">+ Add Movie</button>
+                <button class="btn btn-success" onclick="exportAsHTML()">📥 Export HTML</button>
+                <button class="btn btn-secondary" onclick="exportAsJSON()">📄 Export JSON</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Import</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search your movies..." oninput="searchMovies()">
+            <select id="sortSelect" onchange="changeSort()">
+                <option value="added-desc">Date Added (Newest First)</option>
+                <option value="added-asc">Date Added (Oldest First)</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="title-desc">Title (Z-A)</option>
+                <option value="year-desc">Year (Newest First)</option>
+                <option value="year-asc">Year (Oldest First)</option>
+                <option value="rating-desc">Rating (Highest First)</option>
+                <option value="rating-asc">Rating (Lowest First)</option>
+            </select>
+        </div>
+
+        <div class="movie-grid" id="movieGrid">
+            <!-- Movies will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Add Movie Modal -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAddModal()">&times;</button>
+            <h2>Add Movie</h2>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('search')">🔍 Search TMDB</button>
+                <button class="tab" onclick="switchTab('person')">👤 By Actor/Director</button>
+                <button class="tab" onclick="switchTab('manual')">🔢 Manual ID</button>
+            </div>
+
+            <!-- Search Tab -->
+            <div id="searchTab" class="tab-content active">
+                <div class="form-group">
+                    <label for="tmdbSearchInput">Search by Title</label>
+                    <input type="text" id="tmdbSearchInput" placeholder="e.g., The Dark Knight, Inception..." oninput="debouncedSearch()">
+                    <div class="help-text">Type to search TMDB's database</div>
+                </div>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+
+            <!-- Person Search Tab -->
+            <div id="personTab" class="tab-content">
+                <div class="form-group">
+                    <label for="personSearchInput">Search for Actor or Director</label>
+                    <input type="text" id="personSearchInput" placeholder="e.g., Gene Hackman, Michael Mann..." oninput="debouncedPersonSearch()">
+                    <div class="help-text">Find a person, then see all their movies and add them</div>
+                </div>
+                <div id="personResults" class="person-results"></div>
+                <div id="personMoviesSection" style="display: none;">
+                    <div class="person-movies-header">
+                        <h3 id="personMoviesTitle">Movies</h3>
+                        <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
+                    </div>
+                    <div id="personMovieResults" class="search-results"></div>
+                </div>
+            </div>
+
+            <!-- Manual ID Tab -->
+            <div id="manualTab" class="tab-content">
+                <div class="form-group">
+                    <label for="tmdbInput">TMDB Reference</label>
+                    <input type="text" id="tmdbInput" placeholder="e.g., 1481343 or 1481343-the-devils-mouth">
+                    <div class="help-text">Enter the TMDB ID number or the full reference from the URL</div>
+                </div>
+                <button class="btn" onclick="addMovieManual()" style="width: 100%;">Add to Collection</button>
+                <div id="addMessage" style="margin-top: 15px; text-align: center; color: #e50914;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Details Modal -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
+            <div class="movie-details" id="movieDetails">
+                <!-- Movie details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'de4204747375f4d584fb254b6a94127c';
+        const BASE_URL = 'https://api.themoviedb.org/3';
+        const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+        const IMG_URL_ORIGINAL = 'https://image.tmdb.org/t/p/original';
+        const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w185';
+
+        // EMBEDDED_MOVIES_DATA_START
+        const EMBEDDED_MOVIES = null; // Will be replaced when exported
+        // EMBEDDED_MOVIES_DATA_END
+
+        // Load movies from localStorage or embedded data
+        let movies = JSON.parse(localStorage.getItem('myMovies')) || EMBEDDED_MOVIES || [];
+        let searchTimeout;
+        let personSearchTimeout;
+        let currentSort = localStorage.getItem('movieSort') || 'added-desc';
+        let currentPersonMovies = [];
+        let currentPersonId = null;
+        let currentPersonName = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sortSelect').value = currentSort;
+            renderMovies();
+
+            document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addMovieManual();
+            });
+        });
+
+        // Export as self-contained HTML
+        function exportAsHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+
+            // Replace the EMBEDDED_MOVIES line with actual data
+            const moviesData = JSON.stringify(movies, null, 2);
+            const updatedHTML = htmlContent.replace(
+                /const EMBEDDED_MOVIES = null; \/\/ Will be replaced when exported/,
+                `const EMBEDDED_MOVIES = ${moviesData};`
+            );
+
+            const blob = new Blob([updatedHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `my-movie-collection-${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert(`Exported ${movies.length} movies as HTML!\n\nUpload this file to Mega/GitHub and open it from any device to view your collection.`);
+        }
+
+        // Export as JSON
+        function exportAsJSON() {
+            const dataStr = JSON.stringify(movies, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `movies-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Import from JSON
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedMovies = JSON.parse(e.target.result);
+                    if (Array.isArray(importedMovies)) {
+                        if (confirm(`Import ${importedMovies.length} movies?\n\nThis will REPLACE your current collection.`)) {
+                            movies = importedMovies;
+                            localStorage.setItem('myMovies', JSON.stringify(movies));
+                            renderMovies();
+                            alert('Import successful!');
+                        }
+                    } else {
+                        alert('Invalid JSON format');
+                    }
+                } catch (error) {
+                    alert('Error reading file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            if (tab === 'search') {
+                document.getElementById('searchTab').classList.add('active');
+                document.getElementById('tmdbSearchInput').focus();
+            } else if (tab === 'person') {
+                document.getElementById('personTab').classList.add('active');
+                document.getElementById('personSearchInput').focus();
+            } else {
+                document.getElementById('manualTab').classList.add('active');
+                document.getElementById('tmdbInput').focus();
+            }
+        }
+
+        // Debounced search for TMDB
+        function debouncedSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchTMDB, 500);
+        }
+
+        // Debounced person search
+        function debouncedPersonSearch() {
+            clearTimeout(personSearchTimeout);
+            personSearchTimeout = setTimeout(searchPerson, 500);
+        }
+
+        // Search TMDB API
+        async function searchTMDB() {
+            const query = document.getElementById('tmdbSearchInput').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+
+            if (query.length < 2) {
+                resultsDiv.innerHTML = '';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
+
+            try {
+                const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
+                const data = await response.json();
+
+                if (data.results.length === 0) {
+                    resultsDiv.innerHTML = '<div class="search-no-results">No movies found</div>';
+                    return;
+                }
+
+                resultsDiv.innerHTML = '';
+
+                data.results.forEach(movie => {
+                    const isAdded = movies.some(m => m.id === movie.id);
+
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.onclick = (e) => {
+                        if (!e.target.classList.contains('add-btn-small') && !isAdded) {
+                            addMovieFromSearch(movie.id, item);
+                        }
+                    };
+
+                    const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+
+                    item.innerHTML = `
+                        <img src="${posterPath}" alt="${movie.title}">
+                        <button class="add-btn-small ${isAdded ? 'added' : ''}"
+                                onclick="event.stopPropagation(); ${isAdded ? 'return false;' : `addMovieFromSearch(${movie.id}, this.parentElement)`}">
+                            ${isAdded ? '✓ Added' : '+ Add'}
+                        </button>
+                        <div class="search-result-info">
+                            <div class="search-result-title">${movie.title}</div>
+                            <div class="search-result-year">${year}</div>
+                        </div>
+                    `;
+
+                    resultsDiv.appendChild(item);
+                });
+
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="search-no-results">Error searching TMDB</div>';
+                console.error('Search error:', error);
+            }
+        }
+
+        // Search for person (actor/director)
+        async function searchPerson() {
+            const query = document.getElementById('personSearchInput').value.trim();
+            const personResultsDiv = document.getElementById('personResults');
+            const personMoviesSection = document.getElementById('personMoviesSection');
+
+            if (query.length < 2) {
+                personResultsDiv.innerHTML = '';
+                personMoviesSection.style.display = 'none';
+                return;
+            }
+
+            personResultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
+            personMoviesSection.style.display = 'none';
+
+            try {
+                const response = await fetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
+                const data = await response.json();
+
+                if (data.results.length === 0) {
+                    personResultsDiv.innerHTML = '<div class="search-no-results">No people found</div>';
+                    return;
+                }
+
+                personResultsDiv.innerHTML = '';
+
+                data.results.slice(0, 5).forEach(person => {
+                    const item = document.createElement('div');
+                    item.className = 'person-result-item';
+                    item.onclick = () => loadPersonMovies(person.id, person.name);
+
+                    const profilePath = person.profile_path ? `${IMG_URL_PROFILE}${person.profile_path}` : 'https://via.placeholder.com/185x185?text=No+Image';
+
+                    item.innerHTML = `
+                        <img src="${profilePath}" alt="${person.name}">
+                        <div class="person-result-info">
+                            <div class="person-result-name">${person.name}</div>
+                            <div class="person-result-known">Known for: ${person.known_for_department || 'Acting'}</div>
+                        </div>
+                    `;
+
+                    personResultsDiv.appendChild(item);
+                });
+
+            } catch (error) {
+                personResultsDiv.innerHTML = '<div class="search-no-results">Error searching</div>';
+                console.error('Person search error:', error);
+            }
+        }
+
+        // Load all movies for a person from TMDB
+        async function loadPersonMovies(personId, personName) {
+            currentPersonId = personId;
+            currentPersonName = personName;
+
+            const movieResultsDiv = document.getElementById('personMovieResults');
+            const personMoviesSection = document.getElementById('personMoviesSection');
+            const personMoviesTitle = document.getElementById('personMoviesTitle');
+            const addAllBtn = document.getElementById('addAllBtn');
+
+            personMoviesSection.style.display = 'block';
+            personMoviesTitle.textContent = `Movies featuring ${personName}`;
+            movieResultsDiv.innerHTML = '<div class="search-loading">Loading movies...</div>';
+            addAllBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}`);
+                const data = await response.json();
+
+                const castMovies = data.cast || [];
+                const crewMovies = data.crew || [];
+
+                const allMovies = [...castMovies, ...crewMovies];
+                const uniqueMovies = allMovies.filter((movie, index, self) =>
+                    index === self.findIndex(m => m.id === movie.id)
+                );
+
+                uniqueMovies.sort((a, b) => {
+                    const dateA = a.release_date ? new Date(a.release_date) : new Date(0);
+                    const dateB = b.release_date ? new Date(b.release_date) : new Date(0);
+                    return dateB - dateA;
+                });
+
+                currentPersonMovies = uniqueMovies;
+
+                if (uniqueMovies.length === 0) {
+                    movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found for ${personName}</div>`;
+                    addAllBtn.disabled = true;
+                    return;
+                }
+
+                movieResultsDiv.innerHTML = '';
+
+                uniqueMovies.forEach(movie => {
+                    const isAdded = movies.some(m => m.id === movie.id);
+
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.onclick = (e) => {
+                        if (!e.target.classList.contains('add-btn-small') && !isAdded) {
+                            addMovieFromSearch(movie.id, item);
+                        }
+                    };
+
+                    const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+
+                    item.innerHTML = `
+                        <img src="${posterPath}" alt="${movie.title}">
+                        <button class="add-btn-small ${isAdded ? 'added' : ''}"
+                                data-movie-id="${movie.id}"
+                                onclick="event.stopPropagation(); ${isAdded ? 'return false;' : `addMovieFromSearch(${movie.id}, this.parentElement)`}">
+                            ${isAdded ? '✓ Added' : '+ Add'}
+                        </button>
+                        <div class="search-result-info">
+                            <div class="search-result-title">${movie.title}</div>
+                            <div class="search-result-year">${year}</div>
+                        </div>
+                    `;
+
+                    movieResultsDiv.appendChild(item);
+                });
+
+                updateAddAllButton();
+
+            } catch (error) {
+                movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>';
+                console.error('Error:', error);
+                addAllBtn.disabled = true;
+            }
+        }
+
+        // Update the Add All button state
+        function updateAddAllButton() {
+            const addAllBtn = document.getElementById('addAllBtn');
+            const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
+            addAllBtn.disabled = moviesToAdd.length === 0;
+            addAllBtn.textContent = moviesToAdd.length > 0 ? `Add All (${moviesToAdd.length})` : 'All Added ✓';
+        }
+
+        // Add all visible movies
+        async function addAllVisibleMovies() {
+            const addAllBtn = document.getElementById('addAllBtn');
+            const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
+
+            if (moviesToAdd.length === 0) {
+                addAllBtn.textContent = 'All Added ✓';
+                addAllBtn.disabled = true;
+                return;
+            }
+
+            addAllBtn.disabled = true;
+            addAllBtn.textContent = 'Adding...';
+
+            let addedCount = 0;
+            for (const movie of moviesToAdd) {
+                try {
+                    const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
+                    const movieData = await response.json();
+
+                    if (!movies.some(m => m.id === movieData.id)) {
+                        movies.push({
+                            id: movieData.id,
+                            title: movieData.title,
+                            poster_path: movieData.poster_path,
+                            release_date: movieData.release_date,
+                            vote_average: movieData.vote_average,
+                            added: new Date().toISOString()
+                        });
+                        addedCount++;
+
+                        const button = document.querySelector(`[data-movie-id="${movieData.id}"]`);
+                        if (button) {
+                            button.classList.add('added');
+                            button.textContent = '✓ Added';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error adding movie:', movie.title, error);
+                }
+            }
+
+            localStorage.setItem('myMovies', JSON.stringify(movies));
+            renderMovies();
+
+            updateAddAllButton();
+        }
+
+        // Add movie from search results
+        async function addMovieFromSearch(movieId, element) {
+            if (movies.some(m => m.id === movieId)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+                const movie = await response.json();
+
+                movies.push({
+                    id: movie.id,
+                    title: movie.title,
+                    poster_path: movie.poster_path,
+                    release_date: movie.release_date,
+                    vote_average: movie.vote_average,
+                    added: new Date().toISOString()
+                });
+
+                localStorage.setItem('myMovies', JSON.stringify(movies));
+
+                renderMovies();
+
+                if (element) {
+                    const button = element.querySelector('.add-btn-small');
+                    if (button) {
+                        button.classList.add('added');
+                        button.textContent = '✓ Added';
+                    }
+                }
+
+                if (currentPersonMovies.length > 0) {
+                    updateAddAllButton();
+                }
+
+            } catch (error) {
+                console.error('Add error:', error);
+            }
+        }
+
+        function extractMovieId(input) {
+            const match = input.match(/^(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        async function addMovieManual() {
+            const input = document.getElementById('tmdbInput').value.trim();
+            const messageDiv = document.getElementById('addMessage');
+
+            if (!input) {
+                messageDiv.style.color = '#ff6b6b';
+                messageDiv.textContent = 'Please enter a TMDB reference';
+                return;
+            }
+
+            const movieId = extractMovieId(input);
+
+            if (!movieId) {
+                messageDiv.style.color = '#ff6b6b';
+                messageDiv.textContent = 'Invalid TMDB reference. Please enter a valid ID.';
+                return;
+            }
+
+            messageDiv.textContent = 'Loading...';
+            messageDiv.style.color = '#888888';
+
+            try {
+                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+
+                if (!response.ok) {
+                    throw new Error('Movie not found');
+                }
+
+                const movie = await response.json();
+
+                if (movies.some(m => m.id === movie.id)) {
+                    messageDiv.style.color = '#ffd700';
+                    messageDiv.textContent = 'This movie is already in your collection!';
+                    return;
+                }
+
+                movies.push({
+                    id: movie.id,
+                    title: movie.title,
+                    poster_path: movie.poster_path,
+                    release_date: movie.release_date,
+                    vote_average: movie.vote_average,
+                    added: new Date().toISOString()
+                });
+
+                localStorage.setItem('myMovies', JSON.stringify(movies));
+
+                document.getElementById('tmdbInput').value = '';
+                messageDiv.textContent = '';
+                closeAddModal();
+                renderMovies();
+
+            } catch (error) {
+                messageDiv.style.color = '#ff6b6b';
+                messageDiv.textContent = 'Error: Movie not found. Please check the ID.';
+            }
+        }
+
+        function changeSort() {
+            currentSort = document.getElementById('sortSelect').value;
+            localStorage.setItem('movieSort', currentSort);
+            renderMovies(document.getElementById('searchInput').value);
+        }
+
+        function sortMovies(movieList) {
+            const [field, direction] = currentSort.split('-');
+            const multiplier = direction === 'asc' ? 1 : -1;
+
+            return [...movieList].sort((a, b) => {
+                let valA, valB;
+                let hasDateA, hasDateB;
+
+                switch(field) {
+                    case 'title':
+                        valA = a.title.toLowerCase();
+                        valB = b.title.toLowerCase();
+                        return valA.localeCompare(valB) * multiplier;
+
+                    case 'year':
+                        hasDateA = !!a.release_date;
+                        hasDateB = !!b.release_date;
+
+                        if (!hasDateA && !hasDateB) return 0;
+                        if (!hasDateA) return 1;
+                        if (!hasDateB) return -1;
+
+                        valA = new Date(a.release_date).getFullYear();
+                        valB = new Date(b.release_date).getFullYear();
+                        return (valA - valB) * multiplier;
+
+                    case 'rating':
+                        valA = a.vote_average || 0;
+                        valB = b.vote_average || 0;
+                        return (valA - valB) * multiplier;
+
+                    case 'added':
+                        valA = new Date(a.added).getTime();
+                        valB = new Date(b.added).getTime();
+                        return (valA - valB) * multiplier;
+
+                    default:
+                        return 0;
+                }
+            });
+        }
+
+        function renderMovies(filter = '') {
+            const grid = document.getElementById('movieGrid');
+            grid.innerHTML = '';
+
+            const filteredMovies = movies.filter(movie =>
+                movie.title.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            const sortedMovies = sortMovies(filteredMovies);
+
+            if (sortedMovies.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <h2>No movies yet</h2>
+                        <p>Click "Add Movie" to start building your collection!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            sortedMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.onclick = () => showMovieDetails(movie.id);
+
+                const img = document.createElement('img');
+                img.src = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+                img.alt = movie.title;
+                img.loading = 'lazy';
+
+                card.appendChild(img);
+                grid.appendChild(card);
+            });
+        }
+
+        async function showMovieDetails(movieId) {
+            const modal = document.getElementById('detailsModal');
+            const detailsDiv = document.getElementById('movieDetails');
+
+            detailsDiv.innerHTML = '<p style="text-align: center; padding: 40px; color: #888888;">Loading...</p>';
+            modal.classList.add('active');
+
+            try {
+                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+                const movie = await response.json();
+
+                const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+
+                detailsDiv.innerHTML = `
+                    ${movie.poster_path ? `<img src="${IMG_URL_ORIGINAL}${movie.poster_path}" alt="${movie.title}">` : ''}
+                    <h2>${movie.title}</h2>
+                    <div class="movie-meta">
+                        <span>📅 ${releaseYear}</span>
+                        <span class="movie-rating">⭐ ${rating}/10</span>
+                        ${movie.runtime ? `<span>⏱️ ${movie.runtime} min</span>` : ''}
+                    </div>
+                    ${movie.genres && movie.genres.length > 0 ? `
+                        <div style="color: #888888; font-size: 14px;">
+                            ${movie.genres.map(g => g.name).join(' • ')}
+                        </div>
+                    ` : ''}
+                    <div class="movie-synopsis">
+                        <strong>Synopsis:</strong><br>
+                        ${movie.overview || 'No synopsis available.'}
+                    </div>
+                    <button class="delete-btn" onclick="deleteMovie(${movie.id})">Remove from Collection</button>
+                `;
+
+            } catch (error) {
+                detailsDiv.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading movie details</p>';
+            }
+        }
+
+        function deleteMovie(movieId) {
+            if (confirm('Are you sure you want to remove this movie from your collection?')) {
+                movies = movies.filter(m => m.id !== movieId);
+                localStorage.setItem('myMovies', JSON.stringify(movies));
+                closeDetailsModal();
+                renderMovies(document.getElementById('searchInput').value);
+            }
+        }
+
+        function searchMovies() {
+            const searchTerm = document.getElementById('searchInput').value;
+            renderMovies(searchTerm);
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+            document.getElementById('tmdbSearchInput').focus();
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('tmdbInput').value = '';
+            document.getElementById('tmdbSearchInput').value = '';
+            document.getElementById('personSearchInput').value = '';
+            document.getElementById('addMessage').textContent = '';
+            document.getElementById('searchResults').innerHTML = '';
+            document.getElementById('personResults').innerHTML = '';
+            document.getElementById('personMoviesSection').style.display = 'none';
+            document.getElementById('personMovieResults').innerHTML = '';
+            currentPersonMovies = [];
+            currentPersonId = null;
+            currentPersonName = null;
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
