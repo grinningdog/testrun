@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-07-31T09:35:25.880Z",
+  "exportedAt": "2026-07-31T09:48:11.067Z",
   "movies": [
     {
       "id": 969681,
@@ -1492,7 +1492,7 @@
         "History",
         "War"
       ],
-      "userRating": null,
+      "userRating": 5,
       "added": "2026-07-30T13:38:26.662Z"
     },
     {
@@ -1597,7 +1597,7 @@
       "genres": [
         "Comedy"
       ],
-      "userRating": null,
+      "userRating": 5,
       "added": "2026-07-30T14:26:41.678Z"
     },
     {
@@ -1613,6 +1613,20 @@
       ],
       "userRating": 5,
       "added": "2026-07-30T14:38:16.750Z"
+    },
+    {
+      "id": 1458215,
+      "title": "The Gentleman Thief",
+      "poster_path": "/oMutDMODnbCZf46w0dK4wncQmDB.jpg",
+      "release_date": "2026-07-31",
+      "vote_average": 6.5,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": 1,
+      "added": "2026-07-31T09:47:37.718Z"
     }
   ]
 }
