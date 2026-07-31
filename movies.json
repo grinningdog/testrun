@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-07-31T09:48:11.067Z",
+  "exportedAt": "2026-07-31T09:50:51.327Z",
   "movies": [
     {
       "id": 969681,
@@ -1627,6 +1627,20 @@
       ],
       "userRating": 1,
       "added": "2026-07-31T09:47:37.718Z"
+    },
+    {
+      "id": 1149167,
+      "title": "High Rollers",
+      "poster_path": "/hHowAaChDjwueySmwVbsjHmpWa.jpg",
+      "release_date": "2025-03-14",
+      "vote_average": 6.478,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-07-31T09:50:15.623Z"
     }
   ]
 }
