@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-07-31T09:50:51.327Z",
+  "exportedAt": "2026-08-03T14:09:19.154Z",
   "movies": [
     {
       "id": 969681,
@@ -1641,6 +1641,31 @@
       ],
       "userRating": null,
       "added": "2026-07-31T09:50:15.623Z"
+    },
+    {
+      "id": 1290799,
+      "title": "The Patient",
+      "poster_path": "/hd5WHJOGfiwxrR3D14SqUP9DrPo.jpg",
+      "release_date": "2025-12-01",
+      "vote_average": 6.429,
+      "genres": [
+        "Thriller"
+      ],
+      "userRating": 3,
+      "added": "2026-08-03T14:07:20.493Z"
+    },
+    {
+      "id": 64320,
+      "title": "Good Neighbours",
+      "poster_path": "/1i2YBTnZyC71TuJXq4RQWPGSbvv.jpg",
+      "release_date": "2011-06-03",
+      "vote_average": 5.611,
+      "genres": [
+        "Thriller",
+        "Drama"
+      ],
+      "userRating": 4,
+      "added": "2026-08-03T14:08:20.931Z"
     }
   ]
 }
