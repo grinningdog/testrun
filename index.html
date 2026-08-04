@@ -770,8 +770,6 @@
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
 
-        // ✅ CONFIGURED FOR YOUR GITHUB REPO
-        // If this doesn't work, try changing 'main' to 'master' (older repos use 'master')
         const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
 
         const EMBEDDED_MOVIES = null;
@@ -788,39 +786,37 @@
         let ytApiReady = false;
         let ytPlayers = {};
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('sortSelect').value = currentSort;
-            
-            document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addMovieManual();
-            });
-
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => {
-                    console.log('Service worker registration failed:', err);
-                });
+        // TOAST FUNCTION - DEFINED FIRST
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            if (!container) {
+                console.warn('Toast container not found');
+                return;
             }
-
-            window.addEventListener('scroll', handleScroll);
-
-            console.log('📡 GitHub URL configured:', GITHUB_MOVIES_URL);
-
-            await loadMoviesFromGitHub(true);
-
-            renderMovies();
-            renderGenreFilter();
-            updateMovieCount();
-
-            backfillMissingGenres();
-        });
-
-        function onYouTubeIframeAPIReady() {
-            ytApiReady = true;
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
         }
 
         function updateSyncStatus(status, message, detail) {
             const statusEl = document.getElementById('syncStatus');
             const textEl = document.getElementById('lastUpdatedText');
+            
+            if (!statusEl || !textEl) return;
             
             statusEl.className = 'sync-status ' + status;
             statusEl.textContent = status.toUpperCase();
@@ -845,15 +841,6 @@
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.error('❌ movies.json not found at:', url);
-                        console.error('Possible causes:');
-                        console.error('  1. The file is not uploaded to your repo');
-                        console.error('  2. The file is named something other than "movies.json"');
-                        console.error('  3. The branch name is "master" instead of "main"');
-                        console.error('');
-                        console.error('Try this URL in your browser to test:');
-                        console.error('  https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json');
-                        console.error('If that fails, try:');
-                        console.error('  https://raw.githubusercontent.com/grinningdog/testrun/master/movies.json');
                         
                         updateSyncStatus('error', 'movies.json not found', 'Check browser console (F12)');
                         
@@ -953,26 +940,6 @@
             renderMovies();
             renderGenreFilter();
             updateMovieCount();
-        }
-
-        function showToast(message, type = 'info', duration = 4000) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            
-            toast.innerHTML = `
-                <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
-                <span class="toast-message">${message}</span>
-            `;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.add('fade-out');
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
         }
 
         function updateMovieCount() {
@@ -1705,7 +1672,7 @@
                 let starsHTML = '';
                 for (let i = 1; i <= 5; i++) {
                     const filled = userRating && i <= userRating ? 'filled' : '';
-                    starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
+                    starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout("clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
                 }
 
                 detailsDiv.innerHTML = `
@@ -1969,6 +1936,36 @@
                 document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
             }
         });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('sortSelect').value = currentSort;
+            
+            document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addMovieManual();
+            });
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('Service worker registration failed:', err);
+                });
+            }
+
+            window.addEventListener('scroll', handleScroll);
+
+            console.log('📡 GitHub URL configured:', GITHUB_MOVIES_URL);
+
+            await loadMoviesFromGitHub(true);
+
+            renderMovies();
+            renderGenreFilter();
+            updateMovieCount();
+
+            backfillMissingGenres();
+        });
+
+        function onYouTubeIframeAPIReady() {
+            ytApiReady = true;
+        }
     </script>
     <script src="https://www.youtube.com/iframe_api"></script>
 </body>
