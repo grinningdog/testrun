@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Movie Collection</title>
-
+    
     <meta name="theme-color" content="#000000">
     <meta name="description" content="My personal movie collection">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-title" content="My Movies">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -306,7 +306,20 @@
 
         .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888888; grid-column: 1 / -1; }
 
-        .person-results { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; flex-shrink: 0; }
+        /* FIX: person-results is hidden by default, shown only with .show class */
+        .person-results {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .person-results.show {
+            display: flex;
+        }
 
         .person-result-item {
             display: flex; align-items: center; gap: 15px;
@@ -339,7 +352,6 @@
         .add-all-btn:hover { background: #1b5e20; }
         .add-all-btn:disabled { background: #333333; cursor: not-allowed; opacity: 0.5; }
 
-        /* Person Filters */
         .person-filters {
             background: #000000;
             padding: 15px;
@@ -349,9 +361,7 @@
             display: none;
         }
 
-        .person-filters.show {
-            display: block;
-        }
+        .person-filters.show { display: block; }
 
         .filter-row {
             display: flex;
@@ -361,9 +371,7 @@
             margin-bottom: 10px;
         }
 
-        .filter-row:last-child {
-            margin-bottom: 0;
-        }
+        .filter-row:last-child { margin-bottom: 0; }
 
         .filter-group {
             display: flex;
@@ -371,11 +379,7 @@
             gap: 5px;
         }
 
-        .filter-group label {
-            font-size: 12px;
-            color: #888888;
-            font-weight: normal;
-        }
+        .filter-group label { font-size: 12px; color: #888888; font-weight: normal; }
 
         .filter-group select,
         .filter-group input {
@@ -389,10 +393,7 @@
         }
 
         .filter-group select:focus,
-        .filter-group input:focus {
-            outline: none;
-            border-color: #e50914;
-        }
+        .filter-group input:focus { outline: none; border-color: #e50914; }
 
         .filter-checkbox {
             display: flex;
@@ -403,46 +404,25 @@
             color: #cccccc;
         }
 
-        .filter-checkbox input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
+        .filter-checkbox input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
 
         .apply-filters-btn {
-            background: #e50914;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s;
-            align-self: flex-end;
+            background: #e50914; color: white; border: none;
+            padding: 8px 16px; border-radius: 4px;
+            cursor: pointer; font-size: 14px; font-weight: bold;
+            transition: all 0.3s; align-self: flex-end;
         }
 
-        .apply-filters-btn:hover {
-            background: #f40612;
-            transform: translateY(-1px);
-        }
+        .apply-filters-btn:hover { background: #f40612; transform: translateY(-1px); }
 
         .clear-filters-btn {
-            background: #333333;
-            color: #cccccc;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            align-self: flex-end;
+            background: #333333; color: #cccccc; border: none;
+            padding: 8px 16px; border-radius: 4px;
+            cursor: pointer; font-size: 14px;
+            transition: all 0.3s; align-self: flex-end;
         }
 
-        .clear-filters-btn:hover {
-            background: #444444;
-            color: #ffffff;
-        }
+        .clear-filters-btn:hover { background: #444444; color: #ffffff; }
 
         .movie-details { display: flex; flex-direction: column; gap: 15px; }
         .movie-details img { width: 100%; max-width: 300px; border-radius: 8px; align-self: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
@@ -620,11 +600,11 @@
                 <div class="last-updated" id="lastUpdated"></div>
             </div>
             <div class="header-buttons">
-                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub"> Refresh</button>
+                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub">🔄 Refresh</button>
                 <button class="btn" onclick="openAddModal()">+ Add Movie</button>
                 <button class="btn btn-success" onclick="exportAsHTML()">📥 Export HTML</button>
                 <button class="btn btn-success" onclick="exportAsJSON()">📄 Export JSON</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()"> Import</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Import</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
             </div>
         </div>
@@ -692,8 +672,7 @@
                             <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
                         </div>
                     </div>
-
-                    <!-- Filter Section -->
+                    
                     <div id="personFilters" class="person-filters">
                         <div class="filter-row">
                             <div class="filter-group">
@@ -737,7 +716,7 @@
                             </label>
                         </div>
                     </div>
-
+                    
                     <div id="personMovieResults" class="search-results"></div>
                 </div>
             </div>
@@ -783,7 +762,7 @@
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
 
-        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/movies.json';
+        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
 
         const EMBEDDED_MOVIES = null;
 
@@ -801,7 +780,7 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('sortSelect').value = currentSort;
-
+            
             document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') addMovieManual();
             });
@@ -854,10 +833,10 @@
                 }
 
                 const data = await response.json();
-
+                
                 let githubMovies;
                 let githubExportedAt = null;
-
+                
                 if (Array.isArray(data)) {
                     githubMovies = data;
                 } else if (data && Array.isArray(data.movies)) {
@@ -944,7 +923,7 @@
             const githubExportedAt = localStorage.getItem('githubExportedAt');
             const localData = localStorage.getItem('myMoviesData');
             let localExportedAt = null;
-
+            
             if (localData) {
                 try {
                     const parsed = JSON.parse(localData);
@@ -963,7 +942,7 @@
                     hour: '2-digit',
                     minute: '2-digit'
                 });
-
+                
                 const source = githubExportedAt ? 'from GitHub' : 'local';
                 display.textContent = `Last updated: ${formatted} (${source})`;
                 display.className = `last-updated ${githubExportedAt ? 'github' : 'local'}`;
@@ -979,21 +958,21 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-
+            
             const icons = {
                 success: '✅',
                 error: '❌',
                 warning: '⚠️',
                 info: 'ℹ️'
             };
-
+            
             toast.innerHTML = `
                 <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
                 <span class="toast-message">${message}</span>
             `;
-
+            
             container.appendChild(toast);
-
+            
             setTimeout(() => {
                 toast.classList.add('fade-out');
                 setTimeout(() => toast.remove(), 300);
@@ -1035,7 +1014,7 @@
                     console.error('Error backfilling genres for', movie.title, error);
                 }
             }
-
+            
             localStorage.setItem('myMovies', JSON.stringify(movies));
             renderGenreFilter();
         }
@@ -1053,9 +1032,9 @@
         function renderGenreFilter() {
             const bar = document.getElementById('genreFilterBar');
             const genres = getAllGenres();
-
+            
             bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
-
+            
             const allChip = document.createElement('button');
             allChip.className = `genre-chip ${currentGenreFilter === 'all' ? 'active' : ''}`;
             allChip.dataset.genre = 'all';
@@ -1101,7 +1080,7 @@
                 /const EMBEDDED_MOVIES = null;/,
                 `const EMBEDDED_MOVIES = ${moviesData};`
             );
-
+            
             const blob = new Blob([updatedHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1111,7 +1090,7 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
+            
             showToast(`📥 Exported ${movies.length} movies as HTML`, 'success');
         }
 
@@ -1121,7 +1100,7 @@
                 exportedAt: new Date().toISOString(),
                 movies: movies
             };
-
+            
             const dataStr = JSON.stringify(data, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -1137,7 +1116,7 @@
                 exportedAt: data.exportedAt,
                 count: movies.length
             }));
-
+            
             showToast(`📄 Exported ${movies.length} movies as movies.json`, 'success');
             showToast('💡 Upload this file to GitHub as "movies.json" to publish', 'info', 6000);
             updateLastUpdatedDisplay();
@@ -1152,7 +1131,7 @@
                 try {
                     const parsed = JSON.parse(e.target.result);
                     let importedMovies;
-
+                    
                     if (Array.isArray(parsed)) {
                         importedMovies = parsed;
                     } else if (parsed && Array.isArray(parsed.movies)) {
@@ -1160,7 +1139,7 @@
                     } else {
                         throw new Error('Invalid format');
                     }
-
+                    
                     if (confirm(`Import ${importedMovies.length} movies?\n\nThis will REPLACE your current collection.`)) {
                         movies = importedMovies;
                         localStorage.setItem('myMovies', JSON.stringify(movies));
@@ -1182,7 +1161,7 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
+            
             if (tab === 'search') {
                 document.getElementById('searchTab').classList.add('active');
                 document.getElementById('tmdbSearchInput').focus();
@@ -1229,7 +1208,7 @@
                 }
 
                 resultsDiv.innerHTML = '';
-
+                
                 data.results.forEach(movie => {
                     const isAdded = movies.some(m => m.id === movie.id);
                     const item = document.createElement('div');
@@ -1242,7 +1221,7 @@
 
                     item.innerHTML = `
                         <img src="${posterPath}" alt="${movie.title}">
-                        <button class="add-btn-small ${isAdded ? 'added' : ''}"
+                        <button class="add-btn-small ${isAdded ? 'added' : ''}" 
                                 onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">
                             ${isAdded ? '✓ Remove' : '+ Add'}
                         </button>
@@ -1301,7 +1280,7 @@
                 }
 
                 personResultsDiv.innerHTML = '';
-
+                
                 data.results.slice(0, 5).forEach(person => {
                     const item = document.createElement('div');
                     item.className = 'person-result-item';
@@ -1326,7 +1305,7 @@
         async function loadPersonMovies(personId, personName) {
             currentPersonId = personId;
             currentPersonName = personName;
-
+            
             const movieResultsDiv = document.getElementById('personMovieResults');
             const personMoviesSection = document.getElementById('personMoviesSection');
             const personMoviesTitle = document.getElementById('personMoviesTitle');
@@ -1334,10 +1313,11 @@
             const personResultsDiv = document.getElementById('personResults');
             const personSearchForm = document.getElementById('personSearchForm');
 
+            // Hide the person search results list and the search form
             personResultsDiv.classList.remove('show');
             personSearchForm.style.display = 'none';
             personMoviesSection.style.display = 'flex';
-
+            
             personMoviesTitle.innerHTML = `Movies featuring ${personName}`;
             movieResultsDiv.innerHTML = '<div class="search-loading">Loading movies...</div>';
             addAllBtn.disabled = true;
@@ -1348,12 +1328,13 @@
 
                 const castMovies = data.cast || [];
                 const crewMovies = data.crew || [];
-
+                
                 const allMovies = [...castMovies, ...crewMovies];
-                let uniqueMovies = allMovies.filter((movie, index, self) =>
+                let uniqueMovies = allMovies.filter((movie, index, self) => 
                     index === self.findIndex(m => m.id === movie.id)
                 );
 
+                // Apply filters - pass the filmography as a separate parameter
                 uniqueMovies = applyPersonFilters(uniqueMovies);
 
                 uniqueMovies.sort((a, b) => {
@@ -1371,11 +1352,11 @@
                 }
 
                 movieResultsDiv.innerHTML = '';
-
+                
                 uniqueMovies.forEach(movie => {
                     const isAdded = movies.some(m => m.id === movie.id);
                     const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-
+                    
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
                     item.dataset.movieId = movie.id;
@@ -1385,7 +1366,7 @@
 
                     item.innerHTML = `
                         <img src="${posterPath}" alt="${movie.title}">
-                        <button class="add-btn-small ${isAdded ? 'added' : ''}"
+                        <button class="add-btn-small ${isAdded ? 'added' : ''}" 
                                 data-movie-id="${movie.id}"
                                 onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">
                             ${isAdded ? '✓ Remove' : '+ Add'}
@@ -1407,7 +1388,8 @@
             }
         }
 
-        function applyPersonFilters(movies) {
+        // FIX: Renamed parameter from 'movies' to 'filmography' to avoid shadowing the global 'movies' variable
+        function applyPersonFilters(filmography) {
             const yearFrom = document.getElementById('filterYearFrom')?.value;
             const yearTo = document.getElementById('filterYearTo')?.value;
             const minRating = document.getElementById('filterMinRating')?.value;
@@ -1416,7 +1398,7 @@
             const excludeTV = document.getElementById('filterExcludeTV')?.checked;
             const excludeAlreadyAdded = document.getElementById('filterExcludeAdded')?.checked;
 
-            return movies.filter(movie => {
+            return filmography.filter(movie => {
                 const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
                 const rating = movie.vote_average || 0;
                 const title = movie.title.toLowerCase();
@@ -1438,6 +1420,7 @@
                     return false;
                 }
 
+                // Now 'movies' correctly refers to the global user collection
                 if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) {
                     return false;
                 }
@@ -1459,7 +1442,7 @@
             document.getElementById('filterExcludeDocumentaries').checked = false;
             document.getElementById('filterExcludeTV').checked = false;
             document.getElementById('filterExcludeAdded').checked = false;
-
+            
             if (currentPersonId && currentPersonName) {
                 loadPersonMovies(currentPersonId, currentPersonName);
             }
@@ -1475,7 +1458,7 @@
         async function addAllVisibleMovies() {
             const addAllBtn = document.getElementById('addAllBtn');
             const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
-
+            
             if (moviesToAdd.length === 0) return;
 
             addAllBtn.disabled = true;
@@ -1497,7 +1480,7 @@
                             userRating: null,
                             added: new Date().toISOString()
                         });
-
+                        
                         const item = document.querySelector(`[data-movie-id="${movieData.id}"]`);
                         if (item) {
                             const button = item.querySelector('.add-btn-small');
@@ -1543,7 +1526,7 @@
                 renderMovies();
                 renderGenreFilter();
                 updateMovieCount();
-
+                
                 if (element) {
                     const button = element.querySelector('.add-btn-small');
                     if (button) {
@@ -1552,7 +1535,7 @@
                     }
                     updateItemClickHandler(element, movieId, true);
                 }
-
+                
                 if (currentPersonMovies.length > 0) updateAddAllButton();
                 showToast(`✅ Added "${movie.title}"`, 'success');
             } catch (error) {
@@ -1565,14 +1548,14 @@
             if (movieIndex === -1) return;
 
             const movieTitle = movies[movieIndex].title;
-
+            
             if (confirm(`Remove "${movieTitle}" from your collection?`)) {
                 movies.splice(movieIndex, 1);
                 localStorage.setItem('myMovies', JSON.stringify(movies));
                 renderMovies();
                 renderGenreFilter();
                 updateMovieCount();
-
+                
                 if (element) {
                     const button = element.querySelector('.add-btn-small');
                     if (button) {
@@ -1581,7 +1564,7 @@
                     }
                     updateItemClickHandler(element, movieId, false);
                 }
-
+                
                 if (currentPersonMovies.length > 0) updateAddAllButton();
                 showToast(`🗑️ Removed "${movieTitle}"`, 'info');
             }
@@ -1595,7 +1578,7 @@
         async function addMovieManual() {
             const input = document.getElementById('tmdbInput').value.trim();
             const messageDiv = document.getElementById('addMessage');
-
+            
             if (!input) {
                 messageDiv.style.color = '#ff6b6b';
                 messageDiv.textContent = 'Please enter a TMDB reference';
@@ -1694,7 +1677,7 @@
 
             let filteredMovies = movies.filter(movie => {
                 const matchesSearch = movie.title.toLowerCase().includes(searchTerm);
-                const matchesGenre = currentGenreFilter === 'all' ||
+                const matchesGenre = currentGenreFilter === 'all' || 
                     (movie.genres && movie.genres.includes(currentGenreFilter));
                 return matchesSearch && matchesGenre;
             });
@@ -1745,7 +1728,7 @@
                     fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`),
                     fetch(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`)
                 ]);
-
+                
                 const movie = await movieResponse.json();
                 const credits = await creditsResponse.json();
 
@@ -1754,7 +1737,7 @@
                 const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
                 const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
                 const topActors = credits.cast ? credits.cast.slice(0, 3) : [];
-
+                
                 let actorsHTML = '';
                 if (topActors.length > 0) {
                     actorsHTML = '<div class="movie-actors"><span class="movie-actors-label">Starring:</span>';
@@ -1836,8 +1819,8 @@
             try {
                 const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`);
                 const data = await response.json();
-                const allTrailers = data.results.filter(video =>
-                    video.site === 'YouTube' &&
+                const allTrailers = data.results.filter(video => 
+                    video.site === 'YouTube' && 
                     (video.type === 'Trailer' || video.type === 'Teaser' || video.type === 'Clip')
                 );
                 allTrailers.sort((a, b) => {
