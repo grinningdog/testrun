@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-04T13:44:52.071Z",
+  "exportedAt": "2026-08-04T13:55:26.240Z",
   "movies": [
     {
       "id": 969681,
@@ -2295,6 +2295,339 @@
       ],
       "userRating": null,
       "added": "2026-08-04T13:19:16.866Z"
+    },
+    {
+      "id": 17887,
+      "title": "Barefoot in the Park",
+      "poster_path": "/qh64tAOmbQNoYMLTETkhmBQgSbu.jpg",
+      "release_date": "1967-05-25",
+      "vote_average": 7.1,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:32.003Z"
+    },
+    {
+      "id": 642,
+      "title": "Butch Cassidy and the Sundance Kid",
+      "poster_path": "/gFmmykF1Ym3OGzENo50nZQaD1dx.jpg",
+      "release_date": "1969-09-23",
+      "vote_average": 7.6,
+      "genres": [
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:33.861Z"
+    },
+    {
+      "id": 42619,
+      "title": "Tell Them Willie Boy Is Here",
+      "poster_path": "/jHgVrkklycUdjKtzGiKgGzwCEnl.jpg",
+      "release_date": "1969-10-31",
+      "vote_average": 5.774,
+      "genres": [
+        "Western",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:36.099Z"
+    },
+    {
+      "id": 46059,
+      "title": "The Hot Rock",
+      "poster_path": "/vzfGNqmANfRbavk5XdQTsfnjmeH.jpg",
+      "release_date": "1972-01-26",
+      "vote_average": 6.542,
+      "genres": [
+        "Crime",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:42.474Z"
+    },
+    {
+      "id": 21711,
+      "title": "The Candidate",
+      "poster_path": "/6zcDSOe1akUXsc2Q1APfchKcVaI.jpg",
+      "release_date": "1972-06-29",
+      "vote_average": 6.5,
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:43.251Z"
+    },
+    {
+      "id": 11943,
+      "title": "Jeremiah Johnson",
+      "poster_path": "/fANj1S3UmBB51wnKxYRKtw8LMBn.jpg",
+      "release_date": "1972-09-10",
+      "vote_average": 7.307,
+      "genres": [
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:44.168Z"
+    },
+    {
+      "id": 9277,
+      "title": "The Sting",
+      "poster_path": "/ckmYng37zey8INYf6d10cVgIG93.jpg",
+      "release_date": "1973-12-25",
+      "vote_average": 8.014,
+      "genres": [
+        "Comedy",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:46.999Z"
+    },
+    {
+      "id": 11034,
+      "title": "The Great Gatsby",
+      "poster_path": "/zCjwyhfDTFgunVVzBoEFzafpjbV.jpg",
+      "release_date": "1974-03-27",
+      "vote_average": 6.282,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:47.967Z"
+    },
+    {
+      "id": 11963,
+      "title": "Three Days of the Condor",
+      "poster_path": "/zinwtZqdb7gnc4zMu8dfkK1fMN3.jpg",
+      "release_date": "1975-09-24",
+      "vote_average": 7.273,
+      "genres": [
+        "Thriller",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:55.682Z"
+    },
+    {
+      "id": 891,
+      "title": "All the President's Men",
+      "poster_path": "/pCe6lfLxt1B58zPD4lgQrlnDS2j.jpg",
+      "release_date": "1976-04-09",
+      "vote_average": 7.655,
+      "genres": [
+        "Drama",
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:57.521Z"
+    },
+    {
+      "id": 5902,
+      "title": "A Bridge Too Far",
+      "poster_path": "/lszOk3Xmh7qpLaM9J4K9E6ADLk1.jpg",
+      "release_date": "1977-06-15",
+      "vote_average": 7.2,
+      "genres": [
+        "Drama",
+        "History",
+        "War"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:52:59.425Z"
+    },
+    {
+      "id": 11145,
+      "title": "The Electric Horseman",
+      "poster_path": "/x9wifiDa8q7oK4GIBpJnUjGVSww.jpg",
+      "release_date": "1979-12-21",
+      "vote_average": 6.1,
+      "genres": [
+        "Drama",
+        "Romance",
+        "Comedy",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:04.174Z"
+    },
+    {
+      "id": 1623,
+      "title": "Brubaker",
+      "poster_path": "/fjf3elnOC32m1BdNyxiL8CzNc6t.jpg",
+      "release_date": "1980-06-20",
+      "vote_average": 7.1,
+      "genres": [
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:04.842Z"
+    },
+    {
+      "id": 11393,
+      "title": "The Natural",
+      "poster_path": "/fwn1gYeOkS1XHKVFdNorKSIpix8.jpg",
+      "release_date": "1984-05-11",
+      "vote_average": 6.9,
+      "genres": [
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:11.699Z"
+    },
+    {
+      "id": 606,
+      "title": "Out of Africa",
+      "poster_path": "/6oMKqh08TfxmvnoFR4mm1wZB67P.jpg",
+      "release_date": "1985-12-20",
+      "vote_average": 7.154,
+      "genres": [
+        "History",
+        "Romance",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:12.595Z"
+    },
+    {
+      "id": 9930,
+      "title": "Legal Eagles",
+      "poster_path": "/RH9bXtsxy12YKXqvAwKd5XmGvq.jpg",
+      "release_date": "1986-06-18",
+      "vote_average": 6.056,
+      "genres": [
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:14.513Z"
+    },
+    {
+      "id": 13482,
+      "title": "The Milagro Beanfield War",
+      "poster_path": "/rVLZuiNfKua7C2x3rGUiAR8wGEc.jpg",
+      "release_date": "1988-03-18",
+      "vote_average": 6.578,
+      "genres": [
+        "Comedy",
+        "Drama",
+        "Fantasy"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:18.043Z"
+    },
+    {
+      "id": 2322,
+      "title": "Sneakers",
+      "poster_path": "/l2pIGwCvpZEpBuMb55YBl6A04Jv.jpg",
+      "release_date": "1992-09-09",
+      "vote_average": 6.911,
+      "genres": [
+        "Comedy",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:27.135Z"
+    },
+    {
+      "id": 293,
+      "title": "A River Runs Through It",
+      "poster_path": "/aVP45oS2cBL4WtZ1kB7r8uarruB.jpg",
+      "release_date": "1992-10-09",
+      "vote_average": 6.999,
+      "genres": [
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:28.887Z"
+    },
+    {
+      "id": 4478,
+      "title": "Indecent Proposal",
+      "poster_path": "/a39WoiTJEG5kNLIrr3kOMwg3LFg.jpg",
+      "release_date": "1993-04-07",
+      "vote_average": 6.412,
+      "genres": [
+        "Romance",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:29.851Z"
+    },
+    {
+      "id": 547,
+      "title": "The Horse Whisperer",
+      "poster_path": "/ptkDeHY2mRJVyNRyxb9TgyAjTYs.jpg",
+      "release_date": "1998-02-01",
+      "vote_average": 6.9,
+      "genres": [
+        "Adventure",
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:41.983Z"
+    },
+    {
+      "id": 1535,
+      "title": "Spy Game",
+      "poster_path": "/6y8M1rxjKofQCRKKe6xeV91K2Fc.jpg",
+      "release_date": "2001-11-18",
+      "vote_average": 6.921,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:53.933Z"
+    },
+    {
+      "id": 2100,
+      "title": "The Last Castle",
+      "poster_path": "/pYnUfauPVK6g8IRO2REYl4TUZ2p.jpg",
+      "release_date": "2001-10-19",
+      "vote_average": 7.169,
+      "genres": [
+        "Action",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:53:56.291Z"
+    },
+    {
+      "id": 429203,
+      "title": "The Old Man & the Gun",
+      "poster_path": "/a4BfxRK8dBgbQqbRxPs8kmLd8LG.jpg",
+      "release_date": "2018-09-27",
+      "vote_average": 6.44,
+      "genres": [
+        "Comedy",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:54:53.364Z"
+    },
+    {
+      "id": 520270,
+      "title": "Be Natural: The Untold Story of Alice Guy-Blaché",
+      "poster_path": "/o5fz4qNgI5nfDirf6UcX0SpAG6T.jpg",
+      "release_date": "2018-12-07",
+      "vote_average": 7.263,
+      "genres": [
+        "Documentary",
+        "History"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:54:55.339Z"
     }
   ]
 }
