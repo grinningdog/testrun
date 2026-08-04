@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-04T12:52:53.449Z",
+  "exportedAt": "2026-08-04T13:21:03.300Z",
   "movies": [
     {
       "id": 969681,
@@ -2202,6 +2202,111 @@
       ],
       "userRating": null,
       "added": "2026-08-04T12:50:22.424Z"
+    },
+    {
+      "id": 275,
+      "title": "Fargo",
+      "poster_path": "/rt7cpEr1uP6RTZykBFhBTcRaKvG.jpg",
+      "release_date": "1996-03-08",
+      "vote_average": 7.851,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:18:15.512Z"
+    },
+    {
+      "id": 591538,
+      "title": "The Tragedy of Macbeth",
+      "poster_path": "/tDNJEhcLbX3jIk3BMCur9pCdaVD.jpg",
+      "release_date": "2021-12-05",
+      "vote_average": 6.918,
+      "genres": [
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:18:54.865Z"
+    },
+    {
+      "id": 542178,
+      "title": "The French Dispatch of the Liberty, Kansas Evening Sun",
+      "poster_path": "/6JXR3KJH5roiBCjWFt09xfgxHZc.jpg",
+      "release_date": "2021-10-21",
+      "vote_average": 7.008,
+      "genres": [
+        "Drama",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:18:55.879Z"
+    },
+    {
+      "id": 399174,
+      "title": "Isle of Dogs",
+      "poster_path": "/c0nUX6Q1ZB0P2t1Jo6EeFSVnOGQ.jpg",
+      "release_date": "2018-03-23",
+      "vote_average": 7.846,
+      "genres": [
+        "Adventure",
+        "Comedy",
+        "Animation"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:19:01.919Z"
+    },
+    {
+      "id": 359940,
+      "title": "Three Billboards Outside Ebbing, Missouri",
+      "poster_path": "/fQzCvF2R4P9YkPQK7gO9LNLcnlD.jpg",
+      "release_date": "2017-12-01",
+      "vote_average": 8.052,
+      "genres": [
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:19:03.147Z"
+    },
+    {
+      "id": 270487,
+      "title": "Hail, Caesar!",
+      "poster_path": "/qvecZ7WyemhGW8fuJ8190p472jQ.jpg",
+      "release_date": "2016-02-05",
+      "vote_average": 5.943,
+      "genres": [
+        "Comedy",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:19:07.329Z"
+    },
+    {
+      "id": 83666,
+      "title": "Moonrise Kingdom",
+      "poster_path": "/y4SXcbNl6CEF2t36icuzuBioj7K.jpg",
+      "release_date": "2012-05-16",
+      "vote_average": 7.678,
+      "genres": [
+        "Comedy",
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:19:16.866Z"
+    },
+    {
+      "id": 1653128,
+      "title": "Moonrise Kingdom Extras - Eleven iPhone Videos by Edward Norton.",
+      "poster_path": "/hcap4jyiRSGGyq4l0jx8n6tYFWW.jpg",
+      "release_date": "2015-09-22",
+      "vote_average": 10,
+      "genres": [
+        "Documentary"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T13:20:35.834Z"
     }
   ]
 }
