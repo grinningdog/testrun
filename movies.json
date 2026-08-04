@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-04T07:29:43.661Z",
+  "exportedAt": "2026-08-04T09:06:39.601Z",
   "movies": [
     {
       "id": 969681,
@@ -1733,6 +1733,88 @@
       ],
       "userRating": null,
       "added": "2026-08-04T07:29:12.501Z"
+    },
+    {
+      "id": 10178,
+      "title": "The Caine Mutiny",
+      "poster_path": "/vuO4Z3wOWVlhq35MS9asZeT9rVp.jpg",
+      "release_date": "1954-06-24",
+      "vote_average": 7.239,
+      "genres": [
+        "Drama",
+        "War"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:03:54.852Z"
+    },
+    {
+      "id": 488,
+      "title": "The African Queen",
+      "poster_path": "/2Ypg0KhQfFYWILelvHGtSHHR0dk.jpg",
+      "release_date": "1952-01-07",
+      "vote_average": 7.3,
+      "genres": [
+        "Romance",
+        "Adventure",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:04:00.777Z"
+    },
+    {
+      "id": 3090,
+      "title": "The Treasure of the Sierra Madre",
+      "poster_path": "/pWcst7zVbi8Z8W6GFrdNE7HHRxL.jpg",
+      "release_date": "1948-01-15",
+      "vote_average": 7.954,
+      "genres": [
+        "Adventure",
+        "Drama",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:04:58.230Z"
+    },
+    {
+      "id": 11016,
+      "title": "Key Largo",
+      "poster_path": "/rySfmQQZhS7RswOiJcJrww6FcHy.jpg",
+      "release_date": "1948-07-16",
+      "vote_average": 7.469,
+      "genres": [
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:05:00.751Z"
+    },
+    {
+      "id": 910,
+      "title": "The Big Sleep",
+      "poster_path": "/lraHo9D8c0YWfxsKqT5P5sVqMKN.jpg",
+      "release_date": "1946-08-22",
+      "vote_average": 7.593,
+      "genres": [
+        "Mystery",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:05:18.097Z"
+    },
+    {
+      "id": 22584,
+      "title": "To Have and Have Not",
+      "poster_path": "/m6EjBAY7gA6tx5RMutXGtZWFzyI.jpg",
+      "release_date": "1945-01-20",
+      "vote_average": 7.449,
+      "genres": [
+        "Adventure",
+        "Romance",
+        "War"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T09:06:26.042Z"
     }
   ]
 }

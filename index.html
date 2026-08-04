@@ -41,11 +41,7 @@
             gap: 15px;
         }
 
-        .header-left {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .header-left { display: flex; flex-direction: column; gap: 5px; }
 
         h1 {
             font-size: 2rem;
@@ -56,24 +52,11 @@
             gap: 10px;
         }
 
-        .movie-count {
-            color: #888888;
-            font-size: 1.2rem;
-            font-weight: normal;
-        }
+        .movie-count { color: #888888; font-size: 1.2rem; font-weight: normal; }
 
-        .last-updated {
-            font-size: 12px;
-            color: #666666;
-        }
-
-        .last-updated.github {
-            color: #4dd0e1;
-        }
-
-        .last-updated.local {
-            color: #ffa500;
-        }
+        .last-updated { font-size: 12px; color: #666666; }
+        .last-updated.github { color: #4dd0e1; }
+        .last-updated.local { color: #ffa500; }
 
         .btn {
             background: #e50914;
@@ -356,6 +339,111 @@
         .add-all-btn:hover { background: #1b5e20; }
         .add-all-btn:disabled { background: #333333; cursor: not-allowed; opacity: 0.5; }
 
+        /* Person Filters */
+        .person-filters {
+            background: #000000;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333333;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .person-filters.show {
+            display: block;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .filter-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: #888888;
+            font-weight: normal;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #333333;
+            border-radius: 4px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .apply-filters-btn {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            align-self: flex-end;
+        }
+
+        .apply-filters-btn:hover {
+            background: #f40612;
+            transform: translateY(-1px);
+        }
+
+        .clear-filters-btn {
+            background: #333333;
+            color: #cccccc;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            align-self: flex-end;
+        }
+
+        .clear-filters-btn:hover {
+            background: #444444;
+            color: #ffffff;
+        }
+
         .movie-details { display: flex; flex-direction: column; gap: 15px; }
         .movie-details img { width: 100%; max-width: 300px; border-radius: 8px; align-self: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
         .movie-details h2 { font-size: 1.8rem; margin-bottom: 10px; color: #e50914; }
@@ -457,7 +545,6 @@
         .back-to-top.visible { opacity: 1; visibility: visible; }
         .back-to-top:hover { transform: translateY(-3px); background: #f40612; }
 
-        /* Toast notification */
         .toast-container {
             position: fixed; top: 20px; right: 20px;
             z-index: 2000;
@@ -519,6 +606,9 @@
             .actor-details img { width: 150px; height: 150px; }
             .toast-container { top: 10px; right: 10px; left: 10px; }
             .toast { min-width: auto; max-width: none; }
+            .filter-row { flex-direction: column; align-items: stretch; }
+            .filter-group { min-width: 100%; }
+            .apply-filters-btn, .clear-filters-btn { align-self: stretch; }
         }
     </style>
 </head>
@@ -530,11 +620,11 @@
                 <div class="last-updated" id="lastUpdated"></div>
             </div>
             <div class="header-buttons">
-                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub">🔄 Refresh</button>
+                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub"> Refresh</button>
                 <button class="btn" onclick="openAddModal()">+ Add Movie</button>
                 <button class="btn btn-success" onclick="exportAsHTML()">📥 Export HTML</button>
                 <button class="btn btn-success" onclick="exportAsJSON()">📄 Export JSON</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Import</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()"> Import</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
             </div>
         </div>
@@ -591,14 +681,63 @@
             <div id="personTab" class="tab-content">
                 <div class="form-group" id="personSearchForm">
                     <label for="personSearchInput">Search for Actor or Director</label>
-                    <input type="text" id="personSearchInput" placeholder="e.g., Gene Hackman, Michael Mann..." oninput="debouncedPersonSearch()">
+                    <input type="text" id="personSearchInput" placeholder="e.g., Humphrey Bogart, Michael Mann..." oninput="debouncedPersonSearch()">
                 </div>
                 <div id="personResults" class="person-results"></div>
                 <div id="personMoviesSection" style="display: none;">
                     <div class="person-movies-header">
                         <h3 id="personMoviesTitle">Movies</h3>
-                        <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-secondary btn-small" onclick="showPersonFilters()">🔍 Filters</button>
+                            <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
+                        </div>
                     </div>
+
+                    <!-- Filter Section -->
+                    <div id="personFilters" class="person-filters">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label>From Year</label>
+                                <input type="number" id="filterYearFrom" placeholder="e.g., 1940" min="1900" max="2099">
+                            </div>
+                            <div class="filter-group">
+                                <label>To Year</label>
+                                <input type="number" id="filterYearTo" placeholder="e.g., 1960" min="1900" max="2099">
+                            </div>
+                            <div class="filter-group">
+                                <label>Min Rating</label>
+                                <select id="filterMinRating">
+                                    <option value="">Any</option>
+                                    <option value="5">5+ ⭐</option>
+                                    <option value="6">6+ ⭐</option>
+                                    <option value="7">7+ ⭐</option>
+                                    <option value="8">8+ ⭐</option>
+                                    <option value="9">9+ ⭐</option>
+                                </select>
+                            </div>
+                            <button class="apply-filters-btn" onclick="loadPersonMovies(currentPersonId, currentPersonName)">Apply</button>
+                            <button class="clear-filters-btn" onclick="clearPersonFilters()">Clear</button>
+                        </div>
+                        <div class="filter-row">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="filterExcludeCompilations">
+                                Exclude compilations & "Best of"
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="filterExcludeDocumentaries">
+                                Exclude documentaries
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="filterExcludeTV">
+                                Exclude TV movies
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="filterExcludeAdded" checked>
+                                Hide movies already added
+                            </label>
+                        </div>
+                    </div>
+
                     <div id="personMovieResults" class="search-results"></div>
                 </div>
             </div>
@@ -644,11 +783,7 @@
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
 
-        // ============================================================
-        // ⚠️ IMPORTANT: Update this URL with YOUR GitHub username and repo name
-        // Format: https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/movies.json
-        // ============================================================
-        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
+        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/movies.json';
 
         const EMBEDDED_MOVIES = null;
 
@@ -679,7 +814,6 @@
 
             window.addEventListener('scroll', handleScroll);
 
-            // Try to load movies from GitHub first
             await loadMoviesFromGitHub(false);
 
             renderMovies();
@@ -694,12 +828,7 @@
             ytApiReady = true;
         }
 
-        // ============================================================
-        // GITHUB SYNC FUNCTIONS
-        // ============================================================
-
         async function loadMoviesFromGitHub(showToast = true) {
-            // Skip if URL hasn't been configured
             if (GITHUB_MOVIES_URL.includes('YOUR_USERNAME')) {
                 if (showToast) {
                     showToast('⚠️ GitHub URL not configured. Edit GITHUB_MOVIES_URL in the code.', 'warning');
@@ -709,7 +838,6 @@
             }
 
             try {
-                // Add cache-busting parameter to avoid stale data
                 const url = `${GITHUB_MOVIES_URL}?t=${Date.now()}`;
                 const response = await fetch(url);
 
@@ -727,7 +855,6 @@
 
                 const data = await response.json();
 
-                // Handle both old format (array) and new format (object with movies)
                 let githubMovies;
                 let githubExportedAt = null;
 
@@ -740,7 +867,6 @@
                     throw new Error('Invalid JSON format');
                 }
 
-                // Get local data info
                 const localData = localStorage.getItem('myMoviesData');
                 let localExportedAt = null;
                 if (localData) {
@@ -750,21 +876,17 @@
                     } catch (e) {}
                 }
 
-                // Decide which data to use
                 const localCount = movies.length;
                 const githubCount = githubMovies.length;
 
                 if (githubExportedAt && localExportedAt) {
-                    // Both have timestamps - compare them
                     if (new Date(githubExportedAt) > new Date(localExportedAt)) {
-                        // GitHub is newer
                         movies = githubMovies;
                         localStorage.setItem('myMovies', JSON.stringify(movies));
                         if (showToast) {
                             showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
                         }
                     } else if (localCount > githubCount) {
-                        // Local has more movies - user is working locally
                         if (showToast) {
                             showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
                         }
@@ -774,14 +896,12 @@
                         }
                     }
                 } else if (githubCount > 0 && localCount === 0) {
-                    // Local is empty, GitHub has data - use GitHub
                     movies = githubMovies;
                     localStorage.setItem('myMovies', JSON.stringify(movies));
                     if (showToast) {
                         showToast(`✅ Loaded ${githubCount} movies from GitHub`, 'success');
                     }
                 } else if (githubCount > localCount) {
-                    // GitHub has more movies - likely a new publish
                     movies = githubMovies;
                     localStorage.setItem('myMovies', JSON.stringify(movies));
                     if (showToast) {
@@ -793,7 +913,6 @@
                     showToast('✅ Already up to date', 'success');
                 }
 
-                // Store the GitHub timestamp for comparison
                 if (githubExportedAt) {
                     localStorage.setItem('githubExportedAt', githubExportedAt);
                 }
@@ -833,7 +952,6 @@
                 } catch (e) {}
             }
 
-            // Use the most recent timestamp
             const mostRecent = githubExportedAt || localExportedAt;
 
             if (mostRecent) {
@@ -856,10 +974,6 @@
                 display.textContent = '';
             }
         }
-
-        // ============================================================
-        // TOAST NOTIFICATIONS
-        // ============================================================
 
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
@@ -885,10 +999,6 @@
                 setTimeout(() => toast.remove(), 300);
             }, duration);
         }
-
-        // ============================================================
-        // EXISTING FUNCTIONS (unchanged)
-        // ============================================================
 
         function updateMovieCount() {
             const count = movies.length;
@@ -1006,7 +1116,6 @@
         }
 
         function exportAsJSON() {
-            // New format with timestamp for GitHub sync
             const data = {
                 version: 1,
                 exportedAt: new Date().toISOString(),
@@ -1024,7 +1133,6 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            // Store timestamp for comparison
             localStorage.setItem('myMoviesData', JSON.stringify({
                 exportedAt: data.exportedAt,
                 count: movies.length
@@ -1045,7 +1153,6 @@
                     const parsed = JSON.parse(e.target.result);
                     let importedMovies;
 
-                    // Handle both old and new format
                     if (Array.isArray(parsed)) {
                         importedMovies = parsed;
                     } else if (parsed && Array.isArray(parsed.movies)) {
@@ -1231,7 +1338,7 @@
             personSearchForm.style.display = 'none';
             personMoviesSection.style.display = 'flex';
 
-            personMoviesTitle.textContent = `Movies featuring ${personName}`;
+            personMoviesTitle.innerHTML = `Movies featuring ${personName}`;
             movieResultsDiv.innerHTML = '<div class="search-loading">Loading movies...</div>';
             addAllBtn.disabled = true;
 
@@ -1241,10 +1348,13 @@
 
                 const castMovies = data.cast || [];
                 const crewMovies = data.crew || [];
+
                 const allMovies = [...castMovies, ...crewMovies];
-                const uniqueMovies = allMovies.filter((movie, index, self) =>
+                let uniqueMovies = allMovies.filter((movie, index, self) =>
                     index === self.findIndex(m => m.id === movie.id)
                 );
+
+                uniqueMovies = applyPersonFilters(uniqueMovies);
 
                 uniqueMovies.sort((a, b) => {
                     const dateA = a.release_date ? new Date(a.release_date) : new Date(0);
@@ -1255,7 +1365,7 @@
                 currentPersonMovies = uniqueMovies;
 
                 if (uniqueMovies.length === 0) {
-                    movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found for ${personName}</div>`;
+                    movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found matching your filters</div>`;
                     addAllBtn.disabled = true;
                     return;
                 }
@@ -1264,13 +1374,14 @@
 
                 uniqueMovies.forEach(movie => {
                     const isAdded = movies.some(m => m.id === movie.id);
+                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
                     item.dataset.movieId = movie.id;
                     updateItemClickHandler(item, movie.id, isAdded);
 
                     const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
-                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
 
                     item.innerHTML = `
                         <img src="${posterPath}" alt="${movie.title}">
@@ -1281,16 +1392,76 @@
                         </button>
                         <div class="search-result-info">
                             <div class="search-result-title">${movie.title}</div>
-                            <div class="search-result-year">${year}</div>
+                            <div class="search-result-year">${year} ${movie.vote_average ? `• ⭐ ${movie.vote_average.toFixed(1)}` : ''}</div>
                         </div>
                     `;
+
                     movieResultsDiv.appendChild(item);
                 });
 
                 updateAddAllButton();
+
             } catch (error) {
                 movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>';
                 addAllBtn.disabled = true;
+            }
+        }
+
+        function applyPersonFilters(movies) {
+            const yearFrom = document.getElementById('filterYearFrom')?.value;
+            const yearTo = document.getElementById('filterYearTo')?.value;
+            const minRating = document.getElementById('filterMinRating')?.value;
+            const excludeCompilations = document.getElementById('filterExcludeCompilations')?.checked;
+            const excludeDocumentaries = document.getElementById('filterExcludeDocumentaries')?.checked;
+            const excludeTV = document.getElementById('filterExcludeTV')?.checked;
+            const excludeAlreadyAdded = document.getElementById('filterExcludeAdded')?.checked;
+
+            return movies.filter(movie => {
+                const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
+                const rating = movie.vote_average || 0;
+                const title = movie.title.toLowerCase();
+
+                if (yearFrom && year && year < parseInt(yearFrom)) return false;
+                if (yearTo && year && year > parseInt(yearTo)) return false;
+
+                if (minRating && rating < parseFloat(minRating)) return false;
+
+                if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) {
+                    return false;
+                }
+
+                if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of') || title.includes('behind the scenes'))) {
+                    return false;
+                }
+
+                if (excludeTV && movie.media_type === 'tv') {
+                    return false;
+                }
+
+                if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        function showPersonFilters() {
+            const filtersDiv = document.getElementById('personFilters');
+            filtersDiv.classList.toggle('show');
+        }
+
+        function clearPersonFilters() {
+            document.getElementById('filterYearFrom').value = '';
+            document.getElementById('filterYearTo').value = '';
+            document.getElementById('filterMinRating').value = '';
+            document.getElementById('filterExcludeCompilations').checked = false;
+            document.getElementById('filterExcludeDocumentaries').checked = false;
+            document.getElementById('filterExcludeTV').checked = false;
+            document.getElementById('filterExcludeAdded').checked = false;
+
+            if (currentPersonId && currentPersonName) {
+                loadPersonMovies(currentPersonId, currentPersonName);
             }
         }
 
