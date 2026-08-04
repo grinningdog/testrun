@@ -55,9 +55,6 @@
         .movie-count { color: #888888; font-size: 1.2rem; font-weight: normal; }
 
         .last-updated { font-size: 12px; color: #666666; }
-        .last-updated.github { color: #4dd0e1; }
-        .last-updated.local { color: #ffa500; }
-        .last-updated.error { color: #ff6b6b; }
 
         .sync-status {
             display: inline-block;
@@ -65,7 +62,7 @@
             border-radius: 4px;
             font-size: 11px;
             font-weight: bold;
-            margin-left: 8px;
+            margin-right: 8px;
         }
 
         .sync-status.ok { background: #2e7d32; color: white; }
@@ -120,6 +117,7 @@
             border-radius: 30px;
             background: #1a1a1a;
             color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         #searchInput:focus { outline: none; border-color: #e50914; background: #222222; }
@@ -280,7 +278,7 @@
             border: 1px solid #333333; border-radius: 6px;
             background: #000000; color: #ffffff; font-size: 16px;
         }
-        .form-group input:focus { outline: none; border-color: #e50914; }
+        .form-group input:focus { outline: none; border-color: #e50914; box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
         .help-text { font-size: 14px; color: #888888; margin-top: 5px; }
 
         .search-results {
@@ -772,8 +770,8 @@
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
 
-        // ⚠️ IMPORTANT: Replace YOUR_USERNAME and YOUR_REPO with your actual GitHub details
-        // Also check the branch name - if your repo uses 'master' instead of 'main', change it below
+        // ✅ CONFIGURED FOR YOUR GITHUB REPO
+        // If this doesn't work, try changing 'main' to 'master' (older repos use 'master')
         const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
 
         const EMBEDDED_MOVIES = null;
@@ -805,7 +803,6 @@
 
             window.addEventListener('scroll', handleScroll);
 
-            // Log the URL being used so user can verify it's correct
             console.log('📡 GitHub URL configured:', GITHUB_MOVIES_URL);
 
             await loadMoviesFromGitHub(true);
@@ -820,10 +817,6 @@
         function onYouTubeIframeAPIReady() {
             ytApiReady = true;
         }
-
-        // ============================================================
-        // IMPROVED GITHUB SYNC WITH VISIBLE STATUS
-        // ============================================================
 
         function updateSyncStatus(status, message, detail) {
             const statusEl = document.getElementById('syncStatus');
@@ -840,20 +833,6 @@
         }
 
         async function loadMoviesFromGitHub(showToast = true) {
-            // Check if URL is configured
-            if (GITHUB_MOVIES_URL.includes('YOUR_USERNAME') || GITHUB_MOVIES_URL.includes('YOUR_REPO')) {
-                console.error('❌ GitHub URL not configured!');
-                console.error('Edit the GITHUB_MOVIES_URL constant in the code.');
-                console.error('Current URL:', GITHUB_MOVIES_URL);
-                
-                updateSyncStatus('error', 'GitHub URL not configured', 'Edit GITHUB_MOVIES_URL in the code');
-                
-                if (showToast) {
-                    showToast('⚠️ GitHub URL not configured. Edit GITHUB_MOVIES_URL in the code.', 'warning', 10000);
-                }
-                return;
-            }
-
             updateSyncStatus('loading', 'Checking GitHub...');
 
             try {
@@ -866,15 +845,20 @@
                 if (!response.ok) {
                     if (response.status === 404) {
                         console.error('❌ movies.json not found at:', url);
-                        console.error('Make sure:');
-                        console.error('  1. The file is named exactly "movies.json" (lowercase)');
-                        console.error('  2. The file is in the root of your repo');
-                        console.error('  3. The branch name is correct (main vs master)');
+                        console.error('Possible causes:');
+                        console.error('  1. The file is not uploaded to your repo');
+                        console.error('  2. The file is named something other than "movies.json"');
+                        console.error('  3. The branch name is "master" instead of "main"');
+                        console.error('');
+                        console.error('Try this URL in your browser to test:');
+                        console.error('  https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json');
+                        console.error('If that fails, try:');
+                        console.error('  https://raw.githubusercontent.com/grinningdog/testrun/master/movies.json');
                         
-                        updateSyncStatus('error', 'movies.json not found on GitHub', 'Check browser console (F12)');
+                        updateSyncStatus('error', 'movies.json not found', 'Check browser console (F12)');
                         
                         if (showToast) {
-                            showToast('❌ movies.json not found on GitHub. Press F12 to see details.', 'error', 8000);
+                            showToast('❌ movies.json not found. Press F12 for details.', 'error', 8000);
                         }
                         return;
                     } else {
@@ -970,10 +954,6 @@
             renderGenreFilter();
             updateMovieCount();
         }
-
-        // ============================================================
-        // REST OF THE FUNCTIONS (unchanged from previous version)
-        // ============================================================
 
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
