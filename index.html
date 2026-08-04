@@ -57,6 +57,21 @@
         .last-updated { font-size: 12px; color: #666666; }
         .last-updated.github { color: #4dd0e1; }
         .last-updated.local { color: #ffa500; }
+        .last-updated.error { color: #ff6b6b; }
+
+        .sync-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .sync-status.ok { background: #2e7d32; color: white; }
+        .sync-status.warning { background: #ffa500; color: black; }
+        .sync-status.error { background: #d32f2f; color: white; }
+        .sync-status.loading { background: #333333; color: #cccccc; }
 
         .btn {
             background: #e50914;
@@ -105,7 +120,6 @@
             border-radius: 30px;
             background: #1a1a1a;
             color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         #searchInput:focus { outline: none; border-color: #e50914; background: #222222; }
@@ -122,7 +136,6 @@
             min-width: 200px;
         }
 
-        #sortSelect:focus { outline: none; border-color: #e50914; }
         #sortSelect option { background: #1a1a1a; color: #ffffff; }
 
         .genre-filter-bar {
@@ -267,7 +280,7 @@
             border: 1px solid #333333; border-radius: 6px;
             background: #000000; color: #ffffff; font-size: 16px;
         }
-        .form-group input:focus { outline: none; border-color: #e50914; box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
+        .form-group input:focus { outline: none; border-color: #e50914; }
         .help-text { font-size: 14px; color: #888888; margin-top: 5px; }
 
         .search-results {
@@ -306,7 +319,6 @@
 
         .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888888; grid-column: 1 / -1; }
 
-        /* FIX: person-results is hidden by default, shown only with .show class */
         .person-results {
             display: none;
             flex-direction: column;
@@ -317,9 +329,7 @@
             flex-shrink: 0;
         }
 
-        .person-results.show {
-            display: flex;
-        }
+        .person-results.show { display: flex; }
 
         .person-result-item {
             display: flex; align-items: center; gap: 15px;
@@ -392,9 +402,6 @@
             min-width: 120px;
         }
 
-        .filter-group select:focus,
-        .filter-group input:focus { outline: none; border-color: #e50914; }
-
         .filter-checkbox {
             display: flex;
             align-items: center;
@@ -413,7 +420,7 @@
             transition: all 0.3s; align-self: flex-end;
         }
 
-        .apply-filters-btn:hover { background: #f40612; transform: translateY(-1px); }
+        .apply-filters-btn:hover { background: #f40612; }
 
         .clear-filters-btn {
             background: #333333; color: #cccccc; border: none;
@@ -597,7 +604,10 @@
         <div class="header">
             <div class="header-left">
                 <h1>🎬 My Movie Collection <span class="movie-count" id="movieCount">(0 movies)</span></h1>
-                <div class="last-updated" id="lastUpdated"></div>
+                <div class="last-updated" id="lastUpdated">
+                    <span class="sync-status loading" id="syncStatus">LOADING</span>
+                    <span id="lastUpdatedText">Checking GitHub...</span>
+                </div>
             </div>
             <div class="header-buttons">
                 <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub">🔄 Refresh</button>
@@ -762,7 +772,9 @@
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
 
-        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
+        // ⚠️ IMPORTANT: Replace YOUR_USERNAME and YOUR_REPO with your actual GitHub details
+        // Also check the branch name - if your repo uses 'master' instead of 'main', change it below
+        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/movies.json';
 
         const EMBEDDED_MOVIES = null;
 
@@ -793,12 +805,14 @@
 
             window.addEventListener('scroll', handleScroll);
 
-            await loadMoviesFromGitHub(false);
+            // Log the URL being used so user can verify it's correct
+            console.log('📡 GitHub URL configured:', GITHUB_MOVIES_URL);
+
+            await loadMoviesFromGitHub(true);
 
             renderMovies();
             renderGenreFilter();
             updateMovieCount();
-            updateLastUpdatedDisplay();
 
             backfillMissingGenres();
         });
@@ -807,32 +821,69 @@
             ytApiReady = true;
         }
 
+        // ============================================================
+        // IMPROVED GITHUB SYNC WITH VISIBLE STATUS
+        // ============================================================
+
+        function updateSyncStatus(status, message, detail) {
+            const statusEl = document.getElementById('syncStatus');
+            const textEl = document.getElementById('lastUpdatedText');
+            
+            statusEl.className = 'sync-status ' + status;
+            statusEl.textContent = status.toUpperCase();
+            
+            if (detail) {
+                textEl.innerHTML = message + ' <span style="color:#666;">(' + detail + ')</span>';
+            } else {
+                textEl.textContent = message;
+            }
+        }
+
         async function loadMoviesFromGitHub(showToast = true) {
-            if (GITHUB_MOVIES_URL.includes('YOUR_USERNAME')) {
+            // Check if URL is configured
+            if (GITHUB_MOVIES_URL.includes('YOUR_USERNAME') || GITHUB_MOVIES_URL.includes('YOUR_REPO')) {
+                console.error('❌ GitHub URL not configured!');
+                console.error('Edit the GITHUB_MOVIES_URL constant in the code.');
+                console.error('Current URL:', GITHUB_MOVIES_URL);
+                
+                updateSyncStatus('error', 'GitHub URL not configured', 'Edit GITHUB_MOVIES_URL in the code');
+                
                 if (showToast) {
-                    showToast('⚠️ GitHub URL not configured. Edit GITHUB_MOVIES_URL in the code.', 'warning');
+                    showToast('⚠️ GitHub URL not configured. Edit GITHUB_MOVIES_URL in the code.', 'warning', 10000);
                 }
-                updateLastUpdatedDisplay();
                 return;
             }
 
+            updateSyncStatus('loading', 'Checking GitHub...');
+
             try {
                 const url = `${GITHUB_MOVIES_URL}?t=${Date.now()}`;
+                console.log('📡 Fetching from:', url);
+                
                 const response = await fetch(url);
+                console.log('📡 Response status:', response.status);
 
                 if (!response.ok) {
                     if (response.status === 404) {
+                        console.error('❌ movies.json not found at:', url);
+                        console.error('Make sure:');
+                        console.error('  1. The file is named exactly "movies.json" (lowercase)');
+                        console.error('  2. The file is in the root of your repo');
+                        console.error('  3. The branch name is correct (main vs master)');
+                        
+                        updateSyncStatus('error', 'movies.json not found on GitHub', 'Check browser console (F12)');
+                        
                         if (showToast) {
-                            showToast('No movies.json found on GitHub yet. Using local data.', 'info');
+                            showToast('❌ movies.json not found on GitHub. Press F12 to see details.', 'error', 8000);
                         }
+                        return;
                     } else {
                         throw new Error(`HTTP ${response.status}`);
                     }
-                    updateLastUpdatedDisplay();
-                    return;
                 }
 
                 const data = await response.json();
+                console.log('✅ Successfully loaded movies.json');
                 
                 let githubMovies;
                 let githubExportedAt = null;
@@ -845,6 +896,9 @@
                 } else {
                     throw new Error('Invalid JSON format');
                 }
+
+                console.log(`📊 GitHub has ${githubMovies.length} movies`);
+                console.log(`📊 Local has ${movies.length} movies`);
 
                 const localData = localStorage.getItem('myMoviesData');
                 let localExportedAt = null;
@@ -862,34 +916,31 @@
                     if (new Date(githubExportedAt) > new Date(localExportedAt)) {
                         movies = githubMovies;
                         localStorage.setItem('myMovies', JSON.stringify(movies));
-                        if (showToast) {
-                            showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
-                        }
+                        updateSyncStatus('ok', `Updated from GitHub`, `${githubCount} movies`);
+                        if (showToast) showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
                     } else if (localCount > githubCount) {
-                        if (showToast) {
-                            showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
-                        }
+                        updateSyncStatus('warning', `${localCount} movies locally`, `${localCount - githubCount} unpublished`);
+                        if (showToast) showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
                     } else {
-                        if (showToast) {
-                            showToast('✅ Already up to date with GitHub', 'success');
-                        }
+                        updateSyncStatus('ok', `In sync with GitHub`, `${githubCount} movies`);
+                        if (showToast) showToast('✅ Already up to date with GitHub', 'success');
                     }
                 } else if (githubCount > 0 && localCount === 0) {
                     movies = githubMovies;
                     localStorage.setItem('myMovies', JSON.stringify(movies));
-                    if (showToast) {
-                        showToast(`✅ Loaded ${githubCount} movies from GitHub`, 'success');
-                    }
+                    updateSyncStatus('ok', `Loaded from GitHub`, `${githubCount} movies`);
+                    if (showToast) showToast(`✅ Loaded ${githubCount} movies from GitHub`, 'success');
                 } else if (githubCount > localCount) {
                     movies = githubMovies;
                     localStorage.setItem('myMovies', JSON.stringify(movies));
-                    if (showToast) {
-                        showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
-                    }
-                } else if (showToast && localCount > githubCount) {
-                    showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
-                } else if (showToast) {
-                    showToast('✅ Already up to date', 'success');
+                    updateSyncStatus('ok', `Updated from GitHub`, `${githubCount} movies`);
+                    if (showToast) showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
+                } else if (localCount > githubCount) {
+                    updateSyncStatus('warning', `${localCount} movies locally`, `${localCount - githubCount} unpublished`);
+                    if (showToast) showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
+                } else {
+                    updateSyncStatus('ok', `In sync`, `${localCount} movies`);
+                    if (showToast) showToast('✅ Already up to date', 'success');
                 }
 
                 if (githubExportedAt) {
@@ -897,17 +948,19 @@
                 }
 
             } catch (error) {
-                console.error('Error loading from GitHub:', error);
+                console.error('❌ Error loading from GitHub:', error);
+                console.error('URL attempted:', GITHUB_MOVIES_URL);
+                
+                updateSyncStatus('error', 'Could not reach GitHub', error.message);
+                
                 if (showToast) {
                     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                         showToast('📴 Offline - using cached data', 'info');
                     } else {
-                        showToast(`⚠️ Could not reach GitHub: ${error.message}`, 'error');
+                        showToast(`❌ GitHub error: ${error.message}. Press F12 for details.`, 'error', 8000);
                     }
                 }
             }
-
-            updateLastUpdatedDisplay();
         }
 
         async function refreshFromGitHub() {
@@ -918,53 +971,16 @@
             updateMovieCount();
         }
 
-        function updateLastUpdatedDisplay() {
-            const display = document.getElementById('lastUpdated');
-            const githubExportedAt = localStorage.getItem('githubExportedAt');
-            const localData = localStorage.getItem('myMoviesData');
-            let localExportedAt = null;
-            
-            if (localData) {
-                try {
-                    const parsed = JSON.parse(localData);
-                    localExportedAt = parsed.exportedAt;
-                } catch (e) {}
-            }
-
-            const mostRecent = githubExportedAt || localExportedAt;
-
-            if (mostRecent) {
-                const date = new Date(mostRecent);
-                const formatted = date.toLocaleString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                const source = githubExportedAt ? 'from GitHub' : 'local';
-                display.textContent = `Last updated: ${formatted} (${source})`;
-                display.className = `last-updated ${githubExportedAt ? 'github' : 'local'}`;
-            } else if (movies.length > 0) {
-                display.textContent = `${movies.length} movies (unsaved)`;
-                display.className = 'last-updated local';
-            } else {
-                display.textContent = '';
-            }
-        }
+        // ============================================================
+        // REST OF THE FUNCTIONS (unchanged from previous version)
+        // ============================================================
 
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
-            const icons = {
-                success: '✅',
-                error: '❌',
-                warning: '⚠️',
-                info: 'ℹ️'
-            };
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
             
             toast.innerHTML = `
                 <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
@@ -991,11 +1007,8 @@
 
         function handleScroll() {
             const backToTopBtn = document.getElementById('backToTop');
-            if (window.pageYOffset > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
+            if (window.pageYOffset > 300) backToTopBtn.classList.add('visible');
+            else backToTopBtn.classList.remove('visible');
         }
 
         async function backfillMissingGenres() {
@@ -1006,9 +1019,7 @@
                 try {
                     const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
                     const data = await response.json();
-                    if (data.genres) {
-                        movie.genres = data.genres.map(g => g.name);
-                    }
+                    if (data.genres) movie.genres = data.genres.map(g => g.name);
                     await new Promise(resolve => setTimeout(resolve, 250));
                 } catch (error) {
                     console.error('Error backfilling genres for', movie.title, error);
@@ -1059,9 +1070,8 @@
             });
             const notice = document.getElementById('activeFilterNotice');
             const text = document.getElementById('activeFilterText');
-            if (genre === 'all') {
-                notice.classList.remove('show');
-            } else {
+            if (genre === 'all') notice.classList.remove('show');
+            else {
                 text.textContent = `Genre: ${genre}`;
                 notice.classList.add('show');
             }
@@ -1119,7 +1129,6 @@
             
             showToast(`📄 Exported ${movies.length} movies as movies.json`, 'success');
             showToast('💡 Upload this file to GitHub as "movies.json" to publish', 'info', 6000);
-            updateLastUpdatedDisplay();
         }
 
         function importJSON(event) {
@@ -1132,13 +1141,9 @@
                     const parsed = JSON.parse(e.target.result);
                     let importedMovies;
                     
-                    if (Array.isArray(parsed)) {
-                        importedMovies = parsed;
-                    } else if (parsed && Array.isArray(parsed.movies)) {
-                        importedMovies = parsed.movies;
-                    } else {
-                        throw new Error('Invalid format');
-                    }
+                    if (Array.isArray(parsed)) importedMovies = parsed;
+                    else if (parsed && Array.isArray(parsed.movies)) importedMovies = parsed.movies;
+                    else throw new Error('Invalid format');
                     
                     if (confirm(`Import ${importedMovies.length} movies?\n\nThis will REPLACE your current collection.`)) {
                         movies = importedMovies;
@@ -1146,7 +1151,6 @@
                         renderMovies();
                         renderGenreFilter();
                         updateMovieCount();
-                        updateLastUpdatedDisplay();
                         showToast(`✅ Imported ${importedMovies.length} movies`, 'success');
                     }
                 } catch (error) {
@@ -1191,10 +1195,7 @@
             const query = document.getElementById('tmdbSearchInput').value.trim();
             const resultsDiv = document.getElementById('searchResults');
 
-            if (query.length < 2) {
-                resultsDiv.innerHTML = '';
-                return;
-            }
+            if (query.length < 2) { resultsDiv.innerHTML = ''; return; }
 
             resultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
 
@@ -1239,19 +1240,14 @@
 
         function updateItemClickHandler(item, movieId, isAdded) {
             item.onclick = (e) => {
-                if (!e.target.classList.contains('add-btn-small')) {
-                    toggleMovie(movieId, item);
-                }
+                if (!e.target.classList.contains('add-btn-small')) toggleMovie(movieId, item);
             };
         }
 
         function toggleMovie(movieId, element) {
             const isAdded = movies.some(m => m.id === movieId);
-            if (isAdded) {
-                removeMovieFromCollection(movieId, element);
-            } else {
-                addMovieFromSearch(movieId, element);
-            }
+            if (isAdded) removeMovieFromCollection(movieId, element);
+            else addMovieFromSearch(movieId, element);
         }
 
         async function searchPerson() {
@@ -1313,7 +1309,6 @@
             const personResultsDiv = document.getElementById('personResults');
             const personSearchForm = document.getElementById('personSearchForm');
 
-            // Hide the person search results list and the search form
             personResultsDiv.classList.remove('show');
             personSearchForm.style.display = 'none';
             personMoviesSection.style.display = 'flex';
@@ -1328,13 +1323,11 @@
 
                 const castMovies = data.cast || [];
                 const crewMovies = data.crew || [];
-                
                 const allMovies = [...castMovies, ...crewMovies];
                 let uniqueMovies = allMovies.filter((movie, index, self) => 
                     index === self.findIndex(m => m.id === movie.id)
                 );
 
-                // Apply filters - pass the filmography as a separate parameter
                 uniqueMovies = applyPersonFilters(uniqueMovies);
 
                 uniqueMovies.sort((a, b) => {
@@ -1376,19 +1369,16 @@
                             <div class="search-result-year">${year} ${movie.vote_average ? `• ⭐ ${movie.vote_average.toFixed(1)}` : ''}</div>
                         </div>
                     `;
-
                     movieResultsDiv.appendChild(item);
                 });
 
                 updateAddAllButton();
-
             } catch (error) {
                 movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>';
                 addAllBtn.disabled = true;
             }
         }
 
-        // FIX: Renamed parameter from 'movies' to 'filmography' to avoid shadowing the global 'movies' variable
         function applyPersonFilters(filmography) {
             const yearFrom = document.getElementById('filterYearFrom')?.value;
             const yearTo = document.getElementById('filterYearTo')?.value;
@@ -1405,33 +1395,19 @@
 
                 if (yearFrom && year && year < parseInt(yearFrom)) return false;
                 if (yearTo && year && year > parseInt(yearTo)) return false;
-
                 if (minRating && rating < parseFloat(minRating)) return false;
 
-                if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) {
-                    return false;
-                }
-
-                if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of') || title.includes('behind the scenes'))) {
-                    return false;
-                }
-
-                if (excludeTV && movie.media_type === 'tv') {
-                    return false;
-                }
-
-                // Now 'movies' correctly refers to the global user collection
-                if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) {
-                    return false;
-                }
+                if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) return false;
+                if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of') || title.includes('behind the scenes'))) return false;
+                if (excludeTV && movie.media_type === 'tv') return false;
+                if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) return false;
 
                 return true;
             });
         }
 
         function showPersonFilters() {
-            const filtersDiv = document.getElementById('personFilters');
-            filtersDiv.classList.toggle('show');
+            document.getElementById('personFilters').classList.toggle('show');
         }
 
         function clearPersonFilters() {
@@ -1443,9 +1419,7 @@
             document.getElementById('filterExcludeTV').checked = false;
             document.getElementById('filterExcludeAdded').checked = false;
             
-            if (currentPersonId && currentPersonName) {
-                loadPersonMovies(currentPersonId, currentPersonName);
-            }
+            if (currentPersonId && currentPersonName) loadPersonMovies(currentPersonId, currentPersonName);
         }
 
         function updateAddAllButton() {
@@ -1652,9 +1626,7 @@
                         if (!hasDateA && !hasDateB) return 0;
                         if (!hasDateA) return 1;
                         if (!hasDateB) return -1;
-                        valA = new Date(a.release_date).getFullYear();
-                        valB = new Date(b.release_date).getFullYear();
-                        return (valA - valB) * multiplier;
+                        return (new Date(a.release_date).getFullYear() - new Date(b.release_date).getFullYear()) * multiplier;
                     case 'rating':
                         valA = a.userRating || 0; valB = b.userRating || 0;
                         if (valA === 0 && valB === 0) return 0;
