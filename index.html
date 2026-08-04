@@ -769,9 +769,7 @@
         const IMG_URL_ORIGINAL = 'https://image.tmdb.org/t/p/original';
         const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
         const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
-
         const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
-
         const EMBEDDED_MOVIES = null;
 
         let movies = JSON.parse(localStorage.getItem('myMovies')) || EMBEDDED_MOVIES || [];
@@ -786,151 +784,79 @@
         let ytApiReady = false;
         let ytPlayers = {};
 
-        // TOAST FUNCTION - DEFINED FIRST
+        // ============================================================
+        // UTILITY FUNCTIONS
+        // ============================================================
+
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
-            if (!container) {
-                console.warn('Toast container not found');
-                return;
-            }
-            
+            if (!container) return;
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            
             const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            
-            toast.innerHTML = `
-                <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
-                <span class="toast-message">${message}</span>
-            `;
-            
+            toast.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span class="toast-message">${message}</span>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.add('fade-out');
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
+            setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 300); }, duration);
         }
 
         function updateSyncStatus(status, message, detail) {
             const statusEl = document.getElementById('syncStatus');
             const textEl = document.getElementById('lastUpdatedText');
-            
             if (!statusEl || !textEl) return;
-            
             statusEl.className = 'sync-status ' + status;
             statusEl.textContent = status.toUpperCase();
-            
-            if (detail) {
-                textEl.innerHTML = message + ' <span style="color:#666;">(' + detail + ')</span>';
-            } else {
-                textEl.textContent = message;
-            }
+            textEl.innerHTML = detail ? message + ' <span style="color:#666;">(' + detail + ')</span>' : message;
         }
 
-        async function loadMoviesFromGitHub(showToast = true) {
-            updateSyncStatus('loading', 'Checking GitHub...');
+        // Fetch with timeout - prevents hanging forever
+        function fetchWithTimeout(url, timeout = 10000) {
+            return Promise.race([
+                fetch(url),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Request timed out after ' + (timeout/1000) + ' seconds')), timeout)
+                )
+            ]);
+        }
 
+        // ============================================================
+        // GITHUB SYNC
+        // ============================================================
+
+        async function loadMoviesFromGitHub(showToastMsg = true) {
+            updateSyncStatus('loading', 'Checking GitHub...');
             try {
                 const url = `${GITHUB_MOVIES_URL}?t=${Date.now()}`;
                 console.log('📡 Fetching from:', url);
                 
-                const response = await fetch(url);
+                const response = await fetchWithTimeout(url, 10000);
                 console.log('📡 Response status:', response.status);
-
+                
                 if (!response.ok) {
                     if (response.status === 404) {
-                        console.error('❌ movies.json not found at:', url);
-                        
-                        updateSyncStatus('error', 'movies.json not found', 'Check browser console (F12)');
-                        
-                        if (showToast) {
-                            showToast('❌ movies.json not found. Press F12 for details.', 'error', 8000);
-                        }
-                        return;
+                        updateSyncStatus('error', 'movies.json not found', 'Check GitHub');
+                        if (showToastMsg) showToast('❌ movies.json not found', 'error', 8000);
                     } else {
                         throw new Error(`HTTP ${response.status}`);
                     }
+                    return;
                 }
-
+                
                 const data = await response.json();
-                console.log('✅ Successfully loaded movies.json');
+                let githubMovies = Array.isArray(data) ? data : (data.movies || []);
+                let githubExportedAt = data.exportedAt || null;
                 
-                let githubMovies;
-                let githubExportedAt = null;
+                console.log(`✅ Loaded ${githubMovies.length} movies from GitHub`);
                 
-                if (Array.isArray(data)) {
-                    githubMovies = data;
-                } else if (data && Array.isArray(data.movies)) {
-                    githubMovies = data.movies;
-                    githubExportedAt = data.exportedAt;
-                } else {
-                    throw new Error('Invalid JSON format');
-                }
-
-                console.log(`📊 GitHub has ${githubMovies.length} movies`);
-                console.log(`📊 Local has ${movies.length} movies`);
-
-                const localData = localStorage.getItem('myMoviesData');
-                let localExportedAt = null;
-                if (localData) {
-                    try {
-                        const parsed = JSON.parse(localData);
-                        localExportedAt = parsed.exportedAt;
-                    } catch (e) {}
-                }
-
-                const localCount = movies.length;
-                const githubCount = githubMovies.length;
-
-                if (githubExportedAt && localExportedAt) {
-                    if (new Date(githubExportedAt) > new Date(localExportedAt)) {
-                        movies = githubMovies;
-                        localStorage.setItem('myMovies', JSON.stringify(movies));
-                        updateSyncStatus('ok', `Updated from GitHub`, `${githubCount} movies`);
-                        if (showToast) showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
-                    } else if (localCount > githubCount) {
-                        updateSyncStatus('warning', `${localCount} movies locally`, `${localCount - githubCount} unpublished`);
-                        if (showToast) showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
-                    } else {
-                        updateSyncStatus('ok', `In sync with GitHub`, `${githubCount} movies`);
-                        if (showToast) showToast('✅ Already up to date with GitHub', 'success');
-                    }
-                } else if (githubCount > 0 && localCount === 0) {
-                    movies = githubMovies;
-                    localStorage.setItem('myMovies', JSON.stringify(movies));
-                    updateSyncStatus('ok', `Loaded from GitHub`, `${githubCount} movies`);
-                    if (showToast) showToast(`✅ Loaded ${githubCount} movies from GitHub`, 'success');
-                } else if (githubCount > localCount) {
-                    movies = githubMovies;
-                    localStorage.setItem('myMovies', JSON.stringify(movies));
-                    updateSyncStatus('ok', `Updated from GitHub`, `${githubCount} movies`);
-                    if (showToast) showToast(`✅ Updated from GitHub (${githubCount} movies)`, 'success');
-                } else if (localCount > githubCount) {
-                    updateSyncStatus('warning', `${localCount} movies locally`, `${localCount - githubCount} unpublished`);
-                    if (showToast) showToast(`📝 You have ${localCount - githubCount} unpublished movie(s) locally`, 'warning');
-                } else {
-                    updateSyncStatus('ok', `In sync`, `${localCount} movies`);
-                    if (showToast) showToast('✅ Already up to date', 'success');
-                }
-
-                if (githubExportedAt) {
-                    localStorage.setItem('githubExportedAt', githubExportedAt);
-                }
-
+                movies = githubMovies;
+                localStorage.setItem('myMovies', JSON.stringify(movies));
+                if (githubExportedAt) localStorage.setItem('githubExportedAt', githubExportedAt);
+                
+                updateSyncStatus('ok', `Loaded from GitHub`, `${githubMovies.length} movies`);
+                if (showToastMsg) showToast(`✅ Loaded ${githubMovies.length} movies`, 'success');
             } catch (error) {
                 console.error('❌ Error loading from GitHub:', error);
-                console.error('URL attempted:', GITHUB_MOVIES_URL);
-                
                 updateSyncStatus('error', 'Could not reach GitHub', error.message);
-                
-                if (showToast) {
-                    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-                        showToast('📴 Offline - using cached data', 'info');
-                    } else {
-                        showToast(`❌ GitHub error: ${error.message}. Press F12 for details.`, 'error', 8000);
-                    }
-                }
+                if (showToastMsg) showToast(`❌ GitHub error: ${error.message}`, 'error', 8000);
             }
         }
 
@@ -942,10 +868,58 @@
             updateMovieCount();
         }
 
+        // ============================================================
+        // INITIALIZATION - runs once when page loads
+        // ============================================================
+
+        async function init() {
+            console.log('🚀 Starting initialization...');
+            
+            // Set sort dropdown
+            document.getElementById('sortSelect').value = currentSort;
+            
+            // Enter key on manual ID input
+            document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addMovieManual();
+            });
+
+            // Scroll listener for back-to-top button
+            window.addEventListener('scroll', handleScroll);
+
+            // Load movies from GitHub FIRST
+            await loadMoviesFromGitHub(true);
+            
+            // THEN render everything
+            console.log('🎨 Rendering movies...');
+            renderMovies();
+            renderGenreFilter();
+            updateMovieCount();
+            
+            // Backfill genres in background
+            backfillMissingGenres();
+            
+            console.log('✅ Initialization complete');
+        }
+
+        // Run init when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // YouTube API ready callback
+        function onYouTubeIframeAPIReady() {
+            ytApiReady = true;
+        }
+
+        // ============================================================
+        // CORE FUNCTIONS
+        // ============================================================
+
         function updateMovieCount() {
             const count = movies.length;
-            const countText = count === 1 ? '1 movie' : `${count} movies`;
-            document.getElementById('movieCount').textContent = `(${countText})`;
+            document.getElementById('movieCount').textContent = `(${count === 1 ? '1 movie' : count + ' movies'})`;
         }
 
         function scrollToTop() {
@@ -989,6 +963,7 @@
 
         function renderGenreFilter() {
             const bar = document.getElementById('genreFilterBar');
+            if (!bar) return;
             const genres = getAllGenres();
             
             bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
@@ -1052,23 +1027,17 @@
         }
 
         function exportAsJSON() {
-            const data = {
-                version: 1,
-                exportedAt: new Date().toISOString(),
-                movies: movies
-            };
-            
-            const dataStr = JSON.stringify(data, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
+            const data = { version: 1, exportedAt: new Date().toISOString(), movies: movies };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `movies.json`;
+            a.download = 'movies.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
+            
             localStorage.setItem('myMoviesData', JSON.stringify({
                 exportedAt: data.exportedAt,
                 count: movies.length
@@ -1591,6 +1560,7 @@
 
         function renderMovies() {
             const grid = document.getElementById('movieGrid');
+            if (!grid) return;
             grid.innerHTML = '';
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
@@ -1672,7 +1642,7 @@
                 let starsHTML = '';
                 for (let i = 1; i <= 5; i++) {
                     const filled = userRating && i <= userRating ? 'filled' : '';
-                    starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout("clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
+                    starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
                 }
 
                 detailsDiv.innerHTML = `
@@ -1914,833 +1884,28 @@
             document.getElementById('searchResults').innerHTML = '';
             document.getElementById('personResults').innerHTML = '';
             document.getElementById('personResults').classList.remove('show');
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Movie Collection</title>
-    
-    <meta name="theme-color" content="#000000">
-    <meta name="description" content="My personal movie collection">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My Movies">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000000;
-            min-height: 100vh;
-            color: #ffffff;
-            padding: 20px;
+            document.getElementById('personMoviesSection').style.display = 'none';
+            document.getElementById('personSearchForm').style.display = 'block';
+            document.getElementById('personMovieResults').innerHTML = '';
+            currentPersonMovies = [];
+            currentPersonId = null;
+            currentPersonName = null;
         }
 
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #333333; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444444; }
-
-        .container { max-width: 1400px; margin: 0 auto; }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 20px;
-            flex-wrap: wrap;
-            gap: 15px;
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+            currentMovieIdInDetails = null;
         }
 
-        .header-left { display: flex; flex-direction: column; gap: 5px; }
-
-        h1 {
-            font-size: 2rem;
-            color: #ffffff;
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 10px;
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) event.target.classList.remove('active');
         }
 
-        .movie-count { color: #888888; font-size: 1.2rem; font-weight: normal; }
-
-        .last-updated { font-size: 12px; color: #666666; }
-
-        .sync-status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        .sync-status.ok { background: #2e7d32; color: white; }
-        .sync-status.warning { background: #ffa500; color: black; }
-        .sync-status.error { background: #d32f2f; color: white; }
-        .sync-status.loading { background: #333333; color: #cccccc; }
-
-        .btn {
-            background: #e50914;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn:hover {
-            background: #f40612;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(229, 9, 20, 0.4);
-        }
-
-        .btn-secondary { background: #333333; color: #ffffff; }
-        .btn-secondary:hover { background: #444444; }
-        .btn-success { background: #2e7d32; }
-        .btn-success:hover { background: #1b5e20; }
-        .btn-trailer { background: #ff0000; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-trailer:hover { background: #cc0000; }
-        .btn-small { padding: 8px 16px; font-size: 14px; }
-
-        .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-
-        .controls {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        #searchInput {
-            flex: 1;
-            max-width: 500px;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #searchInput:focus { outline: none; border-color: #e50914; background: #222222; }
-        #searchInput::placeholder { color: #888888; }
-
-        #sortSelect {
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            cursor: pointer;
-            min-width: 200px;
-        }
-
-        #sortSelect option { background: #1a1a1a; color: #ffffff; }
-
-        .genre-filter-bar {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .genre-filter-label { color: #888888; font-size: 14px; margin-right: 5px; font-weight: bold; }
-
-        .genre-chip {
-            padding: 6px 14px;
-            background: #1a1a1a;
-            color: #cccccc;
-            border: 1px solid #333333;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .genre-chip:hover { background: #333333; color: #ffffff; border-color: #e50914; }
-        .genre-chip.active { background: #e50914; color: #ffffff; border-color: #e50914; font-weight: bold; }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 1200px) { .movie-grid { grid-template-columns: repeat(5, 1fr); } }
-
-        .movie-card {
-            position: relative;
-            cursor: pointer;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: #1a1a1a;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .movie-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3); z-index: 10; }
-        .movie-card img { width: 100%; height: 300px; object-fit: cover; display: block; }
-
-        .movie-card-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
-            padding: 30px 10px 10px 10px;
-            transition: all 0.3s;
-        }
-
-        .movie-card-title {
-            font-size: 14px; font-weight: bold; color: #ffffff;
-            margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .movie-card-year { font-size: 12px; color: #cccccc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-
-        .movie-card-rating {
-            position: absolute; top: 8px; left: 8px;
-            background: rgba(0, 0, 0, 0.85); color: #ffd700;
-            padding: 4px 8px; border-radius: 4px;
-            font-size: 12px; font-weight: bold;
-            display: flex; align-items: center; gap: 3px;
-        }
-
-        .movie-card:hover .movie-card-overlay { padding: 40px 10px 10px 10px; }
-
-        .movie-card-genres {
-            font-size: 11px; color: #e50914; margin-top: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            opacity: 0; max-height: 0; transition: all 0.3s;
-        }
-
-        .movie-card:hover .movie-card-genres { opacity: 1; max-height: 20px; }
-
-        .modal {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center; align-items: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.active { display: flex; }
-
-        .modal-content {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            border: 1px solid #333333;
-            color: #ffffff;
-        }
-
-        #addModal .modal-content { display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; }
-        #addModal .modal-close { z-index: 20; }
-        #addModal h2 { margin-bottom: 15px; padding-right: 40px; flex-shrink: 0; }
-        #addModal .tabs { margin-bottom: 15px; flex-shrink: 0; }
-        #addModal .tab-content { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-        #addModal .tab-content.active { display: flex; }
-        #addModal .form-group { margin-bottom: 15px; flex-shrink: 0; }
-        #addModal .search-results, #addModal #personMovieResults { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
-        #addModal #personMoviesSection { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-        #addModal #personMoviesSection[style*="flex"] { display: flex !important; }
-        #addModal .person-movies-header { flex-shrink: 0; margin: 0 0 10px 0; }
-
-        .modal-close {
-            position: absolute; top: 15px; right: 15px;
-            background: none; border: none; color: #ffffff;
-            font-size: 28px; cursor: pointer;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; transition: background 0.3s; z-index: 10;
-        }
-
-        .modal-close:hover { background: #333333; }
-        .modal h2 { margin-bottom: 20px; color: #e50914; }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #cccccc; }
-        .form-group input {
-            width: 100%; padding: 12px;
-            border: 1px solid #333333; border-radius: 6px;
-            background: #000000; color: #ffffff; font-size: 16px;
-        }
-        .form-group input:focus { outline: none; border-color: #e50914; box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
-        .help-text { font-size: 14px; color: #888888; margin-top: 5px; }
-
-        .search-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px; margin-top: 20px;
-            max-height: 500px; overflow-y: auto;
-        }
-
-        .search-result-item {
-            position: relative; cursor: pointer;
-            border-radius: 8px; overflow: hidden;
-            background: #000000; border: 2px solid transparent;
-            transition: all 0.3s;
-            display: flex; flex-direction: column; height: 280px;
-        }
-
-        .search-result-item:hover { border-color: #e50914; transform: scale(1.02); }
-        .search-result-item img { width: 100%; height: 225px; object-fit: cover; display: block; flex-shrink: 0; }
-
-        .search-result-info { padding: 10px; background: #000000; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .search-result-title { font-size: 14px; font-weight: bold; color: #ffffff; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .search-result-year { font-size: 12px; color: #888888; }
-
-        .add-btn-small {
-            position: absolute; top: 5px; right: 5px;
-            background: #e50914; color: white; border: none;
-            padding: 5px 10px; border-radius: 4px;
-            cursor: pointer; font-size: 12px; font-weight: bold;
-            opacity: 0; transition: opacity 0.3s; z-index: 2;
-        }
-
-        .search-result-item:hover .add-btn-small { opacity: 1; }
-        .add-btn-small:hover { background: #f40612; }
-        .add-btn-small.added { background: #2e7d32; opacity: 1; cursor: pointer; }
-
-        .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888888; grid-column: 1 / -1; }
-
-        .person-results {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .person-results.show { display: flex; }
-
-        .person-result-item {
-            display: flex; align-items: center; gap: 15px;
-            padding: 10px; background: #000000;
-            border: 1px solid #333333; border-radius: 8px;
-            cursor: pointer; transition: all 0.3s;
-        }
-
-        .person-result-item:hover { border-color: #e50914; background: #222222; }
-        .person-result-item img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
-        .person-result-info { flex: 1; }
-        .person-result-name { font-size: 16px; font-weight: bold; color: #ffffff; margin-bottom: 3px; }
-        .person-result-known { font-size: 12px; color: #888888; }
-
-        .person-movies-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin: 20px 0 10px 0; padding: 10px;
-            background: #000000; border-radius: 8px;
-        }
-
-        .person-movies-header h3 { color: #e50914; font-size: 18px; }
-
-        .add-all-btn {
-            background: #2e7d32; color: white; border: none;
-            padding: 8px 16px; border-radius: 6px;
-            cursor: pointer; font-size: 14px; font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .add-all-btn:hover { background: #1b5e20; }
-        .add-all-btn:disabled { background: #333333; cursor: not-allowed; opacity: 0.5; }
-
-        .person-filters {
-            background: #000000;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333333;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .person-filters.show { display: block; }
-
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: end;
-            margin-bottom: 10px;
-        }
-
-        .filter-row:last-child { margin-bottom: 0; }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .filter-group label { font-size: 12px; color: #888888; font-weight: normal; }
-
-        .filter-group select,
-        .filter-group input {
-            padding: 8px 12px;
-            border: 1px solid #333333;
-            border-radius: 4px;
-            background: #1a1a1a;
-            color: #ffffff;
-            font-size: 14px;
-            min-width: 120px;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #cccccc;
-        }
-
-        .filter-checkbox input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
-
-        .apply-filters-btn {
-            background: #e50914; color: white; border: none;
-            padding: 8px 16px; border-radius: 4px;
-            cursor: pointer; font-size: 14px; font-weight: bold;
-            transition: all 0.3s; align-self: flex-end;
-        }
-
-        .apply-filters-btn:hover { background: #f40612; }
-
-        .clear-filters-btn {
-            background: #333333; color: #cccccc; border: none;
-            padding: 8px 16px; border-radius: 4px;
-            cursor: pointer; font-size: 14px;
-            transition: all 0.3s; align-self: flex-end;
-        }
-
-        .clear-filters-btn:hover { background: #444444; color: #ffffff; }
-
-        .movie-details { display: flex; flex-direction: column; gap: 15px; }
-        .movie-details img { width: 100%; max-width: 300px; border-radius: 8px; align-self: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
-        .movie-details h2 { font-size: 1.8rem; margin-bottom: 10px; color: #e50914; }
-        .movie-meta { display: flex; gap: 20px; color: #cccccc; font-size: 14px; flex-wrap: wrap; }
-        .movie-rating { color: #ffd700; }
-        .movie-synopsis { line-height: 1.6; color: #ffffff; margin-top: 10px; }
-
-        .movie-actors { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; color: #cccccc; margin-top: 5px; }
-        .movie-actors-label { color: #888888; font-size: 13px; margin-right: 4px; }
-        .actor-chip { cursor: pointer; color: #ffffff; transition: color 0.2s; padding: 2px 0; }
-        .actor-chip:hover { color: #e50914; text-decoration: underline; }
-        .actor-separator { color: #555555; user-select: none; }
-
-        .actor-modal-content { max-width: 420px; text-align: center; }
-        .actor-details { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .actor-details img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
-        .actor-details h2 { color: #e50914; margin: 0; font-size: 1.6rem; }
-        .actor-details .actor-character { color: #888888; font-size: 14px; font-style: italic; }
-        .actor-tmdb-link {
-            display: inline-block; background: #000000; color: #4dd0e1;
-            text-decoration: none; padding: 10px 20px; border-radius: 6px;
-            border: 1px solid #333333; transition: all 0.3s;
-            font-weight: bold; margin-top: 10px;
-        }
-        .actor-tmdb-link:hover { background: #e50914; color: white; border-color: #e50914; }
-
-        .user-rating-section { background: #000000; padding: 15px; border-radius: 8px; border: 1px solid #333333; margin-top: 10px; }
-        .user-rating-label { font-size: 14px; color: #cccccc; margin-bottom: 8px; font-weight: bold; }
-        .star-rating { display: flex; gap: 5px; align-items: center; }
-        .star { font-size: 32px; cursor: pointer; color: #333333; transition: all 0.2s; user-select: none; }
-        .star:hover { transform: scale(1.2); }
-        .star.filled { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
-        .star.hover-preview { color: #ffed4e; }
-        .rating-text { margin-left: 10px; color: #888888; font-size: 14px; }
-        .clear-rating {
-            background: none; border: 1px solid #444444; color: #888888;
-            padding: 4px 10px; border-radius: 4px; cursor: pointer;
-            font-size: 12px; margin-left: 10px; transition: all 0.2s;
-        }
-        .clear-rating:hover { border-color: #e50914; color: #e50914; }
-
-        .delete-btn {
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Movie Collection</title>
-    
-    <meta name="theme-color" content="#000000">
-    <meta name="description" content="My personal movie collection">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My Movies">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000000;
-            min-height: 100vh;
-            color: #ffffff;
-            padding: 20px;
-        }
-
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #333333; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444444; }
-
-        .container { max-width: 1400px; margin: 0 auto; }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .header-left { display: flex; flex-direction: column; gap: 5px; }
-
-        h1 {
-            font-size: 2rem;
-            color: #ffffff;
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .movie-count { color: #888888; font-size: 1.2rem; font-weight: normal; }
-
-        .last-updated { font-size: 12px; color: #666666; }
-
-        .sync-status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        .sync-status.ok { background: #2e7d32; color: white; }
-        .sync-status.warning { background: #ffa500; color: black; }
-        .sync-status.error { background: #d32f2f; color: white; }
-        .sync-status.loading { background: #333333; color: #cccccc; }
-
-        .btn {
-            background: #e50914;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn:hover {
-            background: #f40612;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(229, 9, 20, 0.4);
-        }
-
-        .btn-secondary { background: #333333; color: #ffffff; }
-        .btn-secondary:hover { background: #444444; }
-        .btn-success { background: #2e7d32; }
-        .btn-success:hover { background: #1b5e20; }
-        .btn-trailer { background: #ff0000; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-trailer:hover { background: #cc0000; }
-        .btn-small { padding: 8px 16px; font-size: 14px; }
-
-        .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-
-        .controls {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        #searchInput {
-            flex: 1;
-            max-width: 500px;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #searchInput:focus { outline: none; border-color: #e50914; background: #222222; }
-        #searchInput::placeholder { color: #888888; }
-
-        #sortSelect {
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            cursor: pointer;
-            min-width: 200px;
-        }
-
-        #sortSelect option { background: #1a1a1a; color: #ffffff; }
-
-        .genre-filter-bar {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .genre-filter-label { color: #888888; font-size: 14px; margin-right: 5px; font-weight: bold; }
-
-        .genre-chip {
-            padding: 6px 14px;
-            background: #1a1a1a;
-            color: #cccccc;
-            border: 1px solid #333333;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .genre-chip:hover { background: #333333; color: #ffffff; border-color: #e50914; }
-        .genre-chip.active { background: #e50914; color: #ffffff; border-color: #e50914; font-weight: bold; }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (min-width: 1200px) { .movie-grid { grid-template-columns: repeat(5, 1fr); } }
-
-        .movie-card {
-            position: relative;
-            cursor: pointer;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: #1a1a1a;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .movie-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3); z-index: 10; }
-        .movie-card img { width: 100%; height: 300px; object-fit: cover; display: block; }
-
-        .movie-card-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
-            padding: 30px 10px 10px 10px;
-            transition: all 0.3s;
-        }
-
-        .movie-card-title {
-            font-size: 14px; font-weight: bold; color: #ffffff;
-            margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .movie-card-year { font-size: 12px; color: #cccccc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-
-        .movie-card-rating {
-            position: absolute; top: 8px; left: 8px;
-            background: rgba(0, 0, 0, 0.85); color: #ffd700;
-            padding: 4px 8px; border-radius: 4px;
-            font-size: 12px; font-weight: bold;
-            display: flex; align-items: center; gap: 3px;
-        }
-
-        .movie-card:hover .movie-card-overlay { padding: 40px 10px 10px 10px; }
-
-        .movie-card-genres {
-            font-size: 11px; color: #e50914; margin-top: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            opacity: 0; max-height: 0; transition: all 0.3s;
-        }
-
-        .movie-card:hover .movie-card-genres { opacity: 1; max-height: 20px; }
-
-        .modal {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center; align-items: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.active { display: flex; }
-
-        .modal-content {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            border: 1px solid #333333;
-            color: #ffffff;
-        }
-
-        #addModal .modal-content { display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; }
-        #addModal .modal-close { z-index: 20; }
-        #addModal h2 { margin-bottom: 15px; padding-right: 40px; flex-shrink: 0; }
-        #addModal .tabs { margin-bottom: 15px; flex-shrink: 0; }
-        #addModal .tab-content { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-        #addModal .tab-content.active { display: flex; }
-        #addModal .form-group { margin-bottom: 15px; flex-shrink: 0; }
-        #addModal .search-results, #addModal #personMovieResults { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
-        #addModal #personMoviesSection { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-        #addModal #personMoviesSection[style*="flex"] { display: flex !important; }
-        #addModal .person-movies-header { flex-shrink: 0; margin: 0 0 10px 0; }
-
-        .modal-close {
-            position: absolute; top: 15px; right: 15px;
-            background: none; border: none; color: #ffffff;
-            font-size: 28px; cursor: pointer;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; transition: background 0.3s; z-index: 10;
-        }
-
-        .modal-close:hover { background: #333333; }
-        .modal h2 { margin-bottom: 20px; color: #e50914; }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #cccccc; }
-        .form-group input {
-            width: 100%; padding: 12px;
-            border: 1px solid #333333; border-radius: 6px;
-            background: #000000; color: #ffffff; font-size: 16px;
-        }
-        .form-group input:focus { outline: none; border-color: #e50914; box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
-        .help-text { font-size: 14px; color: #888888; margin-top: 5px; }
-
-        .search-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px; margin-top: 20px;
-            max-height: 500px; overflow-y: auto;
-        }
-
-        .search-result-item {
-            position: relative; cursor: pointer;
-            border-radius: 8px; overflow: hidden;
-            background: #000000; border: 2px solid transparent;
-            transition: all 0.3s;
-            display: flex; flex-direction: column; height: 280px;
-        }
-
-        .search-result-item:hover { border-color: #e50914; transform: scale(1.02); }
-        .search-result-item img { width: 100%; height: 225px; object-fit: cover; display: block; flex-shrink: 0; }
-
-        .search-result-info { padding: 10px; background: #000000; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .search-result-title { font-size: 14px; font-weight: bold; color: #ffffff; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .search-result-year { font-size: 12px; color: #888888; }
-
-        .add-btn-small {
-            position: absolute; top: 5px; right: 5px;
-            background: #e50914; color: white; border: none;
-            padding: 5px 10px; border-radius: 4px;
-            cursor: pointer; font-size: 12px; font-weight: bold;
-            opacity: 0; transition: opacity 0.3s; z-index: 2;
-        }
-
-        .search-result-item:hover .add-btn-small { opacity: 1; }
-        .add-btn-small:hover { background: #f40612; }
-        .add-btn-small.added { background: #2e7d32; opacity: 1; cursor: pointer; }
-
-        .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888888; grid-column: 1 / -1; }
-
-        .person-results {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            flex-shrink: 0
-}
-        .active-filter-notice.show { display: block; }
-        .active-filter-notice strong { color: #e50914; }
-
-        .trailer-modal { max-width: 1000px; }
-      
-ker.register('sw.js').catch(err => {
-                    console.log('Service worker registration failed:', err);
-                });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
             }
-
-            window.addEventListener('scroll', handleScroll);
-
-            console.log('📡 GitHub URL configured:', GITHUB_MOVIES_URL);
-
-            await loadMoviesFromGitHub(true);
-
-            renderMovies();
-            renderGenreFilter();
-            updateMovieCount();
-
-            backfillMissingGenres();
         });
-
-        function onYouTubeIframeAPIReady() {
-            ytApiReady = true;
-        }
     </script>
     <script src="https://www.youtube.com/iframe_api"></script>
 </body>
