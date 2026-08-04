@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-04T11:24:10.015Z",
+  "exportedAt": "2026-08-04T12:50:32.564Z",
   "movies": [
     {
       "id": 969681,
@@ -2200,6 +2200,20 @@
       ],
       "userRating": null,
       "added": "2026-08-04T11:23:48.555Z"
+    },
+    {
+      "id": 864,
+      "title": "Cool Runnings",
+      "poster_path": "/6fXuGEb7EqGmAeUodxm7l5ELPZ.jpg",
+      "release_date": "1993-10-01",
+      "vote_average": 7.028,
+      "genres": [
+        "Comedy",
+        "Adventure",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-04T12:50:22.424Z"
     }
   ]
 }
