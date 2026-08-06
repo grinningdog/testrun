@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-06T12:47:41.851Z",
+  "exportedAt": "2026-08-06T18:46:34.372Z",
   "movies": [
     {
       "id": 969681,
@@ -2641,6 +2641,20 @@
       ],
       "userRating": null,
       "added": "2026-08-06T12:45:48.061Z"
+    },
+    {
+      "id": 1404304,
+      "title": "The Isolate Thief",
+      "poster_path": "/gmmCh2BvTKp0YGT2FYG0eOQJELi.jpg",
+      "release_date": "2026-07-10",
+      "vote_average": 7.4,
+      "genres": [
+        "Western",
+        "Action",
+        "Drama"
+      ],
+      "userRating": 2,
+      "added": "2026-08-06T18:46:13.290Z"
     }
   ]
 }
