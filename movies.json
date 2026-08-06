@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-06T18:46:34.372Z",
+  "exportedAt": "2026-08-06T21:03:08.503Z",
   "movies": [
     {
       "id": 969681,
@@ -2655,6 +2655,76 @@
       ],
       "userRating": 2,
       "added": "2026-08-06T18:46:13.290Z"
+    },
+    {
+      "id": 857,
+      "title": "Saving Private Ryan",
+      "poster_path": "/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
+      "release_date": "1998-07-24",
+      "vote_average": 8.231,
+      "genres": [
+        "War",
+        "Drama",
+        "History"
+      ],
+      "userRating": null,
+      "added": "2026-08-06T21:02:10.807Z"
+    },
+    {
+      "id": 1380291,
+      "title": "Tom Clancy's Jack Ryan: Ghost War",
+      "poster_path": "/8ehYxUh5MWE41AeE9gkHE8DKzvB.jpg",
+      "release_date": "2026-05-20",
+      "vote_average": 7,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-06T21:02:16.026Z"
+    },
+    {
+      "id": 137094,
+      "title": "Jack Ryan: Shadow Recruit",
+      "poster_path": "/m7HcLUodrD4lM4s0Hui1tzO2pjO.jpg",
+      "release_date": "2014-01-15",
+      "vote_average": 6.124,
+      "genres": [
+        "Action",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-06T21:02:19.390Z"
+    },
+    {
+      "id": 38953,
+      "title": "Ryan's Daughter",
+      "poster_path": "/g5NAbtEK5bEAkBdXq6YM7a7tkZO.jpg",
+      "release_date": "1970-03-19",
+      "vote_average": 7.1,
+      "genres": [
+        "Romance",
+        "History",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-08-06T21:02:43.820Z"
+    },
+    {
+      "id": 21876,
+      "title": "Von Ryan's Express",
+      "poster_path": "/kNIpEa4fe0RvgTqjkRrHFuSW8lz.jpg",
+      "release_date": "1965-06-23",
+      "vote_average": 7.1,
+      "genres": [
+        "War",
+        "Action",
+        "Adventure",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-08-06T21:02:46.453Z"
     }
   ]
 }
