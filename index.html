@@ -99,7 +99,6 @@
 
         .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
 
-        /* Mobile menu toggle button */
         .mobile-menu-toggle {
             display: none;
             background: #e50914;
@@ -114,11 +113,8 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .mobile-menu-toggle:hover {
-            background: #f40612;
-        }
+        .mobile-menu-toggle:hover { background: #f40612; }
 
-        /* Genre dropdown (hidden on desktop) */
         .genre-dropdown {
             display: none;
             padding: 12px 20px;
@@ -131,15 +127,8 @@
             min-width: 200px;
         }
 
-        .genre-dropdown:focus {
-            outline: none;
-            border-color: #e50914;
-        }
-
-        .genre-dropdown option {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
+        .genre-dropdown:focus { outline: none; border-color: #e50914; }
+        .genre-dropdown option { background: #1a1a1a; color: #ffffff; }
 
         .controls {
             margin-bottom: 20px;
@@ -224,10 +213,18 @@
             transition: transform 0.3s, box-shadow 0.3s;
             background: #1a1a1a;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            /* OPTION 3: Enforce perfect 2:3 movie poster ratio */
+            aspect-ratio: 2 / 3;
         }
 
         .movie-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3); z-index: 10; }
-        .movie-card img { width: 100%; height: 300px; object-fit: cover; display: block; }
+        
+        .movie-card img { 
+            width: 100%; 
+            height: 100%; /* Fills the aspect-ratio container perfectly */
+            object-fit: cover; 
+            display: block; 
+        }
 
         .movie-card-overlay {
             position: absolute;
@@ -625,26 +622,16 @@
                 align-items: flex-start;
             }
 
-            .header-left {
-                min-width: 0;
-            }
+            .header-left { min-width: 0; }
+            h1 { font-size: 1.4rem; }
+            .movie-count { font-size: 1rem; }
 
-            h1 {
-                font-size: 1.4rem;
-            }
-
-            .movie-count {
-                font-size: 1rem;
-            }
-
-            /* Show hamburger button */
             .mobile-menu-toggle {
                 display: block;
                 flex-shrink: 0;
                 margin-left: 10px;
             }
 
-            /* Hide desktop buttons by default */
             .header-buttons {
                 display: none;
                 width: 100%;
@@ -653,22 +640,11 @@
                 margin-top: 10px;
             }
 
-            /* Show buttons when menu is open */
-            .header-buttons.show {
-                display: flex;
-            }
+            .header-buttons.show { display: flex; }
+            .header-buttons .btn { width: 100%; text-align: center; }
 
-            .header-buttons .btn {
-                width: 100%;
-                text-align: center;
-            }
+            .genre-filter-bar { display: none; }
 
-            /* Hide desktop genre chips */
-            .genre-filter-bar {
-                display: none;
-            }
-
-            /* Show mobile genre dropdown */
             .genre-dropdown {
                 display: block;
                 width: 100%;
@@ -693,7 +669,7 @@
                 padding: 10px;
             }
 
-            .movie-card img { height: 180px; }
+            /* Note: .movie-card img height is removed here because aspect-ratio: 2/3 handles it perfectly! */
 
             .search-results { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .search-result-item { height: 230px; }
@@ -747,7 +723,6 @@
             </div>
         </div>
 
-        <!-- Mobile genre dropdown -->
         <select class="genre-dropdown" id="genreDropdown" onchange="filterByGenreMobile(this.value)">
             <option value="all">🎭 All Genres</option>
         </select>
@@ -782,7 +757,6 @@
     </div>
 
     <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">↑</button>
-
     <div class="toast-container" id="toastContainer"></div>
 
     <div class="modal" id="addModal">
@@ -815,7 +789,6 @@
                             <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
                         </div>
                     </div>
-                    
                     <div id="personFilters" class="person-filters">
                         <div class="filter-row">
                             <div class="filter-group">
@@ -841,25 +814,12 @@
                             <button class="clear-filters-btn" onclick="clearPersonFilters()">Clear</button>
                         </div>
                         <div class="filter-row">
-                            <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeCompilations">
-                                Exclude compilations & "Best of"
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeDocumentaries">
-                                Exclude documentaries
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeTV">
-                                Exclude TV movies
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeAdded" checked>
-                                Hide movies already added
-                            </label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeCompilations"> Exclude compilations & "Best of"</label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeDocumentaries"> Exclude documentaries</label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeTV"> Exclude TV movies</label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeAdded" checked> Hide movies already added</label>
                         </div>
                     </div>
-                    
                     <div id="personMovieResults" class="search-results"></div>
                 </div>
             </div>
@@ -908,20 +868,11 @@
         const EMBEDDED_MOVIES = null;
 
         let movies = JSON.parse(localStorage.getItem('myMovies')) || EMBEDDED_MOVIES || [];
-        let searchTimeout;
-        let personSearchTimeout;
+        let searchTimeout, personSearchTimeout;
         let currentSort = localStorage.getItem('movieSort') || 'added-desc';
-        let currentPersonMovies = [];
-        let currentPersonId = null;
-        let currentPersonName = null;
-        let currentGenreFilter = 'all';
-        let currentMovieIdInDetails = null;
-        let ytApiReady = false;
-        let ytPlayers = {};
-
-        // ============================================================
-        // UTILITY FUNCTIONS
-        // ============================================================
+        let currentPersonMovies = [], currentPersonId = null, currentPersonName = null;
+        let currentGenreFilter = 'all', currentMovieIdInDetails = null;
+        let ytApiReady = false, ytPlayers = {};
 
         function showToast(message, type = 'info', duration = 4000) {
             const container = document.getElementById('toastContainer');
@@ -946,15 +897,9 @@
         function fetchWithTimeout(url, timeout = 10000) {
             return Promise.race([
                 fetch(url),
-                new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Request timed out after ' + (timeout/1000) + ' seconds')), timeout)
-                )
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeout))
             ]);
         }
-
-        // ============================================================
-        // MOBILE MENU FUNCTIONS
-        // ============================================================
 
         function toggleMobileMenu() {
             const buttons = document.getElementById('headerButtons');
@@ -976,51 +921,29 @@
 
         function filterByGenreMobile(genre) {
             currentGenreFilter = genre;
-            
-            // Update desktop chips
-            document.querySelectorAll('.genre-chip').forEach(chip => {
-                chip.classList.toggle('active', chip.dataset.genre === genre);
-            });
-            
+            document.querySelectorAll('.genre-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.genre === genre));
             const notice = document.getElementById('activeFilterNotice');
             const text = document.getElementById('activeFilterText');
-            if (genre === 'all') {
-                notice.classList.remove('show');
-            } else {
-                text.textContent = `Genre: ${genre}`;
-                notice.classList.add('show');
-            }
+            if (genre === 'all') notice.classList.remove('show');
+            else { text.textContent = `Genre: ${genre}`; notice.classList.add('show'); }
             renderMovies();
         }
-
-        // ============================================================
-        // GITHUB SYNC
-        // ============================================================
 
         async function loadMoviesFromGitHub(showToastMsg = true) {
             updateSyncStatus('loading', 'Checking GitHub...');
             try {
                 const url = `${GITHUB_MOVIES_URL}?t=${Date.now()}`;
-                console.log('📡 Fetching from:', url);
-                
                 const response = await fetchWithTimeout(url, 10000);
-                console.log('📡 Response status:', response.status);
-                
                 if (!response.ok) {
                     if (response.status === 404) {
                         updateSyncStatus('error', 'movies.json not found', 'Check GitHub');
                         if (showToastMsg) showToast('❌ movies.json not found', 'error', 8000);
-                    } else {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
+                    } else throw new Error(`HTTP ${response.status}`);
                     return;
                 }
-                
                 const data = await response.json();
                 let githubMovies = Array.isArray(data) ? data : (data.movies || []);
                 let githubExportedAt = data.exportedAt || null;
-                
-                console.log(`✅ Loaded ${githubMovies.length} movies from GitHub`);
                 
                 movies = githubMovies;
                 localStorage.setItem('myMovies', JSON.stringify(movies));
@@ -1043,67 +966,31 @@
             updateMovieCount();
         }
 
-        // ============================================================
-        // INITIALIZATION
-        // ============================================================
-
         async function init() {
-            console.log('🚀 Starting initialization...');
-            
             document.getElementById('sortSelect').value = currentSort;
-            
-            document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addMovieManual();
-            });
-
+            document.getElementById('tmdbInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') addMovieManual(); });
             window.addEventListener('scroll', handleScroll);
-
-            // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 const buttons = document.getElementById('headerButtons');
                 const toggle = document.querySelector('.mobile-menu-toggle');
-                if (buttons.classList.contains('show') && 
-                    !buttons.contains(e.target) && 
-                    !toggle.contains(e.target)) {
-                    closeMobileMenu();
-                }
+                if (buttons.classList.contains('show') && !buttons.contains(e.target) && !toggle.contains(e.target)) closeMobileMenu();
             });
-
             await loadMoviesFromGitHub(true);
-            
-            console.log('🎨 Rendering movies...');
             renderMovies();
             renderGenreFilter();
             updateMovieCount();
-            
             backfillMissingGenres();
-            
-            console.log('✅ Initialization complete');
         }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
 
-        function onYouTubeIframeAPIReady() {
-            ytApiReady = true;
-        }
-
-        // ============================================================
-        // CORE FUNCTIONS
-        // ============================================================
-
+        function onYouTubeIframeAPIReady() { ytApiReady = true; }
         function updateMovieCount() {
             const count = movies.length;
             document.getElementById('movieCount').textContent = `(${count === 1 ? '1 movie' : count + ' movies'})`;
         }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
         function handleScroll() {
             const backToTopBtn = document.getElementById('backToTop');
             if (window.pageYOffset > 300) backToTopBtn.classList.add('visible');
@@ -1113,29 +1000,21 @@
         async function backfillMissingGenres() {
             const moviesWithoutGenres = movies.filter(m => !m.genres || m.genres.length === 0);
             if (moviesWithoutGenres.length === 0) return;
-
             for (const movie of moviesWithoutGenres) {
                 try {
                     const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
                     const data = await response.json();
                     if (data.genres) movie.genres = data.genres.map(g => g.name);
                     await new Promise(resolve => setTimeout(resolve, 250));
-                } catch (error) {
-                    console.error('Error backfilling genres for', movie.title, error);
-                }
+                } catch (error) { console.error('Error backfilling genres for', movie.title, error); }
             }
-            
             localStorage.setItem('myMovies', JSON.stringify(movies));
             renderGenreFilter();
         }
 
         function getAllGenres() {
             const genreSet = new Set();
-            movies.forEach(movie => {
-                if (movie.genres && Array.isArray(movie.genres)) {
-                    movie.genres.forEach(g => genreSet.add(g));
-                }
-            });
+            movies.forEach(movie => { if (movie.genres && Array.isArray(movie.genres)) movie.genres.forEach(g => genreSet.add(g)); });
             return Array.from(genreSet).sort();
         }
 
@@ -1144,17 +1023,14 @@
             const dropdown = document.getElementById('genreDropdown');
             const genres = getAllGenres();
             
-            // Desktop chips
             if (bar) {
                 bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
-                
                 const allChip = document.createElement('button');
                 allChip.className = `genre-chip ${currentGenreFilter === 'all' ? 'active' : ''}`;
                 allChip.dataset.genre = 'all';
                 allChip.onclick = () => filterByGenre('all');
                 allChip.textContent = 'All';
                 bar.appendChild(allChip);
-
                 genres.forEach(genre => {
                     const chip = document.createElement('button');
                     chip.className = `genre-chip ${currentGenreFilter === genre ? 'active' : ''}`;
@@ -1164,8 +1040,6 @@
                     bar.appendChild(chip);
                 });
             }
-            
-            // Mobile dropdown
             if (dropdown) {
                 const currentValue = dropdown.value;
                 dropdown.innerHTML = '<option value="all">🎭 All Genres</option>';
@@ -1175,53 +1049,33 @@
                     option.textContent = genre;
                     dropdown.appendChild(option);
                 });
-                // Restore selected value
                 dropdown.value = currentGenreFilter;
             }
         }
 
         function filterByGenre(genre) {
             currentGenreFilter = genre;
-            document.querySelectorAll('.genre-chip').forEach(chip => {
-                chip.classList.toggle('active', chip.dataset.genre === genre);
-            });
-            // Sync mobile dropdown
+            document.querySelectorAll('.genre-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.genre === genre));
             const dropdown = document.getElementById('genreDropdown');
             if (dropdown) dropdown.value = genre;
-            
             const notice = document.getElementById('activeFilterNotice');
             const text = document.getElementById('activeFilterText');
             if (genre === 'all') notice.classList.remove('show');
-            else {
-                text.textContent = `Genre: ${genre}`;
-                notice.classList.add('show');
-            }
+            else { text.textContent = `Genre: ${genre}`; notice.classList.add('show'); }
             renderMovies();
         }
 
-        function clearFilters() {
-            filterByGenre('all');
-            document.getElementById('searchInput').value = '';
-        }
+        function clearFilters() { filterByGenre('all'); document.getElementById('searchInput').value = ''; }
 
         function exportAsHTML() {
             const htmlContent = document.documentElement.outerHTML;
             const moviesData = JSON.stringify(movies, null, 2);
-            const updatedHTML = htmlContent.replace(
-                /const EMBEDDED_MOVIES = null;/,
-                `const EMBEDDED_MOVIES = ${moviesData};`
-            );
-            
+            const updatedHTML = htmlContent.replace(/const EMBEDDED_MOVIES = null;/, `const EMBEDDED_MOVIES = ${moviesData};`);
             const blob = new Blob([updatedHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `my-movie-collection-${new Date().toISOString().split('T')[0]}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
+            a.href = url; a.download = `my-movie-collection-${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
             showToast(`📥 Exported ${movies.length} movies as HTML`, 'success');
         }
 
@@ -1230,18 +1084,9 @@
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'movies.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            localStorage.setItem('myMoviesData', JSON.stringify({
-                exportedAt: data.exportedAt,
-                count: movies.length
-            }));
-            
+            a.href = url; a.download = 'movies.json';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            localStorage.setItem('myMoviesData', JSON.stringify({ exportedAt: data.exportedAt, count: movies.length }));
             showToast(`📄 Exported ${movies.length} movies as movies.json`, 'success');
             showToast('💡 Upload this file to GitHub as "movies.json" to publish', 'info', 6000);
         }
@@ -1249,28 +1094,19 @@
         function importJSON(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
                     const parsed = JSON.parse(e.target.result);
-                    let importedMovies;
-                    
-                    if (Array.isArray(parsed)) importedMovies = parsed;
-                    else if (parsed && Array.isArray(parsed.movies)) importedMovies = parsed.movies;
-                    else throw new Error('Invalid format');
-                    
+                    let importedMovies = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.movies) ? parsed.movies : null);
+                    if (!importedMovies) throw new Error('Invalid format');
                     if (confirm(`Import ${importedMovies.length} movies?\n\nThis will REPLACE your current collection.`)) {
                         movies = importedMovies;
                         localStorage.setItem('myMovies', JSON.stringify(movies));
-                        renderMovies();
-                        renderGenreFilter();
-                        updateMovieCount();
+                        renderMovies(); renderGenreFilter(); updateMovieCount();
                         showToast(`✅ Imported ${importedMovies.length} movies`, 'success');
                     }
-                } catch (error) {
-                    showToast(`❌ Error: ${error.message}`, 'error');
-                }
+                } catch (error) { showToast(`❌ Error: ${error.message}`, 'error'); }
             };
             reader.readAsText(file);
             event.target.value = '';
@@ -1280,83 +1116,45 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            if (tab === 'search') {
-                document.getElementById('searchTab').classList.add('active');
-                document.getElementById('tmdbSearchInput').focus();
-            } else if (tab === 'person') {
-                document.getElementById('personTab').classList.add('active');
+            if (tab === 'search') { document.getElementById('searchTab').classList.add('active'); document.getElementById('tmdbSearchInput').focus(); } 
+            else if (tab === 'person') { 
+                document.getElementById('personTab').classList.add('active'); 
                 document.getElementById('personSearchInput').focus();
                 document.getElementById('personMoviesSection').style.display = 'none';
                 document.getElementById('personResults').classList.remove('show');
                 document.getElementById('personSearchForm').style.display = 'block';
-            } else {
-                document.getElementById('manualTab').classList.add('active');
-                document.getElementById('tmdbInput').focus();
-            }
+            } else { document.getElementById('manualTab').classList.add('active'); document.getElementById('tmdbInput').focus(); }
         }
 
-        function debouncedSearch() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(searchTMDB, 500);
-        }
-
-        function debouncedPersonSearch() {
-            clearTimeout(personSearchTimeout);
-            personSearchTimeout = setTimeout(searchPerson, 500);
-        }
+        function debouncedSearch() { clearTimeout(searchTimeout); searchTimeout = setTimeout(searchTMDB, 500); }
+        function debouncedPersonSearch() { clearTimeout(personSearchTimeout); personSearchTimeout = setTimeout(searchPerson, 500); }
 
         async function searchTMDB() {
             const query = document.getElementById('tmdbSearchInput').value.trim();
             const resultsDiv = document.getElementById('searchResults');
-
             if (query.length < 2) { resultsDiv.innerHTML = ''; return; }
-
             resultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
-
             try {
                 const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
                 const data = await response.json();
-
-                if (data.results.length === 0) {
-                    resultsDiv.innerHTML = '<div class="search-no-results">No movies found</div>';
-                    return;
-                }
-
+                if (data.results.length === 0) { resultsDiv.innerHTML = '<div class="search-no-results">No movies found</div>'; return; }
                 resultsDiv.innerHTML = '';
-                
                 data.results.forEach(movie => {
                     const isAdded = movies.some(m => m.id === movie.id);
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
                     item.dataset.movieId = movie.id;
                     updateItemClickHandler(item, movie.id, isAdded);
-
                     const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
                     const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-
-                    item.innerHTML = `
-                        <img src="${posterPath}" alt="${movie.title}">
-                        <button class="add-btn-small ${isAdded ? 'added' : ''}" 
-                                onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">
-                            ${isAdded ? '✓ Remove' : '+ Add'}
-                        </button>
-                        <div class="search-result-info">
-                            <div class="search-result-title">${movie.title}</div>
-                            <div class="search-result-year">${year}</div>
-                        </div>
-                    `;
+                    item.innerHTML = `<img src="${posterPath}" alt="${movie.title}"><button class="add-btn-small ${isAdded ? 'added' : ''}" onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">${isAdded ? '✓ Remove' : '+ Add'}</button><div class="search-result-info"><div class="search-result-title">${movie.title}</div><div class="search-result-year">${year}</div></div>`;
                     resultsDiv.appendChild(item);
                 });
-            } catch (error) {
-                resultsDiv.innerHTML = '<div class="search-no-results">Error searching TMDB</div>';
-            }
+            } catch (error) { resultsDiv.innerHTML = '<div class="search-no-results">Error searching TMDB</div>'; }
         }
 
         function updateItemClickHandler(item, movieId, isAdded) {
-            item.onclick = (e) => {
-                if (!e.target.classList.contains('add-btn-small')) toggleMovie(movieId, item);
-            };
+            item.onclick = (e) => { if (!e.target.classList.contains('add-btn-small')) toggleMovie(movieId, item); };
         }
 
         function toggleMovie(movieId, element) {
@@ -1369,129 +1167,67 @@
             const query = document.getElementById('personSearchInput').value.trim();
             const personResultsDiv = document.getElementById('personResults');
             const personMoviesSection = document.getElementById('personMoviesSection');
-
-            if (query.length < 2) {
-                personResultsDiv.innerHTML = '';
-                personResultsDiv.classList.remove('show');
-                personMoviesSection.style.display = 'none';
-                return;
-            }
-
+            if (query.length < 2) { personResultsDiv.innerHTML = ''; personResultsDiv.classList.remove('show'); personMoviesSection.style.display = 'none'; return; }
             personResultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
             personResultsDiv.classList.add('show');
             personMoviesSection.style.display = 'none';
-
             try {
                 const response = await fetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
                 const data = await response.json();
-
-                if (data.results.length === 0) {
-                    personResultsDiv.innerHTML = '<div class="search-no-results">No people found</div>';
-                    return;
-                }
-
+                if (data.results.length === 0) { personResultsDiv.innerHTML = '<div class="search-no-results">No people found</div>'; return; }
                 personResultsDiv.innerHTML = '';
-                
                 data.results.slice(0, 5).forEach(person => {
                     const item = document.createElement('div');
                     item.className = 'person-result-item';
                     item.onclick = () => loadPersonMovies(person.id, person.name);
-
                     const profilePath = person.profile_path ? `${IMG_URL_PROFILE}${person.profile_path}` : 'https://via.placeholder.com/185x185?text=No+Image';
-
-                    item.innerHTML = `
-                        <img src="${profilePath}" alt="${person.name}">
-                        <div class="person-result-info">
-                            <div class="person-result-name">${person.name}</div>
-                            <div class="person-result-known">Known for: ${person.known_for_department || 'Acting'}</div>
-                        </div>
-                    `;
+                    item.innerHTML = `<img src="${profilePath}" alt="${person.name}"><div class="person-result-info"><div class="person-result-name">${person.name}</div><div class="person-result-known">Known for: ${person.known_for_department || 'Acting'}</div></div>`;
                     personResultsDiv.appendChild(item);
                 });
-            } catch (error) {
-                personResultsDiv.innerHTML = '<div class="search-no-results">Error searching</div>';
-            }
+            } catch (error) { personResultsDiv.innerHTML = '<div class="search-no-results">Error searching</div>'; }
         }
 
         async function loadPersonMovies(personId, personName) {
-            currentPersonId = personId;
-            currentPersonName = personName;
-            
+            currentPersonId = personId; currentPersonName = personName;
             const movieResultsDiv = document.getElementById('personMovieResults');
             const personMoviesSection = document.getElementById('personMoviesSection');
             const personMoviesTitle = document.getElementById('personMoviesTitle');
             const addAllBtn = document.getElementById('addAllBtn');
             const personResultsDiv = document.getElementById('personResults');
             const personSearchForm = document.getElementById('personSearchForm');
-
             personResultsDiv.classList.remove('show');
             personSearchForm.style.display = 'none';
             personMoviesSection.style.display = 'flex';
-            
             personMoviesTitle.innerHTML = `Movies featuring ${personName}`;
             movieResultsDiv.innerHTML = '<div class="search-loading">Loading movies...</div>';
             addAllBtn.disabled = true;
-
             try {
                 const response = await fetch(`${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}`);
                 const data = await response.json();
-
-                const castMovies = data.cast || [];
-                const crewMovies = data.crew || [];
-                const allMovies = [...castMovies, ...crewMovies];
-                let uniqueMovies = allMovies.filter((movie, index, self) => 
-                    index === self.findIndex(m => m.id === movie.id)
-                );
-
+                const allMovies = [...(data.cast || []), ...(data.crew || [])];
+                let uniqueMovies = allMovies.filter((movie, index, self) => index === self.findIndex(m => m.id === movie.id));
                 uniqueMovies = applyPersonFilters(uniqueMovies);
-
                 uniqueMovies.sort((a, b) => {
                     const dateA = a.release_date ? new Date(a.release_date) : new Date(0);
                     const dateB = b.release_date ? new Date(b.release_date) : new Date(0);
                     return dateB - dateA;
                 });
-
                 currentPersonMovies = uniqueMovies;
-
-                if (uniqueMovies.length === 0) {
-                    movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found matching your filters</div>`;
-                    addAllBtn.disabled = true;
-                    return;
-                }
-
+                if (uniqueMovies.length === 0) { movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found matching your filters</div>`; addAllBtn.disabled = true; return; }
                 movieResultsDiv.innerHTML = '';
-                
                 uniqueMovies.forEach(movie => {
                     const isAdded = movies.some(m => m.id === movie.id);
                     const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-                    
                     const item = document.createElement('div');
                     item.className = 'search-result-item';
                     item.dataset.movieId = movie.id;
                     updateItemClickHandler(item, movie.id, isAdded);
-
                     const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
-
-                    item.innerHTML = `
-                        <img src="${posterPath}" alt="${movie.title}">
-                        <button class="add-btn-small ${isAdded ? 'added' : ''}" 
-                                data-movie-id="${movie.id}"
-                                onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">
-                            ${isAdded ? '✓ Remove' : '+ Add'}
-                        </button>
-                        <div class="search-result-info">
-                            <div class="search-result-title">${movie.title}</div>
-                            <div class="search-result-year">${year} ${movie.vote_average ? `• ⭐ ${movie.vote_average.toFixed(1)}` : ''}</div>
-                        </div>
-                    `;
+                    item.innerHTML = `<img src="${posterPath}" alt="${movie.title}"><button class="add-btn-small ${isAdded ? 'added' : ''}" data-movie-id="${movie.id}" onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">${isAdded ? '✓ Remove' : '+ Add'}</button><div class="search-result-info"><div class="search-result-title">${movie.title}</div><div class="search-result-year">${year} ${movie.vote_average ? `• ⭐ ${movie.vote_average.toFixed(1)}` : ''}</div></div>`;
                     movieResultsDiv.appendChild(item);
                 });
-
                 updateAddAllButton();
-            } catch (error) {
-                movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>';
-                addAllBtn.disabled = true;
-            }
+            } catch (error) { movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>'; addAllBtn.disabled = true; }
         }
 
         function applyPersonFilters(filmography) {
@@ -1502,29 +1238,22 @@
             const excludeDocumentaries = document.getElementById('filterExcludeDocumentaries')?.checked;
             const excludeTV = document.getElementById('filterExcludeTV')?.checked;
             const excludeAlreadyAdded = document.getElementById('filterExcludeAdded')?.checked;
-
             return filmography.filter(movie => {
                 const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
                 const rating = movie.vote_average || 0;
                 const title = movie.title.toLowerCase();
-
                 if (yearFrom && year && year < parseInt(yearFrom)) return false;
                 if (yearTo && year && year > parseInt(yearTo)) return false;
                 if (minRating && rating < parseFloat(minRating)) return false;
-
                 if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) return false;
                 if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of') || title.includes('behind the scenes'))) return false;
                 if (excludeTV && movie.media_type === 'tv') return false;
                 if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) return false;
-
                 return true;
             });
         }
 
-        function showPersonFilters() {
-            document.getElementById('personFilters').classList.toggle('show');
-        }
-
+        function showPersonFilters() { document.getElementById('personFilters').classList.toggle('show'); }
         function clearPersonFilters() {
             document.getElementById('filterYearFrom').value = '';
             document.getElementById('filterYearTo').value = '';
@@ -1533,7 +1262,6 @@
             document.getElementById('filterExcludeDocumentaries').checked = false;
             document.getElementById('filterExcludeTV').checked = false;
             document.getElementById('filterExcludeAdded').checked = false;
-            
             if (currentPersonId && currentPersonName) loadPersonMovies(currentPersonId, currentPersonName);
         }
 
@@ -1547,211 +1275,105 @@
         async function addAllVisibleMovies() {
             const addAllBtn = document.getElementById('addAllBtn');
             const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
-            
             if (moviesToAdd.length === 0) return;
-
-            addAllBtn.disabled = true;
-            addAllBtn.textContent = 'Adding...';
-
+            addAllBtn.disabled = true; addAllBtn.textContent = 'Adding...';
             for (const movie of moviesToAdd) {
                 try {
                     const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
                     const movieData = await response.json();
-
                     if (!movies.some(m => m.id === movieData.id)) {
-                        movies.push({
-                            id: movieData.id,
-                            title: movieData.title,
-                            poster_path: movieData.poster_path,
-                            release_date: movieData.release_date,
-                            vote_average: movieData.vote_average,
-                            genres: movieData.genres ? movieData.genres.map(g => g.name) : [],
-                            userRating: null,
-                            added: new Date().toISOString()
-                        });
-                        
+                        movies.push({ id: movieData.id, title: movieData.title, poster_path: movieData.poster_path, release_date: movieData.release_date, vote_average: movieData.vote_average, genres: movieData.genres ? movieData.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
                         const item = document.querySelector(`[data-movie-id="${movieData.id}"]`);
                         if (item) {
                             const button = item.querySelector('.add-btn-small');
-                            if (button) {
-                                button.classList.add('added');
-                                button.textContent = '✓ Remove';
-                            }
+                            if (button) { button.classList.add('added'); button.textContent = '✓ Remove'; }
                             updateItemClickHandler(item, movieData.id, true);
                         }
                     }
-                } catch (error) {
-                    console.error('Error adding movie:', movie.title, error);
-                }
+                } catch (error) { console.error('Error adding movie:', movie.title, error); }
             }
-
             localStorage.setItem('myMovies', JSON.stringify(movies));
-            renderMovies();
-            renderGenreFilter();
-            updateMovieCount();
-            updateAddAllButton();
+            renderMovies(); renderGenreFilter(); updateMovieCount(); updateAddAllButton();
             showToast(`✅ Added ${moviesToAdd.length} movies`, 'success');
         }
 
         async function addMovieFromSearch(movieId, element) {
             if (movies.some(m => m.id === movieId)) return;
-
             try {
                 const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
                 const movie = await response.json();
-
-                movies.push({
-                    id: movie.id,
-                    title: movie.title,
-                    poster_path: movie.poster_path,
-                    release_date: movie.release_date,
-                    vote_average: movie.vote_average,
-                    genres: movie.genres ? movie.genres.map(g => g.name) : [],
-                    userRating: null,
-                    added: new Date().toISOString()
-                });
-
+                movies.push({ id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date, vote_average: movie.vote_average, genres: movie.genres ? movie.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
                 localStorage.setItem('myMovies', JSON.stringify(movies));
-                renderMovies();
-                renderGenreFilter();
-                updateMovieCount();
-                
+                renderMovies(); renderGenreFilter(); updateMovieCount();
                 if (element) {
                     const button = element.querySelector('.add-btn-small');
-                    if (button) {
-                        button.classList.add('added');
-                        button.textContent = '✓ Remove';
-                    }
+                    if (button) { button.classList.add('added'); button.textContent = '✓ Remove'; }
                     updateItemClickHandler(element, movieId, true);
                 }
-                
                 if (currentPersonMovies.length > 0) updateAddAllButton();
                 showToast(`✅ Added "${movie.title}"`, 'success');
-            } catch (error) {
-                console.error('Add error:', error);
-            }
+            } catch (error) { console.error('Add error:', error); }
         }
 
         function removeMovieFromCollection(movieId, element) {
             const movieIndex = movies.findIndex(m => m.id === movieId);
             if (movieIndex === -1) return;
-
             const movieTitle = movies[movieIndex].title;
-            
             if (confirm(`Remove "${movieTitle}" from your collection?`)) {
                 movies.splice(movieIndex, 1);
                 localStorage.setItem('myMovies', JSON.stringify(movies));
-                renderMovies();
-                renderGenreFilter();
-                updateMovieCount();
-                
+                renderMovies(); renderGenreFilter(); updateMovieCount();
                 if (element) {
                     const button = element.querySelector('.add-btn-small');
-                    if (button) {
-                        button.classList.remove('added');
-                        button.textContent = '+ Add';
-                    }
+                    if (button) { button.classList.remove('added'); button.textContent = '+ Add'; }
                     updateItemClickHandler(element, movieId, false);
                 }
-                
                 if (currentPersonMovies.length > 0) updateAddAllButton();
                 showToast(`🗑️ Removed "${movieTitle}"`, 'info');
             }
         }
 
-        function extractMovieId(input) {
-            const match = input.match(/^(\d+)/);
-            return match ? match[1] : null;
-        }
+        function extractMovieId(input) { const match = input.match(/^(\d+)/); return match ? match[1] : null; }
 
         async function addMovieManual() {
             const input = document.getElementById('tmdbInput').value.trim();
             const messageDiv = document.getElementById('addMessage');
-            
-            if (!input) {
-                messageDiv.style.color = '#ff6b6b';
-                messageDiv.textContent = 'Please enter a TMDB reference';
-                return;
-            }
-
+            if (!input) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Please enter a TMDB reference'; return; }
             const movieId = extractMovieId(input);
-            if (!movieId) {
-                messageDiv.style.color = '#ff6b6b';
-                messageDiv.textContent = 'Invalid TMDB reference';
-                return;
-            }
-
-            messageDiv.textContent = 'Loading...';
-            messageDiv.style.color = '#888888';
-
+            if (!movieId) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Invalid TMDB reference'; return; }
+            messageDiv.textContent = 'Loading...'; messageDiv.style.color = '#888888';
             try {
                 const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
                 if (!response.ok) throw new Error('Movie not found');
-
                 const movie = await response.json();
-
-                if (movies.some(m => m.id === movie.id)) {
-                    messageDiv.style.color = '#ffd700';
-                    messageDiv.textContent = 'Already in your collection!';
-                    return;
-                }
-
-                movies.push({
-                    id: movie.id,
-                    title: movie.title,
-                    poster_path: movie.poster_path,
-                    release_date: movie.release_date,
-                    vote_average: movie.vote_average,
-                    genres: movie.genres ? movie.genres.map(g => g.name) : [],
-                    userRating: null,
-                    added: new Date().toISOString()
-                });
-
+                if (movies.some(m => m.id === movie.id)) { messageDiv.style.color = '#ffd700'; messageDiv.textContent = 'Already in your collection!'; return; }
+                movies.push({ id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date, vote_average: movie.vote_average, genres: movie.genres ? movie.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
                 localStorage.setItem('myMovies', JSON.stringify(movies));
-                document.getElementById('tmdbInput').value = '';
-                messageDiv.textContent = '';
-                closeAddModal();
-                renderMovies();
-                renderGenreFilter();
-                updateMovieCount();
+                document.getElementById('tmdbInput').value = ''; messageDiv.textContent = '';
+                closeAddModal(); renderMovies(); renderGenreFilter(); updateMovieCount();
                 showToast(`✅ Added "${movie.title}"`, 'success');
-            } catch (error) {
-                messageDiv.style.color = '#ff6b6b';
-                messageDiv.textContent = 'Error: Movie not found';
-            }
+            } catch (error) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Error: Movie not found'; }
         }
 
-        function changeSort() {
-            currentSort = document.getElementById('sortSelect').value;
-            localStorage.setItem('movieSort', currentSort);
-            renderMovies();
-        }
+        function changeSort() { currentSort = document.getElementById('sortSelect').value; localStorage.setItem('movieSort', currentSort); renderMovies(); }
 
         function sortMovies(movieList) {
             const [field, direction] = currentSort.split('-');
             const multiplier = direction === 'asc' ? 1 : -1;
-
             return [...movieList].sort((a, b) => {
                 let valA, valB, hasDateA, hasDateB;
                 switch(field) {
-                    case 'title':
-                        return a.title.toLowerCase().localeCompare(b.title.toLowerCase()) * multiplier;
+                    case 'title': return a.title.toLowerCase().localeCompare(b.title.toLowerCase()) * multiplier;
                     case 'year':
                         hasDateA = !!a.release_date; hasDateB = !!b.release_date;
-                        if (!hasDateA && !hasDateB) return 0;
-                        if (!hasDateA) return 1;
-                        if (!hasDateB) return -1;
+                        if (!hasDateA && !hasDateB) return 0; if (!hasDateA) return 1; if (!hasDateB) return -1;
                         return (new Date(a.release_date).getFullYear() - new Date(b.release_date).getFullYear()) * multiplier;
                     case 'rating':
                         valA = a.userRating || 0; valB = b.userRating || 0;
-                        if (valA === 0 && valB === 0) return 0;
-                        if (valA === 0) return 1;
-                        if (valB === 0) return -1;
+                        if (valA === 0 && valB === 0) return 0; if (valA === 0) return 1; if (valB === 0) return -1;
                         return (valA - valB) * multiplier;
-                    case 'tmdb':
-                        return ((a.vote_average || 0) - (b.vote_average || 0)) * multiplier;
-                    case 'added':
-                        return (new Date(a.added).getTime() - new Date(b.added).getTime()) * multiplier;
+                    case 'tmdb': return ((a.vote_average || 0) - (b.vote_average || 0)) * multiplier;
+                    case 'added': return (new Date(a.added).getTime() - new Date(b.added).getTime()) * multiplier;
                     default: return 0;
                 }
             });
@@ -1762,44 +1384,24 @@
             if (!grid) return;
             grid.innerHTML = '';
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
             let filteredMovies = movies.filter(movie => {
                 const matchesSearch = movie.title.toLowerCase().includes(searchTerm);
-                const matchesGenre = currentGenreFilter === 'all' || 
-                    (movie.genres && movie.genres.includes(currentGenreFilter));
+                const matchesGenre = currentGenreFilter === 'all' || (movie.genres && movie.genres.includes(currentGenreFilter));
                 return matchesSearch && matchesGenre;
             });
-
             const sortedMovies = sortMovies(filteredMovies);
-
             if (sortedMovies.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <h2>${movies.length === 0 ? 'No movies yet' : 'No matches'}</h2>
-                        <p>${movies.length === 0 ? 'Click "Add Movie" to start building your collection!' : 'Try adjusting your search or genre filter.'}</p>
-                    </div>
-                `;
+                grid.innerHTML = `<div class="empty-state"><h2>${movies.length === 0 ? 'No movies yet' : 'No matches'}</h2><p>${movies.length === 0 ? 'Click "Add Movie" to start building your collection!' : 'Try adjusting your search or genre filter.'}</p></div>`;
                 return;
             }
-
             sortedMovies.forEach(movie => {
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 card.onclick = () => showMovieDetails(movie.id);
-
                 const year = movie.release_date ? new Date(movie.release_date).getFullYear() : '';
                 const genresText = movie.genres && movie.genres.length > 0 ? movie.genres.slice(0, 3).join(' • ') : '';
                 let ratingBadge = movie.userRating ? `<div class="movie-card-rating">⭐ ${movie.userRating}/5</div>` : '';
-
-                card.innerHTML = `
-                    <img src="${movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}" loading="lazy">
-                    ${ratingBadge}
-                    <div class="movie-card-overlay">
-                        <div class="movie-card-title">${movie.title}</div>
-                        <div class="movie-card-year">${year}</div>
-                        ${genresText ? `<div class="movie-card-genres">${genresText}</div>` : ''}
-                    </div>
-                `;
+                card.innerHTML = `<img src="${movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}" loading="lazy">${ratingBadge}<div class="movie-card-overlay"><div class="movie-card-title">${movie.title}</div><div class="movie-card-year">${year}</div>${genresText ? `<div class="movie-card-genres">${genresText}</div>` : ''}</div>`;
                 grid.appendChild(card);
             });
         }
@@ -1810,22 +1412,18 @@
             const detailsDiv = document.getElementById('movieDetails');
             detailsDiv.innerHTML = '<p style="text-align: center; padding: 40px; color: #888888;">Loading...</p>';
             modal.classList.add('active');
-
             try {
                 const [movieResponse, creditsResponse] = await Promise.all([
                     fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`),
                     fetch(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`)
                 ]);
-                
                 const movie = await movieResponse.json();
                 const credits = await creditsResponse.json();
-
                 const localMovie = movies.find(m => m.id === movieId);
                 const userRating = localMovie ? localMovie.userRating : null;
                 const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
                 const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
                 const topActors = credits.cast ? credits.cast.slice(0, 3) : [];
-                
                 let actorsHTML = '';
                 if (topActors.length > 0) {
                     actorsHTML = '<div class="movie-actors"><span class="movie-actors-label">Starring:</span>';
@@ -1837,40 +1435,13 @@
                     });
                     actorsHTML += '</div>';
                 }
-
                 let starsHTML = '';
                 for (let i = 1; i <= 5; i++) {
                     const filled = userRating && i <= userRating ? 'filled' : '';
                     starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
                 }
-
-                detailsDiv.innerHTML = `
-                    ${movie.poster_path ? `<img src="${IMG_URL_ORIGINAL}${movie.poster_path}" alt="${movie.title}">` : ''}
-                    <h2>${movie.title}</h2>
-                    <div class="movie-meta">
-                        <span>📅 ${releaseYear}</span>
-                        <span class="movie-rating">⭐ ${rating}/10 (TMDB)</span>
-                        ${movie.runtime ? `<span>⏱️ ${movie.runtime} min</span>` : ''}
-                    </div>
-                    ${movie.genres && movie.genres.length > 0 ? `<div style="color: #888888; font-size: 14px;">${movie.genres.map(g => g.name).join(' • ')}</div>` : ''}
-                    ${actorsHTML}
-                    <div class="movie-synopsis"><strong>Synopsis:</strong><br>${movie.overview || 'No synopsis available.'}</div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
-                        <button class="btn btn-trailer" onclick="showTrailer(${movie.id}, '${movie.title.replace(/'/g, "\\'")}')">▶️ Watch Trailer</button>
-                    </div>
-                    <div class="user-rating-section">
-                        <div class="user-rating-label">Your Rating:</div>
-                        <div class="star-rating" id="starRating">
-                            ${starsHTML}
-                            <span class="rating-text" id="ratingText">${userRating ? `You rated this ${userRating}/5` : 'Not rated yet'}</span>
-                            ${userRating ? `<button class="clear-rating" onclick="clearUserRating(${movieId})">Clear</button>` : ''}
-                        </div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteMovie(${movie.id})">Remove from Collection</button>
-                `;
-            } catch (error) {
-                detailsDiv.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading movie details</p>';
-            }
+                detailsDiv.innerHTML = `${movie.poster_path ? `<img src="${IMG_URL_ORIGINAL}${movie.poster_path}" alt="${movie.title}">` : ''}<h2>${movie.title}</h2><div class="movie-meta"><span>📅 ${releaseYear}</span><span class="movie-rating">⭐ ${rating}/10 (TMDB)</span>${movie.runtime ? `<span>⏱️ ${movie.runtime} min</span>` : ''}</div>${movie.genres && movie.genres.length > 0 ? `<div style="color: #888888; font-size: 14px;">${movie.genres.map(g => g.name).join(' • ')}</div>` : ''}${actorsHTML}<div class="movie-synopsis"><strong>Synopsis:</strong><br>${movie.overview || 'No synopsis available.'}</div><div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"><button class="btn btn-trailer" onclick="showTrailer(${movie.id}, '${movie.title.replace(/'/g, "\\'")}')">▶️ Watch Trailer</button></div><div class="user-rating-section"><div class="user-rating-label">Your Rating:</div><div class="star-rating" id="starRating">${starsHTML}<span class="rating-text" id="ratingText">${userRating ? `You rated this ${userRating}/5` : 'Not rated yet'}</span>${userRating ? `<button class="clear-rating" onclick="clearUserRating(${movieId})">Clear</button>` : ''}</div></div><button class="delete-btn" onclick="deleteMovie(${movie.id})">Remove from Collection</button>`;
+            } catch (error) { detailsDiv.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading movie details</p>'; }
         }
 
         function showActorDetails(actorId, actorName, profilePath, character) {
@@ -1879,21 +1450,11 @@
             const profileImg = profilePath ? `${IMG_URL_PROFILE}${profilePath}` : 'https://via.placeholder.com/300x300?text=No+Image';
             const tmdbLink = `${TMDB_PERSON_URL}${actorId}`;
             let characterHTML = character && character.trim() !== '' ? `<div class="actor-character">as "${character}"</div>` : '';
-
-            detailsDiv.innerHTML = `
-                <div class="actor-details">
-                    <img src="${profileImg}" alt="${actorName}">
-                    <h2>${actorName}</h2>
-                    ${characterHTML}
-                    <a href="${tmdbLink}" target="_blank" rel="noopener" class="actor-tmdb-link">More details at The Movie Database</a>
-                </div>
-            `;
+            detailsDiv.innerHTML = `<div class="actor-details"><img src="${profileImg}" alt="${actorName}"><h2>${actorName}</h2>${characterHTML}<a href="${tmdbLink}" target="_blank" rel="noopener" class="actor-tmdb-link">More details at The Movie Database</a></div>`;
             modal.classList.add('active');
         }
 
-        function closeActorModal() {
-            document.getElementById('actorModal').classList.remove('active');
-        }
+        function closeActorModal() { document.getElementById('actorModal').classList.remove('active'); }
 
         async function showTrailer(movieId, movieTitle) {
             const modal = document.getElementById('trailerModal');
@@ -1903,14 +1464,10 @@
             content.innerHTML = '<div class="search-loading">Loading trailers...</div>';
             modal.classList.add('active');
             ytPlayers = {};
-
             try {
                 const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`);
                 const data = await response.json();
-                const allTrailers = data.results.filter(video => 
-                    video.site === 'YouTube' && 
-                    (video.type === 'Trailer' || video.type === 'Teaser' || video.type === 'Clip')
-                );
+                const allTrailers = data.results.filter(video => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser' || video.type === 'Clip'));
                 allTrailers.sort((a, b) => {
                     if (a.official && !b.official) return -1;
                     if (!a.official && b.official) return 1;
@@ -1918,42 +1475,23 @@
                     if (a.type !== 'Trailer' && b.type === 'Trailer') return 1;
                     return 0;
                 });
-
-                if (allTrailers.length === 0) {
-                    content.innerHTML = `<div class="no-trailer"><h3>No trailer available</h3><p>Sorry, no trailer was found for this movie.</p></div>`;
-                    return;
-                }
-
+                if (allTrailers.length === 0) { content.innerHTML = `<div class="no-trailer"><h3>No trailer available</h3><p>Sorry, no trailer was found for this movie.</p></div>`; return; }
                 let trailersHTML = '';
                 allTrailers.forEach((trailer, index) => {
                     const youtubeUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
                     const label = trailer.official ? 'Official ' : '';
                     const typeLabel = trailer.type === 'Teaser' ? 'Teaser' : 'Trailer';
                     const uniqueId = `trailer-${movieId}-${index}`;
-                    trailersHTML += `
-                        <div class="trailer-item">
-                            <div class="trailer-label">${label}${typeLabel}${allTrailers.length > 1 ? ` #${index + 1}` : ''}${trailer.name !== `${movieTitle}` && trailer.name ? ` — ${trailer.name}` : ''}</div>
-                            <div class="trailer-container" id="container-${uniqueId}"><div id="${uniqueId}"></div></div>
-                            <div class="trailer-fallback" id="fallback-${uniqueId}" style="display:none;">
-                                <a href="${youtubeUrl}" target="_blank" rel="noopener" class="btn btn-trailer-small">▶️ Open in YouTube</a>
-                                <span class="trailer-fallback-hint">Embedding blocked — click to watch on YouTube</span>
-                            </div>
-                        </div>
-                    `;
+                    trailersHTML += `<div class="trailer-item"><div class="trailer-label">${label}${typeLabel}${allTrailers.length > 1 ? ` #${index + 1}` : ''}${trailer.name !== `${movieTitle}` && trailer.name ? ` — ${trailer.name}` : ''}</div><div class="trailer-container" id="container-${uniqueId}"><div id="${uniqueId}"></div></div><div class="trailer-fallback" id="fallback-${uniqueId}" style="display:none;"><a href="${youtubeUrl}" target="_blank" rel="noopener" class="btn btn-trailer-small">▶️ Open in YouTube</a><span class="trailer-fallback-hint">Embedding blocked — click to watch on YouTube</span></div></div>`;
                 });
                 content.innerHTML = trailersHTML;
-
                 const waitForApi = () => new Promise(resolve => {
                     if (ytApiReady) return resolve();
-                    const check = setInterval(() => {
-                        if (ytApiReady) { clearInterval(check); resolve(); }
-                    }, 100);
+                    const check = setInterval(() => { if (ytApiReady) { clearInterval(check); resolve(); } }, 100);
                     setTimeout(() => { clearInterval(check); resolve(); }, 5000);
                 });
                 await waitForApi();
-
                 if (!ytApiReady) return;
-
                 allTrailers.forEach((trailer, index) => {
                     const uniqueId = `trailer-${movieId}-${index}`;
                     const youtubeUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
@@ -1963,42 +1501,25 @@
                             playerVars: { autoplay: index === 0 ? 1 : 0, rel: 0, modestbranding: 1 },
                             events: {
                                 onReady: (event) => { if (index === 0) event.target.playVideo(); },
-                                onStateChange: (event) => {
-                                    if (event.data === YT.PlayerState.PLAYING) {
-                                        const fallback = document.getElementById(`fallback-${uniqueId}`);
-                                        if (fallback) fallback.style.display = 'none';
-                                    }
-                                },
+                                onStateChange: (event) => { if (event.data === YT.PlayerState.PLAYING) { const fallback = document.getElementById(`fallback-${uniqueId}`); if (fallback) fallback.style.display = 'none'; } },
                                 onError: (event) => handleTrailerError(uniqueId, youtubeUrl, event.data)
                             }
                         });
-                    } catch (err) {
-                        handleTrailerError(uniqueId, youtubeUrl, 'create-error');
-                    }
+                    } catch (err) { handleTrailerError(uniqueId, youtubeUrl, 'create-error'); }
                     setTimeout(() => {
                         const player = ytPlayers[uniqueId];
                         if (player && typeof player.getPlayerState === 'function') {
-                            try {
-                                const state = player.getPlayerState();
-                                if (state === -1 || state === 5) handleTrailerError(uniqueId, youtubeUrl, 'timeout');
-                            } catch (e) {}
+                            try { const state = player.getPlayerState(); if (state === -1 || state === 5) handleTrailerError(uniqueId, youtubeUrl, 'timeout'); } catch (e) {}
                         }
                     }, 6000);
                 });
-            } catch (error) {
-                content.innerHTML = '<div class="no-trailer"><h3>Error loading trailer</h3></div>';
-            }
+            } catch (error) { content.innerHTML = '<div class="no-trailer"><h3>Error loading trailer</h3></div>'; }
         }
 
         function handleTrailerError(uniqueId, youtubeUrl, errorCode) {
-            if (ytPlayers[uniqueId]) {
-                try { ytPlayers[uniqueId].destroy(); } catch(e) {}
-                delete ytPlayers[uniqueId];
-            }
+            if (ytPlayers[uniqueId]) { try { ytPlayers[uniqueId].destroy(); } catch(e) {} delete ytPlayers[uniqueId]; }
             const container = document.getElementById(`container-${uniqueId}`);
-            if (container) {
-                container.innerHTML = `<div class="no-trailer" style="padding: 40px 20px;"><h3>Embedding blocked</h3><p>Opening trailer on YouTube...</p></div>`;
-            }
+            if (container) container.innerHTML = `<div class="no-trailer" style="padding: 40px 20px;"><h3>Embedding blocked</h3><p>Opening trailer on YouTube...</p></div>`;
             const fallback = document.getElementById(`fallback-${uniqueId}`);
             if (fallback) fallback.style.display = 'flex';
             setTimeout(() => window.open(youtubeUrl, '_blank', 'noopener'), 1200);
@@ -2027,8 +1548,7 @@
             const starRatingDiv = document.getElementById('starRating');
             if (!starRatingDiv.querySelector('.clear-rating')) {
                 const clearBtn = document.createElement('button');
-                clearBtn.className = 'clear-rating';
-                clearBtn.textContent = 'Clear';
+                clearBtn.className = 'clear-rating'; clearBtn.textContent = 'Clear';
                 clearBtn.onclick = () => clearUserRating(movieId);
                 starRatingDiv.appendChild(clearBtn);
             }
@@ -2051,29 +1571,19 @@
             });
         }
 
-        function clearPreview() {
-            document.querySelectorAll('#starRating .star').forEach(star => star.classList.remove('hover-preview'));
-        }
+        function clearPreview() { document.querySelectorAll('#starRating .star').forEach(star => star.classList.remove('hover-preview')); }
 
         function deleteMovie(movieId) {
             if (confirm('Are you sure you want to remove this movie from your collection?')) {
                 movies = movies.filter(m => m.id !== movieId);
                 localStorage.setItem('myMovies', JSON.stringify(movies));
-                closeDetailsModal();
-                renderMovies();
-                renderGenreFilter();
-                updateMovieCount();
+                closeDetailsModal(); renderMovies(); renderGenreFilter(); updateMovieCount();
                 showToast('🗑️ Movie removed', 'info');
             }
         }
 
         function searchMovies() { renderMovies(); }
-
-        function openAddModal() {
-            document.getElementById('addModal').classList.add('active');
-            document.getElementById('tmdbSearchInput').focus();
-        }
-
+        function openAddModal() { document.getElementById('addModal').classList.add('active'); document.getElementById('tmdbSearchInput').focus(); }
         function closeAddModal() {
             document.getElementById('addModal').classList.remove('active');
             document.getElementById('tmdbInput').value = '';
@@ -2086,25 +1596,12 @@
             document.getElementById('personMoviesSection').style.display = 'none';
             document.getElementById('personSearchForm').style.display = 'block';
             document.getElementById('personMovieResults').innerHTML = '';
-            currentPersonMovies = [];
-            currentPersonId = null;
-            currentPersonName = null;
+            currentPersonMovies = []; currentPersonId = null; currentPersonName = null;
         }
+        function closeDetailsModal() { document.getElementById('detailsModal').classList.remove('active'); currentMovieIdInDetails = null; }
 
-        function closeDetailsModal() {
-            document.getElementById('detailsModal').classList.remove('active');
-            currentMovieIdInDetails = null;
-        }
-
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) event.target.classList.remove('active');
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
-            }
-        });
+        window.onclick = function(event) { if (event.target.classList.contains('modal')) event.target.classList.remove('active'); }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active')); });
     </script>
     <script src="https://www.youtube.com/iframe_api"></script>
 </body>
