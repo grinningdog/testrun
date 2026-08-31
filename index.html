@@ -41,7 +41,7 @@
             gap: 15px;
         }
 
-        .header-left { display: flex; flex-direction: column; gap: 5px; }
+        .header-left { display: flex; flex-direction: column; gap: 5px; flex: 1; }
 
         h1 {
             font-size: 2rem;
@@ -98,6 +98,48 @@
         .btn-small { padding: 8px 16px; font-size: 14px; }
 
         .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        /* Mobile menu toggle button */
+        .mobile-menu-toggle {
+            display: none;
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #f40612;
+        }
+
+        /* Genre dropdown (hidden on desktop) */
+        .genre-dropdown {
+            display: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #333333;
+            border-radius: 30px;
+            background: #1a1a1a;
+            color: #ffffff;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .genre-dropdown:focus {
+            outline: none;
+            border-color: #e50914;
+        }
+
+        .genre-dropdown option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
 
         .controls {
             margin-bottom: 20px;
@@ -573,27 +615,114 @@
             to { transform: translateX(400px); opacity: 0; }
         }
 
-        @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; }
-            .controls { flex-direction: column; }
-            #searchInput, #sortSelect { max-width: 100%; }
-            .movie-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-            .movie-card img { height: 225px; }
-            .search-results { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-            .search-result-item { height: 240px; }
-            .search-result-item img { height: 180px; }
+        /* Mobile styles - phones only (600px and below) */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+
+            .header {
+                padding: 0 10px;
+                flex-wrap: nowrap;
+                align-items: flex-start;
+            }
+
+            .header-left {
+                min-width: 0;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .movie-count {
+                font-size: 1rem;
+            }
+
+            /* Show hamburger button */
+            .mobile-menu-toggle {
+                display: block;
+                flex-shrink: 0;
+                margin-left: 10px;
+            }
+
+            /* Hide desktop buttons by default */
+            .header-buttons {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 10px;
+            }
+
+            /* Show buttons when menu is open */
+            .header-buttons.show {
+                display: flex;
+            }
+
+            .header-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Hide desktop genre chips */
+            .genre-filter-bar {
+                display: none;
+            }
+
+            /* Show mobile genre dropdown */
+            .genre-dropdown {
+                display: block;
+                width: 100%;
+                max-width: none;
+                margin: 0 10px 15px 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0 10px;
+            }
+
+            #searchInput, #sortSelect {
+                width: 100%;
+                max-width: none;
+            }
+
+            .movie-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .movie-card img { height: 180px; }
+
+            .search-results { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .search-result-item { height: 230px; }
+            .search-result-item img { height: 170px; }
+
             .star { font-size: 28px; }
+
             .modal { padding: 10px; }
             #addModal .modal-content { max-height: 95vh; padding: 15px; }
             #addModal h2 { font-size: 1.4rem; margin-bottom: 10px; }
             #addModal .tab { padding: 8px 12px; font-size: 14px; }
             #addModal .form-group input { padding: 10px; font-size: 14px; }
+
             .actor-details img { width: 150px; height: 150px; }
+
             .toast-container { top: 10px; right: 10px; left: 10px; }
             .toast { min-width: auto; max-width: none; }
+
             .filter-row { flex-direction: column; align-items: stretch; }
             .filter-group { min-width: 100%; }
             .apply-filters-btn, .clear-filters-btn { align-self: stretch; }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -607,15 +736,21 @@
                     <span id="lastUpdatedText">Checking GitHub...</span>
                 </div>
             </div>
-            <div class="header-buttons">
-                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub()" title="Refresh from GitHub">🔄 Refresh</button>
-                <button class="btn" onclick="openAddModal()">+ Add Movie</button>
-                <button class="btn btn-success" onclick="exportAsHTML()">📥 Export HTML</button>
-                <button class="btn btn-success" onclick="exportAsJSON()">📄 Export JSON</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Import</button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" title="Menu">☰</button>
+            <div class="header-buttons" id="headerButtons">
+                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenu();" title="Refresh from GitHub">🔄 Refresh</button>
+                <button class="btn" onclick="openAddModal(); closeMobileMenu();">+ Add Movie</button>
+                <button class="btn btn-success" onclick="exportAsHTML(); closeMobileMenu();">📥 Export HTML</button>
+                <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenu();">📄 Export JSON</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenu();">📤 Import</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
             </div>
         </div>
+
+        <!-- Mobile genre dropdown -->
+        <select class="genre-dropdown" id="genreDropdown" onchange="filterByGenreMobile(this.value)">
+            <option value="all">🎭 All Genres</option>
+        </select>
 
         <div class="controls">
             <input type="text" id="searchInput" placeholder="Search your movies..." oninput="searchMovies()">
@@ -808,7 +943,6 @@
             textEl.innerHTML = detail ? message + ' <span style="color:#666;">(' + detail + ')</span>' : message;
         }
 
-        // Fetch with timeout - prevents hanging forever
         function fetchWithTimeout(url, timeout = 10000) {
             return Promise.race([
                 fetch(url),
@@ -816,6 +950,47 @@
                     setTimeout(() => reject(new Error('Request timed out after ' + (timeout/1000) + ' seconds')), timeout)
                 )
             ]);
+        }
+
+        // ============================================================
+        // MOBILE MENU FUNCTIONS
+        // ============================================================
+
+        function toggleMobileMenu() {
+            const buttons = document.getElementById('headerButtons');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const isOpen = buttons.classList.toggle('show');
+            toggle.textContent = isOpen ? '✕' : '☰';
+            toggle.title = isOpen ? 'Close menu' : 'Menu';
+        }
+
+        function closeMobileMenu() {
+            const buttons = document.getElementById('headerButtons');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            if (buttons.classList.contains('show')) {
+                buttons.classList.remove('show');
+                toggle.textContent = '☰';
+                toggle.title = 'Menu';
+            }
+        }
+
+        function filterByGenreMobile(genre) {
+            currentGenreFilter = genre;
+            
+            // Update desktop chips
+            document.querySelectorAll('.genre-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.genre === genre);
+            });
+            
+            const notice = document.getElementById('activeFilterNotice');
+            const text = document.getElementById('activeFilterText');
+            if (genre === 'all') {
+                notice.classList.remove('show');
+            } else {
+                text.textContent = `Genre: ${genre}`;
+                notice.classList.add('show');
+            }
+            renderMovies();
         }
 
         // ============================================================
@@ -869,46 +1044,49 @@
         }
 
         // ============================================================
-        // INITIALIZATION - runs once when page loads
+        // INITIALIZATION
         // ============================================================
 
         async function init() {
             console.log('🚀 Starting initialization...');
             
-            // Set sort dropdown
             document.getElementById('sortSelect').value = currentSort;
             
-            // Enter key on manual ID input
             document.getElementById('tmdbInput').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') addMovieManual();
             });
 
-            // Scroll listener for back-to-top button
             window.addEventListener('scroll', handleScroll);
 
-            // Load movies from GitHub FIRST
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const buttons = document.getElementById('headerButtons');
+                const toggle = document.querySelector('.mobile-menu-toggle');
+                if (buttons.classList.contains('show') && 
+                    !buttons.contains(e.target) && 
+                    !toggle.contains(e.target)) {
+                    closeMobileMenu();
+                }
+            });
+
             await loadMoviesFromGitHub(true);
             
-            // THEN render everything
             console.log('🎨 Rendering movies...');
             renderMovies();
             renderGenreFilter();
             updateMovieCount();
             
-            // Backfill genres in background
             backfillMissingGenres();
             
             console.log('✅ Initialization complete');
         }
 
-        // Run init when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
             init();
         }
 
-        // YouTube API ready callback
         function onYouTubeIframeAPIReady() {
             ytApiReady = true;
         }
@@ -963,26 +1141,43 @@
 
         function renderGenreFilter() {
             const bar = document.getElementById('genreFilterBar');
-            if (!bar) return;
+            const dropdown = document.getElementById('genreDropdown');
             const genres = getAllGenres();
             
-            bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
-            
-            const allChip = document.createElement('button');
-            allChip.className = `genre-chip ${currentGenreFilter === 'all' ? 'active' : ''}`;
-            allChip.dataset.genre = 'all';
-            allChip.onclick = () => filterByGenre('all');
-            allChip.textContent = 'All';
-            bar.appendChild(allChip);
+            // Desktop chips
+            if (bar) {
+                bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
+                
+                const allChip = document.createElement('button');
+                allChip.className = `genre-chip ${currentGenreFilter === 'all' ? 'active' : ''}`;
+                allChip.dataset.genre = 'all';
+                allChip.onclick = () => filterByGenre('all');
+                allChip.textContent = 'All';
+                bar.appendChild(allChip);
 
-            genres.forEach(genre => {
-                const chip = document.createElement('button');
-                chip.className = `genre-chip ${currentGenreFilter === genre ? 'active' : ''}`;
-                chip.dataset.genre = genre;
-                chip.onclick = () => filterByGenre(genre);
-                chip.textContent = genre;
-                bar.appendChild(chip);
-            });
+                genres.forEach(genre => {
+                    const chip = document.createElement('button');
+                    chip.className = `genre-chip ${currentGenreFilter === genre ? 'active' : ''}`;
+                    chip.dataset.genre = genre;
+                    chip.onclick = () => filterByGenre(genre);
+                    chip.textContent = genre;
+                    bar.appendChild(chip);
+                });
+            }
+            
+            // Mobile dropdown
+            if (dropdown) {
+                const currentValue = dropdown.value;
+                dropdown.innerHTML = '<option value="all">🎭 All Genres</option>';
+                genres.forEach(genre => {
+                    const option = document.createElement('option');
+                    option.value = genre;
+                    option.textContent = genre;
+                    dropdown.appendChild(option);
+                });
+                // Restore selected value
+                dropdown.value = currentGenreFilter;
+            }
         }
 
         function filterByGenre(genre) {
@@ -990,6 +1185,10 @@
             document.querySelectorAll('.genre-chip').forEach(chip => {
                 chip.classList.toggle('active', chip.dataset.genre === genre);
             });
+            // Sync mobile dropdown
+            const dropdown = document.getElementById('genreDropdown');
+            if (dropdown) dropdown.value = genre;
+            
             const notice = document.getElementById('activeFilterNotice');
             const text = document.getElementById('activeFilterText');
             if (genre === 'all') notice.classList.remove('show');
