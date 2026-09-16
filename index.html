@@ -3,289 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Movie Collection</title>
-    
+    <title>My Movie & TV Collection</title>
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="My personal movie collection">
+    <meta name="description" content="My personal movie and TV collection">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My Movies">
+    <meta name="apple-mobile-web-app-title" content="My Collection">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000000;
-            min-height: 100vh;
-            color: #ffffff;
-            padding: 20px;
-        }
-
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; min-height: 100vh; color: #fff; padding: 20px; }
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #333333; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #444444; }
-
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
         .container { max-width: 1400px; margin: 0 auto; }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
+        .main-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; padding: 0 20px; }
+        .main-tab { padding: 15px 30px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; font-weight: bold; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.3s; }
+        .main-tab.active { color: #e50914; border-bottom-color: #e50914; }
+        .main-tab:hover { color: #fff; }
+        .tab-content-section { display: none; }
+        .tab-content-section.active { display: block; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 20px; flex-wrap: wrap; gap: 15px; }
         .header-left { display: flex; flex-direction: column; gap: 5px; flex: 1; }
-
-        h1 {
-            font-size: 2rem;
-            color: #ffffff;
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .movie-count { color: #888888; font-size: 1.2rem; font-weight: normal; }
-
-        .last-updated { font-size: 12px; color: #666666; }
-
-        .sync-status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
+        h1 { font-size: 2rem; color: #fff; display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
+        .movie-count { color: #888; font-size: 1.2rem; font-weight: normal; }
+        .last-updated { font-size: 12px; color: #666; }
+        .sync-status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-right: 8px; }
         .sync-status.ok { background: #2e7d32; color: white; }
-        .sync-status.warning { background: #ffa500; color: black; }
         .sync-status.error { background: #d32f2f; color: white; }
-        .sync-status.loading { background: #333333; color: #cccccc; }
-
-        .btn {
-            background: #e50914;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn:hover {
-            background: #f40612;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(229, 9, 20, 0.4);
-        }
-
-        .btn-secondary { background: #333333; color: #ffffff; }
-        .btn-secondary:hover { background: #444444; }
+        .sync-status.loading { background: #333; color: #ccc; }
+        .btn { background: #e50914; color: #fff; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .btn:hover { background: #f40612; transform: translateY(-2px); }
+        .btn-secondary { background: #333; }
+        .btn-secondary:hover { background: #444; }
         .btn-success { background: #2e7d32; }
         .btn-success:hover { background: #1b5e20; }
-        .btn-trailer { background: #ff0000; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-trailer:hover { background: #cc0000; }
         .btn-small { padding: 8px 16px; font-size: 14px; }
-
         .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-
-        .mobile-menu-toggle {
-            display: none;
-            background: #e50914;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .mobile-menu-toggle:hover { background: #f40612; }
-
-        .genre-dropdown {
-            display: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            cursor: pointer;
-            min-width: 200px;
-        }
-
+        .mobile-menu-toggle { display: none; background: #e50914; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        .genre-dropdown { display: none; padding: 12px 20px; font-size: 16px; border: 2px solid #333; border-radius: 30px; background: #1a1a1a; color: #fff; cursor: pointer; }
         .genre-dropdown:focus { outline: none; border-color: #e50914; }
-        .genre-dropdown option { background: #1a1a1a; color: #ffffff; }
-
-        .controls {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        #searchInput {
-            flex: 1;
-            max-width: 500px;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #searchInput:focus { outline: none; border-color: #e50914; background: #222222; }
-        #searchInput::placeholder { color: #888888; }
-
-        #sortSelect {
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #333333;
-            border-radius: 30px;
-            background: #1a1a1a;
-            color: #ffffff;
-            cursor: pointer;
-            min-width: 200px;
-        }
-
-        #sortSelect option { background: #1a1a1a; color: #ffffff; }
-
-        .genre-filter-bar {
-            margin-bottom: 20px;
-            padding: 0 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .genre-filter-label { color: #888888; font-size: 14px; margin-right: 5px; font-weight: bold; }
-
-        .genre-chip {
-            padding: 6px 14px;
-            background: #1a1a1a;
-            color: #cccccc;
-            border: 1px solid #333333;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .genre-chip:hover { background: #333333; color: #ffffff; border-color: #e50914; }
-        .genre-chip.active { background: #e50914; color: #ffffff; border-color: #e50914; font-weight: bold; }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
+        .genre-dropdown option { background: #1a1a1a; color: #fff; }
+        .controls { margin-bottom: 20px; padding: 0 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .search-input { flex: 1; max-width: 500px; padding: 12px 20px; font-size: 16px; border: 2px solid #333; border-radius: 30px; background: #1a1a1a; color: #fff; }
+        .search-input:focus { outline: none; border-color: #e50914; background: #222; }
+        .search-input::placeholder { color: #888; }
+        .sort-select { padding: 12px 20px; font-size: 16px; border: 2px solid #333; border-radius: 30px; background: #1a1a1a; color: #fff; cursor: pointer; min-width: 200px; }
+        .sort-select option { background: #1a1a1a; color: #fff; }
+        .genre-filter-bar { margin-bottom: 20px; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+        .genre-filter-label { color: #888; font-size: 14px; margin-right: 5px; font-weight: bold; }
+        .genre-chip { padding: 6px 14px; background: #1a1a1a; color: #ccc; border: 1px solid #333; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .genre-chip:hover { background: #333; color: #fff; border-color: #e50914; }
+        .genre-chip.active { background: #e50914; color: #fff; border-color: #e50914; font-weight: bold; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         @media (min-width: 1200px) { .movie-grid { grid-template-columns: repeat(5, 1fr); } }
-
-        .movie-card {
-            position: relative;
-            cursor: pointer;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: #1a1a1a;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            /* OPTION 3: Enforce perfect 2:3 movie poster ratio */
-            aspect-ratio: 2 / 3;
-        }
-
-        .movie-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3); z-index: 10; }
-        
-        .movie-card img { 
-            width: 100%; 
-            height: 100%; /* Fills the aspect-ratio container perfectly */
-            object-fit: cover; 
-            display: block; 
-        }
-
-        .movie-card-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
-            padding: 30px 10px 10px 10px;
-            transition: all 0.3s;
-        }
-
-        .movie-card-title {
-            font-size: 14px; font-weight: bold; color: #ffffff;
-            margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .movie-card-year { font-size: 12px; color: #cccccc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-
-        .movie-card-rating {
-            position: absolute; top: 8px; left: 8px;
-            background: rgba(0, 0, 0, 0.85); color: #ffd700;
-            padding: 4px 8px; border-radius: 4px;
-            font-size: 12px; font-weight: bold;
-            display: flex; align-items: center; gap: 3px;
-        }
-
-        .movie-card:hover .movie-card-overlay { padding: 40px 10px 10px 10px; }
-
-        .movie-card-genres {
-            font-size: 11px; color: #e50914; margin-top: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            opacity: 0; max-height: 0; transition: all 0.3s;
-        }
-
+        .movie-card { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; background: #1a1a1a; box-shadow: 0 4px 15px rgba(0,0,0,0.5); aspect-ratio: 2/3; }
+        .movie-card:hover { transform: scale(1.05); box-shadow: 0 15px 35px rgba(229,9,20,0.3); z-index: 10; }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .movie-card-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%); padding: 30px 10px 10px; transition: all 0.3s; }
+        .movie-card-title { font-size: 14px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .movie-card-year { font-size: 12px; color: #ccc; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .movie-card-rating { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.85); color: #ffd700; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .movie-card:hover .movie-card-overlay { padding: 40px 10px 10px; }
+        .movie-card-genres { font-size: 11px; color: #e50914; margin-top: 4px; opacity: 0; max-height: 0; transition: all 0.3s; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
         .movie-card:hover .movie-card-genres { opacity: 1; max-height: 20px; }
-
-        .modal {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center; align-items: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
-
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
-
-        .modal-content {
-            background: #1a1a1a;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            border: 1px solid #333333;
-            color: #ffffff;
-        }
-
+        .modal-content { background: #1a1a1a; border-radius: 12px; padding: 30px; max-width: 900px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid #333; color: #fff; }
+        .actor-modal-content { max-width: 420px; text-align: center; }
+        .actor-details { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .actor-details img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; }
+        .actor-details h2 { color: #e50914; margin: 0; font-size: 1.6rem; }
+        .actor-character { color: #888; font-size: 14px; font-style: italic; }
+        .actor-tmdb-link { display: inline-block; background: #000; color: #4dd0e1; text-decoration: none; padding: 10px 20px; border-radius: 6px; border: 1px solid #333; font-weight: bold; margin-top: 10px; }
+        .actor-tmdb-link:hover { background: #e50914; color: white; border-color: #e50914; }
         #addModal .modal-content { display: flex; flex-direction: column; padding: 20px 25px; overflow: hidden; }
         #addModal .modal-close { z-index: 20; }
         #addModal h2 { margin-bottom: 15px; padding-right: 40px; flex-shrink: 0; }
@@ -293,1315 +86,329 @@
         #addModal .tab-content { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
         #addModal .tab-content.active { display: flex; }
         #addModal .form-group { margin-bottom: 15px; flex-shrink: 0; }
-        #addModal .search-results, #addModal #personMovieResults { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
-        #addModal #personMoviesSection { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
-        #addModal #personMoviesSection[style*="flex"] { display: flex !important; }
-        #addModal .person-movies-header { flex-shrink: 0; margin: 0 0 10px 0; }
-
-        .modal-close {
-            position: absolute; top: 15px; right: 15px;
-            background: none; border: none; color: #ffffff;
-            font-size: 28px; cursor: pointer;
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; transition: background 0.3s; z-index: 10;
-        }
-
-        .modal-close:hover { background: #333333; }
+        #addModal .search-results, #addModal #personItemResults { flex: 1; min-height: 0; overflow-y: auto; margin-top: 0; }
+        #addModal #personItemsSection { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
+        #addModal #personItemsSection[style*="flex"] { display: flex !important; }
+        #addModal .person-items-header { flex-shrink: 0; margin: 0 0 10px 0; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10; }
+        .modal-close:hover { background: #333; }
         .modal h2 { margin-bottom: 20px; color: #e50914; }
-
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #cccccc; }
-        .form-group input {
-            width: 100%; padding: 12px;
-            border: 1px solid #333333; border-radius: 6px;
-            background: #000000; color: #ffffff; font-size: 16px;
-        }
-        .form-group input:focus { outline: none; border-color: #e50914; box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2); }
-        .help-text { font-size: 14px; color: #888888; margin-top: 5px; }
-
-        .search-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px; margin-top: 20px;
-            max-height: 500px; overflow-y: auto;
-        }
-
-        .search-result-item {
-            position: relative; cursor: pointer;
-            border-radius: 8px; overflow: hidden;
-            background: #000000; border: 2px solid transparent;
-            transition: all 0.3s;
-            display: flex; flex-direction: column; height: 280px;
-        }
-
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #ccc; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 6px; background: #000; color: #fff; font-size: 16px; }
+        .form-group input:focus { outline: none; border-color: #e50914; }
+        .help-text { font-size: 14px; color: #888; margin-top: 5px; }
+        .search-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; max-height: 500px; overflow-y: auto; }
+        .search-result-item { position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; background: #000; border: 2px solid transparent; transition: all 0.3s; display: flex; flex-direction: column; height: 280px; }
         .search-result-item:hover { border-color: #e50914; transform: scale(1.02); }
         .search-result-item img { width: 100%; height: 225px; object-fit: cover; display: block; flex-shrink: 0; }
-
-        .search-result-info { padding: 10px; background: #000000; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .search-result-title { font-size: 14px; font-weight: bold; color: #ffffff; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .search-result-year { font-size: 12px; color: #888888; }
-
-        .add-btn-small {
-            position: absolute; top: 5px; right: 5px;
-            background: #e50914; color: white; border: none;
-            padding: 5px 10px; border-radius: 4px;
-            cursor: pointer; font-size: 12px; font-weight: bold;
-            opacity: 0; transition: opacity 0.3s; z-index: 2;
-        }
-
+        .search-result-info { padding: 10px; background: #000; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .search-result-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .search-result-year { font-size: 12px; color: #888; }
+        .add-btn-small { position: absolute; top: 5px; right: 5px; background: #e50914; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; opacity: 0; transition: opacity 0.3s; z-index: 2; }
         .search-result-item:hover .add-btn-small { opacity: 1; }
-        .add-btn-small:hover { background: #f40612; }
-        .add-btn-small.added { background: #2e7d32; opacity: 1; cursor: pointer; }
-
-        .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888888; grid-column: 1 / -1; }
-
-        .person-results {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
+        .add-btn-small.added { background: #2e7d32; opacity: 1; }
+        .search-loading, .search-no-results { text-align: center; padding: 40px; color: #888; grid-column: 1/-1; }
+        .person-results { display: none; flex-direction: column; gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; flex-shrink: 0; }
         .person-results.show { display: flex; }
-
-        .person-result-item {
-            display: flex; align-items: center; gap: 15px;
-            padding: 10px; background: #000000;
-            border: 1px solid #333333; border-radius: 8px;
-            cursor: pointer; transition: all 0.3s;
-        }
-
-        .person-result-item:hover { border-color: #e50914; background: #222222; }
+        .person-result-item { display: flex; align-items: center; gap: 15px; padding: 10px; background: #000; border: 1px solid #333; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .person-result-item:hover { border-color: #e50914; background: #222; }
         .person-result-item img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
         .person-result-info { flex: 1; }
-        .person-result-name { font-size: 16px; font-weight: bold; color: #ffffff; margin-bottom: 3px; }
-        .person-result-known { font-size: 12px; color: #888888; }
-
-        .person-movies-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin: 20px 0 10px 0; padding: 10px;
-            background: #000000; border-radius: 8px;
-        }
-
-        .person-movies-header h3 { color: #e50914; font-size: 18px; }
-
-        .add-all-btn {
-            background: #2e7d32; color: white; border: none;
-            padding: 8px 16px; border-radius: 6px;
-            cursor: pointer; font-size: 14px; font-weight: bold;
-            transition: all 0.3s;
-        }
-
+        .person-result-name { font-size: 16px; font-weight: bold; margin-bottom: 3px; }
+        .person-result-known { font-size: 12px; color: #888; }
+        .person-items-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 10px; padding: 10px; background: #000; border-radius: 8px; }
+        .person-items-header h3 { color: #e50914; font-size: 18px; }
+        .add-all-btn { background: #2e7d32; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
         .add-all-btn:hover { background: #1b5e20; }
-        .add-all-btn:disabled { background: #333333; cursor: not-allowed; opacity: 0.5; }
-
-        .person-filters {
-            background: #000000;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #333333;
-            margin-top: 15px;
-            display: none;
-        }
-
+        .add-all-btn:disabled { background: #333; cursor: not-allowed; opacity: 0.5; }
+        .person-filters { background: #000; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-top: 15px; display: none; }
         .person-filters.show { display: block; }
-
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            align-items: end;
-            margin-bottom: 10px;
-        }
-
+        .filter-row { display: flex; gap: 15px; flex-wrap: wrap; align-items: end; margin-bottom: 10px; }
         .filter-row:last-child { margin-bottom: 0; }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .filter-group label { font-size: 12px; color: #888888; font-weight: normal; }
-
-        .filter-group select,
-        .filter-group input {
-            padding: 8px 12px;
-            border: 1px solid #333333;
-            border-radius: 4px;
-            background: #1a1a1a;
-            color: #ffffff;
-            font-size: 14px;
-            min-width: 120px;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #cccccc;
-        }
-
-        .filter-checkbox input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
-
-        .apply-filters-btn {
-            background: #e50914; color: white; border: none;
-            padding: 8px 16px; border-radius: 4px;
-            cursor: pointer; font-size: 14px; font-weight: bold;
-            transition: all 0.3s; align-self: flex-end;
-        }
-
-        .apply-filters-btn:hover { background: #f40612; }
-
-        .clear-filters-btn {
-            background: #333333; color: #cccccc; border: none;
-            padding: 8px 16px; border-radius: 4px;
-            cursor: pointer; font-size: 14px;
-            transition: all 0.3s; align-self: flex-end;
-        }
-
-        .clear-filters-btn:hover { background: #444444; color: #ffffff; }
-
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; color: #888; font-weight: normal; }
+        .filter-group select, .filter-group input { padding: 8px 12px; border: 1px solid #333; border-radius: 4px; background: #1a1a1a; color: #fff; font-size: 14px; min-width: 120px; }
+        .filter-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #ccc; }
+        .filter-checkbox input[type="checkbox"] { width: 16px; height: 16px; }
+        .apply-filters-btn { background: #e50914; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold; align-self: flex-end; }
+        .clear-filters-btn { background: #333; color: #ccc; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; align-self: flex-end; }
         .movie-details { display: flex; flex-direction: column; gap: 15px; }
-        .movie-details img { width: 100%; max-width: 300px; border-radius: 8px; align-self: center; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
+        .movie-details img { width: 100%; max-width: 300px; border-radius: 8px; align-self: center; }
         .movie-details h2 { font-size: 1.8rem; margin-bottom: 10px; color: #e50914; }
-        .movie-meta { display: flex; gap: 20px; color: #cccccc; font-size: 14px; flex-wrap: wrap; }
+        .movie-meta { display: flex; gap: 20px; color: #ccc; font-size: 14px; flex-wrap: wrap; }
         .movie-rating { color: #ffd700; }
-        .movie-synopsis { line-height: 1.6; color: #ffffff; margin-top: 10px; }
-
-        .movie-actors { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; color: #cccccc; margin-top: 5px; }
-        .movie-actors-label { color: #888888; font-size: 13px; margin-right: 4px; }
-        .actor-chip { cursor: pointer; color: #ffffff; transition: color 0.2s; padding: 2px 0; }
+        .movie-synopsis { line-height: 1.6; margin-top: 10px; }
+        .movie-actors { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; color: #ccc; margin-top: 5px; }
+        .movie-actors-label { color: #888; font-size: 13px; margin-right: 4px; }
+        .actor-chip { cursor: pointer; color: #fff; transition: color 0.2s; padding: 2px 0; }
         .actor-chip:hover { color: #e50914; text-decoration: underline; }
-        .actor-separator { color: #555555; user-select: none; }
-
-        .actor-modal-content { max-width: 420px; text-align: center; }
-        .actor-details { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .actor-details img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
-        .actor-details h2 { color: #e50914; margin: 0; font-size: 1.6rem; }
-        .actor-details .actor-character { color: #888888; font-size: 14px; font-style: italic; }
-        .actor-tmdb-link {
-            display: inline-block; background: #000000; color: #4dd0e1;
-            text-decoration: none; padding: 10px 20px; border-radius: 6px;
-            border: 1px solid #333333; transition: all 0.3s;
-            font-weight: bold; margin-top: 10px;
-        }
-        .actor-tmdb-link:hover { background: #e50914; color: white; border-color: #e50914; }
-
-        .user-rating-section { background: #000000; padding: 15px; border-radius: 8px; border: 1px solid #333333; margin-top: 10px; }
-        .user-rating-label { font-size: 14px; color: #cccccc; margin-bottom: 8px; font-weight: bold; }
+        .actor-separator { color: #555; user-select: none; }
+        .user-rating-section { background: #000; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-top: 10px; }
+        .user-rating-label { font-size: 14px; color: #ccc; margin-bottom: 8px; font-weight: bold; }
         .star-rating { display: flex; gap: 5px; align-items: center; }
-        .star { font-size: 32px; cursor: pointer; color: #333333; transition: all 0.2s; user-select: none; }
+        .star { font-size: 32px; cursor: pointer; color: #333; transition: all 0.2s; user-select: none; }
         .star:hover { transform: scale(1.2); }
-        .star.filled { color: #ffd700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+        .star.filled { color: #ffd700; }
         .star.hover-preview { color: #ffed4e; }
-        .rating-text { margin-left: 10px; color: #888888; font-size: 14px; }
-        .clear-rating {
-            background: none; border: 1px solid #444444; color: #888888;
-            padding: 4px 10px; border-radius: 4px; cursor: pointer;
-            font-size: 12px; margin-left: 10px; transition: all 0.2s;
-        }
+        .rating-text { margin-left: 10px; color: #888; font-size: 14px; }
+        .clear-rating { background: none; border: 1px solid #444; color: #888; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 10px; }
         .clear-rating:hover { border-color: #e50914; color: #e50914; }
-
-        .delete-btn {
-            background: #333333; color: #ff6b6b;
-            border: 1px solid #444444; padding: 10px 20px;
-            border-radius: 6px; cursor: pointer;
-            margin-top: 15px; transition: all 0.3s; font-weight: bold;
-        }
-        .delete-btn:hover { background: #d32f2f; color: #ffffff; border-color: #d32f2f; }
-
-        .empty-state { text-align: center; padding: 60px 20px; color: #888888; grid-column: 1 / -1; }
-        .empty-state h2 { margin-bottom: 10px; color: #ffffff; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333333; }
-        .tab {
-            padding: 10px 20px; background: none; border: none;
-            color: #888888; cursor: pointer; font-size: 16px; font-weight: bold;
-            border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.3s;
-        }
+        .delete-btn { background: #333; color: #ff6b6b; border: 1px solid #444; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        .delete-btn:hover { background: #d32f2f; color: #fff; border-color: #d32f2f; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #888; grid-column: 1/-1; }
+        .empty-state h2 { margin-bottom: 10px; color: #fff; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; }
+        .tab { padding: 10px 20px; background: none; border: none; color: #888; cursor: pointer; font-size: 16px; font-weight: bold; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.3s; }
         .tab.active { color: #e50914; border-bottom-color: #e50914; }
-        .tab:hover { color: #ffffff; }
+        .tab:hover { color: #fff; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        .active-filter-notice {
-            text-align: center; padding: 10px; margin: 0 20px 10px 20px;
-            background: #1a1a1a; border: 1px solid #333333; border-radius: 8px;
-            color: #cccccc; font-size: 14px; display: none;
-        }
+        .active-filter-notice { text-align: center; padding: 10px; margin: 0 20px 10px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; color: #ccc; font-size: 14px; display: none; }
         .active-filter-notice.show { display: block; }
         .active-filter-notice strong { color: #e50914; }
-
-        .trailer-modal { max-width: 1000px; }
-        .trailer-container { position: relative; width: 100%; padding-bottom: 56.25%; background: #000000; border-radius: 8px; overflow: hidden; }
-        .trailer-container iframe, .trailer-container > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .no-trailer { text-align: center; padding: 60px 20px; color: #888888; }
-        .no-trailer h3 { color: #ffffff; margin-bottom: 10px; }
-        .trailer-item { margin-bottom: 25px; }
-        .trailer-item:last-child { margin-bottom: 0; }
-        .trailer-label { color: #e50914; font-weight: bold; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .trailer-fallback { margin-top: 10px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .btn-trailer-small {
-            background: #ff0000; color: white; text-decoration: none;
-            padding: 8px 16px; border-radius: 6px; font-size: 14px;
-            font-weight: bold; transition: all 0.3s; display: inline-block;
-        }
-        .btn-trailer-small:hover { background: #cc0000; transform: translateY(-1px); }
-        .trailer-fallback-hint { color: #888888; font-size: 12px; font-style: italic; }
-
-        .back-to-top {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #e50914; color: white;
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; opacity: 0; visibility: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
-            z-index: 999; border: none; font-size: 24px;
-        }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; background: #e50914; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 999; border: none; font-size: 24px; }
         .back-to-top.visible { opacity: 1; visibility: visible; }
-        .back-to-top:hover { transform: translateY(-3px); background: #f40612; }
-
-        .toast-container {
-            position: fixed; top: 20px; right: 20px;
-            z-index: 2000;
-            display: flex; flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            background: #1a1a1a;
-            border: 1px solid #333333;
-            border-left: 4px solid #e50914;
-            color: #ffffff;
-            padding: 15px 20px;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            min-width: 280px;
-            max-width: 400px;
-            animation: slideIn 0.3s ease-out;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: #1a1a1a; border: 1px solid #333; border-left: 4px solid #e50914; color: #fff; padding: 15px 20px; border-radius: 6px; min-width: 280px; max-width: 400px; animation: slideIn 0.3s ease-out; display: flex; align-items: center; gap: 10px; }
         .toast.success { border-left-color: #2e7d32; }
         .toast.error { border-left-color: #d32f2f; }
-        .toast.warning { border-left-color: #ffa500; }
         .toast.info { border-left-color: #4dd0e1; }
-
         .toast-icon { font-size: 20px; }
         .toast-message { flex: 1; font-size: 14px; }
-
         .toast.fade-out { animation: fadeOut 0.3s ease-out forwards; }
-
-        @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
-        }
-
-        /* Mobile styles - phones only (600px and below) */
+        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
         @media (max-width: 600px) {
             body { padding: 10px; }
-
-            .header {
-                padding: 0 10px;
-                flex-wrap: nowrap;
-                align-items: flex-start;
-            }
-
+            .main-tabs { padding: 0 10px; }
+            .main-tab { padding: 12px 20px; font-size: 16px; }
+            .header { padding: 0 10px; flex-wrap: nowrap; align-items: flex-start; }
             .header-left { min-width: 0; }
             h1 { font-size: 1.4rem; }
             .movie-count { font-size: 1rem; }
-
-            .mobile-menu-toggle {
-                display: block;
-                flex-shrink: 0;
-                margin-left: 10px;
-            }
-
-            .header-buttons {
-                display: none;
-                width: 100%;
-                flex-direction: column;
-                gap: 8px;
-                margin-top: 10px;
-            }
-
+            .mobile-menu-toggle { display: block; flex-shrink: 0; margin-left: 10px; }
+            .header-buttons { display: none; width: 100%; flex-direction: column; gap: 8px; margin-top: 10px; }
             .header-buttons.show { display: flex; }
             .header-buttons .btn { width: 100%; text-align: center; }
-
             .genre-filter-bar { display: none; }
-
-            .genre-dropdown {
-                display: block;
-                width: 100%;
-                max-width: none;
-                margin: 0 10px 15px 10px;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 0 10px;
-            }
-
-            #searchInput, #sortSelect {
-                width: 100%;
-                max-width: none;
-            }
-
-            .movie-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 10px;
-                padding: 10px;
-            }
-
-            /* Note: .movie-card img height is removed here because aspect-ratio: 2/3 handles it perfectly! */
-
+            .genre-dropdown { display: block; width: 100%; margin: 0 10px 15px; }
+            .controls { flex-direction: column; padding: 0 10px; }
+            .search-input, .sort-select { width: 100%; max-width: none; }
+            .movie-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; padding: 10px; }
             .search-results { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .search-result-item { height: 230px; }
             .search-result-item img { height: 170px; }
-
             .star { font-size: 28px; }
-
             .modal { padding: 10px; }
             #addModal .modal-content { max-height: 95vh; padding: 15px; }
-            #addModal h2 { font-size: 1.4rem; margin-bottom: 10px; }
-            #addModal .tab { padding: 8px 12px; font-size: 14px; }
-            #addModal .form-group input { padding: 10px; font-size: 14px; }
-
+            #addModal h2 { font-size: 1.4rem; }
+            #addModal .tab { padding: 8px 12px; font-size: 13px; }
             .actor-details img { width: 150px; height: 150px; }
-
             .toast-container { top: 10px; right: 10px; left: 10px; }
             .toast { min-width: auto; max-width: none; }
-
-            .filter-row { flex-direction: column; align-items: stretch; }
+            .back-to-top { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 20px; }
+            .filter-row { flex-direction: column; }
             .filter-group { min-width: 100%; }
             .apply-filters-btn, .clear-filters-btn { align-self: stretch; }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="header-left">
-                <h1>🎬 My Movie Collection <span class="movie-count" id="movieCount">(0 movies)</span></h1>
-                <div class="last-updated" id="lastUpdated">
-                    <span class="sync-status loading" id="syncStatus">LOADING</span>
-                    <span id="lastUpdatedText">Checking GitHub...</span>
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="switchMainTab('movie')">🎬 Movies</button>
+            <button class="main-tab" onclick="switchMainTab('tv')">📺 TV Shows</button>
+        </div>
+
+        <div id="movieSection" class="tab-content-section active">
+            <div class="header">
+                <div class="header-left">
+                    <h1>🎬 My Movie Collection <span class="movie-count" id="movieCount">(0 movies)</span></h1>
+                    <div class="last-updated"><span class="sync-status loading" id="syncStatus">LOADING</span><span id="lastUpdatedText">Checking GitHub...</span></div>
+                </div>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+                <div class="header-buttons" id="headerButtons">
+                    <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenu();">🔄 Refresh</button>
+                    <button class="btn" onclick="openAddModal('movie'); closeMobileMenu();">+ Add Movie</button>
+                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenu();">📄 Export JSON</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenu();">📤 Import</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
                 </div>
             </div>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" title="Menu">☰</button>
-            <div class="header-buttons" id="headerButtons">
-                <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenu();" title="Refresh from GitHub">🔄 Refresh</button>
-                <button class="btn" onclick="openAddModal(); closeMobileMenu();">+ Add Movie</button>
-                <button class="btn btn-success" onclick="exportAsHTML(); closeMobileMenu();">📥 Export HTML</button>
-                <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenu();">📄 Export JSON</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenu();">📤 Import</button>
-                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(event)">
+            <select class="genre-dropdown" id="movieGenreDropdown" onchange="filterByGenre(this.value,'movie')"><option value="all">🎭 All Genres</option></select>
+            <div class="controls">
+                <input type="text" class="search-input" id="movieSearchInput" placeholder="Search your movies..." oninput="renderMovies()">
+                <select class="sort-select" id="movieSortSelect" onchange="currentSort.movie=this.value; renderMovies();">
+                    <option value="added-desc">Date Added (Newest)</option><option value="added-asc">Date Added (Oldest)</option>
+                    <option value="title-asc">Title (A-Z)</option><option value="title-desc">Title (Z-A)</option>
+                    <option value="year-desc">Year (Newest)</option><option value="year-asc">Year (Oldest)</option>
+                    <option value="rating-desc">My Rating (High)</option><option value="rating-asc">My Rating (Low)</option>
+                    <option value="tmdb-desc">TMDB Rating (High)</option><option value="tmdb-asc">TMDB Rating (Low)</option>
+                </select>
             </div>
+            <div class="genre-filter-bar" id="movieGenreFilterBar"><span class="genre-filter-label">🎭 Genres:</span><button class="genre-chip active" data-genre="all" onclick="filterByGenre('all','movie')">All</button></div>
+            <div class="active-filter-notice" id="movieActiveFilterNotice">Showing: <strong id="movieActiveFilterText"></strong> <button onclick="clearFilters('movie')" style="background:none;border:none;color:#e50914;cursor:pointer;">✕ Clear</button></div>
+            <div class="movie-grid" id="movieGrid"></div>
         </div>
 
-        <select class="genre-dropdown" id="genreDropdown" onchange="filterByGenreMobile(this.value)">
-            <option value="all">🎭 All Genres</option>
-        </select>
-
-        <div class="controls">
-            <input type="text" id="searchInput" placeholder="Search your movies..." oninput="searchMovies()">
-            <select id="sortSelect" onchange="changeSort()">
-                <option value="added-desc">Date Added (Newest First)</option>
-                <option value="added-asc">Date Added (Oldest First)</option>
-                <option value="title-asc">Title (A-Z)</option>
-                <option value="title-desc">Title (Z-A)</option>
-                <option value="year-desc">Year (Newest First)</option>
-                <option value="year-asc">Year (Oldest First)</option>
-                <option value="rating-desc">My Rating (Highest First)</option>
-                <option value="rating-asc">My Rating (Lowest First)</option>
-                <option value="tmdb-desc">TMDB Rating (Highest First)</option>
-                <option value="tmdb-asc">TMDB Rating (Lowest First)</option>
-            </select>
+        <div id="tvSection" class="tab-content-section">
+            <div class="header">
+                <div class="header-left">
+                    <h1>📺 My TV Shows <span class="movie-count" id="tvCount">(0 shows)</span></h1>
+                    <div class="last-updated"><span class="sync-status loading" id="tvSyncStatus">LOADING</span><span id="tvLastUpdatedText">Checking GitHub...</span></div>
+                </div>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenuTV()">☰</button>
+                <div class="header-buttons" id="headerButtonsTV">
+                    <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenuTV();">🔄 Refresh</button>
+                    <button class="btn" onclick="openAddModal('tv'); closeMobileMenuTV();">+ Add TV Show</button>
+                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenuTV();">📄 Export JSON</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenuTV();">📤 Import</button>
+                </div>
+            </div>
+            <select class="genre-dropdown" id="tvGenreDropdown" onchange="filterByGenre(this.value,'tv')"><option value="all">🎭 All Genres</option></select>
+            <div class="controls">
+                <input type="text" class="search-input" id="tvSearchInput" placeholder="Search your TV shows..." oninput="renderTV()">
+                <select class="sort-select" id="tvSortSelect" onchange="currentSort.tv=this.value; renderTV();">
+                    <option value="added-desc">Date Added (Newest)</option><option value="added-asc">Date Added (Oldest)</option>
+                    <option value="title-asc">Title (A-Z)</option><option value="title-desc">Title (Z-A)</option>
+                    <option value="year-desc">Year (Newest)</option><option value="year-asc">Year (Oldest)</option>
+                    <option value="rating-desc">My Rating (High)</option><option value="rating-asc">My Rating (Low)</option>
+                    <option value="tmdb-desc">TMDB Rating (High)</option><option value="tmdb-asc">TMDB Rating (Low)</option>
+                </select>
+            </div>
+            <div class="genre-filter-bar" id="tvGenreFilterBar"><span class="genre-filter-label">🎭 Genres:</span><button class="genre-chip active" data-genre="all" onclick="filterByGenre('all','tv')">All</button></div>
+            <div class="active-filter-notice" id="tvActiveFilterNotice">Showing: <strong id="tvActiveFilterText"></strong> <button onclick="clearFilters('tv')" style="background:none;border:none;color:#e50914;cursor:pointer;">✕ Clear</button></div>
+            <div class="movie-grid" id="tvGrid"></div>
         </div>
-
-        <div class="genre-filter-bar" id="genreFilterBar">
-            <span class="genre-filter-label">🎭 Genres:</span>
-            <button class="genre-chip active" data-genre="all" onclick="filterByGenre('all')">All</button>
-        </div>
-
-        <div class="active-filter-notice" id="activeFilterNotice">
-            Showing: <strong id="activeFilterText"></strong>
-            <button onclick="clearFilters()" style="background:none;border:none;color:#e50914;cursor:pointer;margin-left:10px;font-size:14px;">✕ Clear</button>
-        </div>
-
-        <div class="movie-grid" id="movieGrid"></div>
     </div>
 
-    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">↑</button>
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
     <div class="toast-container" id="toastContainer"></div>
 
     <div class="modal" id="addModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeAddModal()">&times;</button>
-            <h2>Add Movie</h2>
+            <h2 id="addModalTitle">Add Movie</h2>
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('search')">🔍 Search TMDB</button>
-                <button class="tab" onclick="switchTab('person')">👤 By Actor/Director</button>
-                <button class="tab" onclick="switchTab('manual')">🔢 Manual ID</button>
+                <button class="tab active" onclick="switchAddTab('search')">🔍 Search</button>
+                <button class="tab" onclick="switchAddTab('person')">👤 By Actor/Director</button>
+                <button class="tab" onclick="switchAddTab('manual')">🔢 Manual ID</button>
             </div>
             <div id="searchTab" class="tab-content active">
-                <div class="form-group">
-                    <label for="tmdbSearchInput">Search by Title</label>
-                    <input type="text" id="tmdbSearchInput" placeholder="e.g., The Dark Knight, Inception..." oninput="debouncedSearch()">
-                </div>
-                <div id="searchResults" class="search-results"></div>
+                <div class="form-group"><label>Search by Title</label><input type="text" id="addSearchInput" oninput="debouncedAddSearch()"></div>
+                <div id="addSearchResults" class="search-results"></div>
             </div>
             <div id="personTab" class="tab-content">
-                <div class="form-group" id="personSearchForm">
-                    <label for="personSearchInput">Search for Actor or Director</label>
-                    <input type="text" id="personSearchInput" placeholder="e.g., Humphrey Bogart, Michael Mann..." oninput="debouncedPersonSearch()">
-                </div>
+                <div class="form-group" id="personSearchForm"><label>Search for Actor or Director</label><input type="text" id="personSearchInput" placeholder="e.g., Humphrey Bogart, Michael Mann..." oninput="debouncedPersonSearch()"></div>
                 <div id="personResults" class="person-results"></div>
-                <div id="personMoviesSection" style="display: none;">
-                    <div class="person-movies-header">
-                        <h3 id="personMoviesTitle">Movies</h3>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-secondary btn-small" onclick="showPersonFilters()">🔍 Filters</button>
-                            <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleMovies()">Add All to Collection</button>
+                <div id="personItemsSection" style="display:none;">
+                    <div class="person-items-header">
+                        <h3 id="personItemsTitle">Movies</h3>
+                        <div style="display:flex;gap:10px;">
+                            <button class="btn btn-secondary btn-small" onclick="document.getElementById('personFilters').classList.toggle('show')">🔍 Filters</button>
+                            <button class="add-all-btn" id="addAllBtn" onclick="addAllVisibleItems()">Add All</button>
                         </div>
                     </div>
                     <div id="personFilters" class="person-filters">
                         <div class="filter-row">
-                            <div class="filter-group">
-                                <label>From Year</label>
-                                <input type="number" id="filterYearFrom" placeholder="e.g., 1940" min="1900" max="2099">
-                            </div>
-                            <div class="filter-group">
-                                <label>To Year</label>
-                                <input type="number" id="filterYearTo" placeholder="e.g., 1960" min="1900" max="2099">
-                            </div>
-                            <div class="filter-group">
-                                <label>Min Rating</label>
-                                <select id="filterMinRating">
-                                    <option value="">Any</option>
-                                    <option value="5">5+ ⭐</option>
-                                    <option value="6">6+ ⭐</option>
-                                    <option value="7">7+ ⭐</option>
-                                    <option value="8">8+ ⭐</option>
-                                    <option value="9">9+ ⭐</option>
-                                </select>
-                            </div>
-                            <button class="apply-filters-btn" onclick="loadPersonMovies(currentPersonId, currentPersonName)">Apply</button>
+                            <div class="filter-group"><label>From Year</label><input type="number" id="filterYearFrom" placeholder="e.g., 1940" min="1900" max="2099"></div>
+                            <div class="filter-group"><label>To Year</label><input type="number" id="filterYearTo" placeholder="e.g., 1960" min="1900" max="2099"></div>
+                            <div class="filter-group"><label>Min Rating</label><select id="filterMinRating"><option value="">Any</option><option value="5">5+</option><option value="6">6+</option><option value="7">7+</option><option value="8">8+</option></select></div>
+                            <button class="apply-filters-btn" onclick="loadPersonItems(currentPersonId, currentPersonName)">Apply</button>
                             <button class="clear-filters-btn" onclick="clearPersonFilters()">Clear</button>
                         </div>
                         <div class="filter-row">
-                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeCompilations"> Exclude compilations & "Best of"</label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeCompilations"> Exclude compilations</label>
                             <label class="filter-checkbox"><input type="checkbox" id="filterExcludeDocumentaries"> Exclude documentaries</label>
-                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeTV"> Exclude TV movies</label>
-                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeAdded" checked> Hide movies already added</label>
+                            <label class="filter-checkbox"><input type="checkbox" id="filterExcludeAdded" checked> Hide already added</label>
                         </div>
                     </div>
-                    <div id="personMovieResults" class="search-results"></div>
+                    <div id="personItemResults" class="search-results"></div>
                 </div>
             </div>
             <div id="manualTab" class="tab-content">
-                <div class="form-group">
-                    <label for="tmdbInput">TMDB Reference</label>
-                    <input type="text" id="tmdbInput" placeholder="e.g., 1481343 or 1481343-the-devils-mouth">
-                    <div class="help-text">Enter the TMDB ID number or the full reference from the URL</div>
-                </div>
-                <button class="btn" onclick="addMovieManual()" style="width: 100%;">Add to Collection</button>
-                <div id="addMessage" style="margin-top: 15px; text-align: center; color: #e50914;"></div>
+                <div class="form-group"><label id="manualInputLabel">TMDB ID</label><input type="text" id="manualIdInput" placeholder="e.g., 155"><div class="help-text">Enter the TMDB ID number</div></div>
+                <button class="btn" onclick="addManual()" style="width:100%;">Add to Collection</button>
+                <div id="addMessage" style="margin-top:15px;text-align:center;color:#e50914;"></div>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="detailsModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeDetailsModal()">&times;</button>
-            <div class="movie-details" id="movieDetails"></div>
-        </div>
-    </div>
-
-    <div class="modal" id="trailerModal">
-        <div class="modal-content trailer-modal">
-            <button class="modal-close" onclick="closeTrailerModal()">&times;</button>
-            <h2 id="trailerTitle">Trailer</h2>
-            <div id="trailerContent"></div>
-        </div>
-    </div>
-
-    <div class="modal" id="actorModal">
-        <div class="modal-content actor-modal-content">
-            <button class="modal-close" onclick="closeActorModal()">&times;</button>
-            <div id="actorDetails"></div>
-        </div>
-    </div>
+    <div class="modal" id="detailsModal"><div class="modal-content"><button class="modal-close" onclick="closeDetailsModal()">&times;</button><div class="movie-details" id="detailsContent"></div></div></div>
+    <div class="modal" id="actorModal"><div class="modal-content actor-modal-content"><button class="modal-close" onclick="document.getElementById('actorModal').classList.remove('active')">&times;</button><div id="actorDetails"></div></div></div>
 
     <script>
-        const API_KEY = 'de4204747375f4d584fb254b6a94127c';
-        const BASE_URL = 'https://api.themoviedb.org/3';
-        const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-        const IMG_URL_ORIGINAL = 'https://image.tmdb.org/t/p/original';
-        const IMG_URL_PROFILE = 'https://image.tmdb.org/t/p/w300';
-        const TMDB_PERSON_URL = 'https://www.themoviedb.org/person/';
-        const GITHUB_MOVIES_URL = 'https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
-        const EMBEDDED_MOVIES = null;
+        const API_KEY='de4204747375f4d584fb254b6a94127c', BASE_URL='https://api.themoviedb.org/3', IMG_URL='https://image.tmdb.org/t/p/w500', IMG_ORIG='https://image.tmdb.org/t/p/original', GITHUB_URL='https://raw.githubusercontent.com/grinningdog/testrun/main/movies.json';
+        let movies=JSON.parse(localStorage.getItem('myMovies'))||[], tvShows=JSON.parse(localStorage.getItem('myTVShows'))||[];
+        let currentTab='movie', currentSort={movie:'added-desc',tv:'added-desc'}, currentGenreFilter={movie:'all',tv:'all'};
+        let addSearchTimeout, personSearchTimeout, currentAddType='movie', currentPersonMovies=[], currentPersonId=null, currentPersonName=null;
 
-        let movies = JSON.parse(localStorage.getItem('myMovies')) || EMBEDDED_MOVIES || [];
-        let searchTimeout, personSearchTimeout;
-        let currentSort = localStorage.getItem('movieSort') || 'added-desc';
-        let currentPersonMovies = [], currentPersonId = null, currentPersonName = null;
-        let currentGenreFilter = 'all', currentMovieIdInDetails = null;
-        let ytApiReady = false, ytPlayers = {};
+        function showToast(msg,type='info',dur=4000){const c=document.getElementById('toastContainer');if(!c)return;const t=document.createElement('div');t.className=`toast ${type}`;const i={success:'✅',error:'❌',info:'ℹ️'};t.innerHTML=`<span class="toast-icon">${i[type]||'ℹ️'}</span><span class="toast-message">${msg}</span>`;c.appendChild(t);setTimeout(()=>{t.classList.add('fade-out');setTimeout(()=>t.remove(),300)},dur);}
+        function fetchTO(url,t=10000){return Promise.race([fetch(url),new Promise((_,r)=>setTimeout(()=>r(new Error('Timeout')),t))]);}
+        function getList(t){return t==='movie'?movies:tvShows;}
+        function setList(t,l){if(t==='movie'){movies=l;localStorage.setItem('myMovies',JSON.stringify(l));}else{tvShows=l;localStorage.setItem('myTVShows',JSON.stringify(l));}}
 
-        function showToast(message, type = 'info', duration = 4000) {
-            const container = document.getElementById('toastContainer');
-            if (!container) return;
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            toast.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span class="toast-message">${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 300); }, duration);
-        }
+        function switchMainTab(tab){currentTab=tab;document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('.tab-content-section').forEach(s=>s.classList.remove('active'));document.getElementById(`${tab}Section`).classList.add('active');if(tab==='movie'){updateCount('movie');renderMovies();renderGF('movie');}else{updateCount('tv');renderTV();renderGF('tv');}}
+        function switchAddTab(tab){document.querySelectorAll('#addModal .tab').forEach(t=>t.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('#addModal .tab-content').forEach(c=>c.classList.remove('active'));document.getElementById(`${tab}Tab`).classList.add('active');}
+        function toggleMobileMenu(){const b=document.getElementById('headerButtons'),t=document.querySelector('#movieSection .mobile-menu-toggle');b.classList.toggle('show');t.textContent=b.classList.contains('show')?'✕':'☰';}
+        function closeMobileMenu(){const b=document.getElementById('headerButtons'),t=document.querySelector('#movieSection .mobile-menu-toggle');b.classList.remove('show');t.textContent='☰';}
+        function toggleMobileMenuTV(){const b=document.getElementById('headerButtonsTV'),t=document.querySelector('#tvSection .mobile-menu-toggle');b.classList.toggle('show');t.textContent=b.classList.contains('show')?'✕':'☰';}
+        function closeMobileMenuTV(){const b=document.getElementById('headerButtonsTV'),t=document.querySelector('#tvSection .mobile-menu-toggle');b.classList.remove('show');t.textContent='☰';}
 
-        function updateSyncStatus(status, message, detail) {
-            const statusEl = document.getElementById('syncStatus');
-            const textEl = document.getElementById('lastUpdatedText');
-            if (!statusEl || !textEl) return;
-            statusEl.className = 'sync-status ' + status;
-            statusEl.textContent = status.toUpperCase();
-            textEl.innerHTML = detail ? message + ' <span style="color:#666;">(' + detail + ')</span>' : message;
-        }
+        async function loadFromGitHub(show=true){try{const r=await fetchTO(`${GITHUB_URL}?t=${Date.now()}`);if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(d.movies&&Array.isArray(d.movies)){movies=d.movies;localStorage.setItem('myMovies',JSON.stringify(movies));updateCount('movie');renderMovies();renderGF('movie');}if(d.tvShows&&Array.isArray(d.tvShows)){tvShows=d.tvShows;localStorage.setItem('myTVShows',JSON.stringify(tvShows));updateCount('tv');renderTV();renderGF('tv');}['','tv'].forEach(p=>{const s=document.getElementById(`${p}syncStatus`),t=document.getElementById(`${p}lastUpdatedText`);if(s){s.className='sync-status ok';s.textContent='OK';}const c=p==='tv'?tvShows.length:movies.length;if(t)t.textContent=`${c} ${p==='tv'?'shows':'movies'} loaded`;});if(show)showToast('✅ Loaded from GitHub','success');}catch(e){console.error(e);if(show)showToast(`❌ ${e.message}`,'error',8000);}}
+        async function refreshFromGitHub(){showToast('🔄 Checking...','info');await loadFromGitHub(true);}
+        function exportAsJSON(){const d={version:1,exportedAt:new Date().toISOString(),movies,tvShows};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='movies.json';a.click();URL.revokeObjectURL(u);showToast(`📄 Exported ${movies.length} movies, ${tvShows.length} shows`,'success');}
+        function importJSON(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.movies&&Array.isArray(d.movies)){movies=d.movies;localStorage.setItem('myMovies',JSON.stringify(movies));}if(d.tvShows&&Array.isArray(d.tvShows)){tvShows=d.tvShows;localStorage.setItem('myTVShows',JSON.stringify(tvShows));}updateCount('movie');updateCount('tv');renderMovies();renderTV();renderGF('movie');renderGF('tv');showToast('✅ Imported','success');}catch(err){showToast(`❌ ${err.message}`,'error');}};r.readAsText(f);ev.target.value='';}
 
-        function fetchWithTimeout(url, timeout = 10000) {
-            return Promise.race([
-                fetch(url),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeout))
-            ]);
-        }
+        function updateCount(t){const l=getList(t);document.getElementById(t==='movie'?'movieCount':'tvCount').textContent=`(${l.length} ${t==='movie'?'movie':'show'}${l.length!==1?'s':''})`;}
+        function filterByGenre(g,t){currentGenreFilter[t]=g;const bar=document.getElementById(`${t}GenreFilterBar`);if(bar)bar.querySelectorAll('.genre-chip').forEach(c=>c.classList.toggle('active',c.dataset.genre===g));const dd=document.getElementById(`${t}GenreDropdown`);if(dd)dd.value=g;const n=document.getElementById(`${t}ActiveFilterNotice`),tx=document.getElementById(`${t}ActiveFilterText`);if(g==='all')n.classList.remove('show');else{tx.textContent=`Genre: ${g}`;n.classList.add('show');}t==='movie'?renderMovies():renderTV();}
+        function clearFilters(t){filterByGenre('all',t);document.getElementById(`${t}SearchInput`).value='';}
+        function getAllGenres(t){const s=new Set();getList(t).forEach(i=>{if(i.genres)i.genres.forEach(g=>s.add(g));});return Array.from(s).sort();}
+        function renderGF(t){const bar=document.getElementById(`${t}GenreFilterBar`),dd=document.getElementById(`${t}GenreDropdown`),gs=getAllGenres(t);if(bar){bar.innerHTML='<span class="genre-filter-label">🎭 Genres:</span>';const a=document.createElement('button');a.className=`genre-chip ${currentGenreFilter[t]==='all'?'active':''}`;a.dataset.genre='all';a.onclick=()=>filterByGenre('all',t);a.textContent='All';bar.appendChild(a);gs.forEach(g=>{const c=document.createElement('button');c.className=`genre-chip ${currentGenreFilter[t]===g?'active':''}`;c.dataset.genre=g;c.onclick=()=>filterByGenre(g,t);c.textContent=g;bar.appendChild(c);});}if(dd){dd.innerHTML='<option value="all">🎭 All Genres</option>';gs.forEach(g=>{const o=document.createElement('option');o.value=g;o.textContent=g;dd.appendChild(o);});dd.value=currentGenreFilter[t];}}
 
-        function toggleMobileMenu() {
-            const buttons = document.getElementById('headerButtons');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            const isOpen = buttons.classList.toggle('show');
-            toggle.textContent = isOpen ? '✕' : '☰';
-            toggle.title = isOpen ? 'Close menu' : 'Menu';
-        }
+        function sortItems(list,t){const[f,d]=currentSort[t].split('-');const m=d==='asc'?1:-1;return[...list].sort((a,b)=>{switch(f){case'title':return(a.title||'').toLowerCase().localeCompare((b.title||'').toLowerCase())*m;case'year':return((a.release_date?new Date(a.release_date).getFullYear():0)-(b.release_date?new Date(b.release_date).getFullYear():0))*m;case'rating':const ra=a.userRating||0,rb=b.userRating||0;if(!ra&&!rb)return 0;if(!ra)return 1;if(!rb)return -1;return(ra-rb)*m;case'tmdb':return((a.vote_average||0)-(b.vote_average||0))*m;case'added':return(new Date(a.added).getTime()-new Date(b.added).getTime())*m;default:return 0;}});}
 
-        function closeMobileMenu() {
-            const buttons = document.getElementById('headerButtons');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            if (buttons.classList.contains('show')) {
-                buttons.classList.remove('show');
-                toggle.textContent = '☰';
-                toggle.title = 'Menu';
-            }
-        }
+        function renderGrid(gridId,list,t){const grid=document.getElementById(gridId);if(!grid)return;grid.innerHTML='';const q=document.getElementById(`${t}SearchInput`).value.toLowerCase();let f=list.filter(i=>(i.title||'').toLowerCase().includes(q)&&(currentGenreFilter[t]==='all'||(i.genres&&i.genres.includes(currentGenreFilter[t]))));f=sortItems(f,t);if(!f.length){grid.innerHTML=`<div class="empty-state"><h2>${list.length===0?`No ${t==='movie'?'movies':'TV shows'} yet`:'No matches'}</h2></div>`;return;}f.forEach(item=>{const c=document.createElement('div');c.className='movie-card';c.onclick=()=>showDetails(item.id,t);const y=item.release_date?new Date(item.release_date).getFullYear():'';const g=item.genres&&item.genres.length?item.genres.slice(0,3).join(' • '):'';const r=item.userRating?`<div class="movie-card-rating">⭐ ${item.userRating}/5</div>`:'';c.innerHTML=`<img src="${item.poster_path?IMG_URL+item.poster_path:'https://via.placeholder.com/500x750?text=No+Image'}" alt="${item.title}" loading="lazy">${r}<div class="movie-card-overlay"><div class="movie-card-title">${item.title}</div><div class="movie-card-year">${y}</div>${g?`<div class="movie-card-genres">${g}</div>`:''}</div>`;grid.appendChild(c);});}
+        function renderMovies(){renderGrid('movieGrid',movies,'movie');}
+        function renderTV(){renderGrid('tvGrid',tvShows,'tv');}
 
-        function filterByGenreMobile(genre) {
-            currentGenreFilter = genre;
-            document.querySelectorAll('.genre-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.genre === genre));
-            const notice = document.getElementById('activeFilterNotice');
-            const text = document.getElementById('activeFilterText');
-            if (genre === 'all') notice.classList.remove('show');
-            else { text.textContent = `Genre: ${genre}`; notice.classList.add('show'); }
-            renderMovies();
-        }
+        function openAddModal(t){currentAddType=t;document.getElementById('addModalTitle').textContent=t==='movie'?'Add Movie':'Add TV Show';document.getElementById('addSearchInput').placeholder=t==='movie'?'e.g., The Dark Knight...':'e.g., Breaking Bad...';document.getElementById('manualInputLabel').textContent=t==='movie'?'TMDB Movie ID':'TMDB TV Show ID';document.getElementById('addModal').classList.add('active');document.getElementById('addSearchInput').focus();}
+        function closeAddModal(){document.getElementById('addModal').classList.remove('active');document.getElementById('addSearchInput').value='';document.getElementById('manualIdInput').value='';document.getElementById('addMessage').textContent='';document.getElementById('addSearchResults').innerHTML='';document.getElementById('personSearchInput').value='';document.getElementById('personResults').innerHTML='';document.getElementById('personResults').classList.remove('show');document.getElementById('personItemsSection').style.display='none';document.getElementById('personSearchForm').style.display='block';document.getElementById('personItemResults').innerHTML='';currentPersonMovies=[];currentPersonId=null;currentPersonName=null;}
+        function debouncedAddSearch(){clearTimeout(addSearchTimeout);addSearchTimeout=setTimeout(performAddSearch,500);}
 
-        async function loadMoviesFromGitHub(showToastMsg = true) {
-            updateSyncStatus('loading', 'Checking GitHub...');
-            try {
-                const url = `${GITHUB_MOVIES_URL}?t=${Date.now()}`;
-                const response = await fetchWithTimeout(url, 10000);
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        updateSyncStatus('error', 'movies.json not found', 'Check GitHub');
-                        if (showToastMsg) showToast('❌ movies.json not found', 'error', 8000);
-                    } else throw new Error(`HTTP ${response.status}`);
-                    return;
-                }
-                const data = await response.json();
-                let githubMovies = Array.isArray(data) ? data : (data.movies || []);
-                let githubExportedAt = data.exportedAt || null;
-                
-                movies = githubMovies;
-                localStorage.setItem('myMovies', JSON.stringify(movies));
-                if (githubExportedAt) localStorage.setItem('githubExportedAt', githubExportedAt);
-                
-                updateSyncStatus('ok', `Loaded from GitHub`, `${githubMovies.length} movies`);
-                if (showToastMsg) showToast(`✅ Loaded ${githubMovies.length} movies`, 'success');
-            } catch (error) {
-                console.error('❌ Error loading from GitHub:', error);
-                updateSyncStatus('error', 'Could not reach GitHub', error.message);
-                if (showToastMsg) showToast(`❌ GitHub error: ${error.message}`, 'error', 8000);
-            }
-        }
+        async function performAddSearch(){const q=document.getElementById('addSearchInput').value.trim();const r=document.getElementById('addSearchResults');if(q.length<2){r.innerHTML='';return;}r.innerHTML='<div class="search-loading">Searching...</div>';try{const ep=currentAddType==='movie'?'movie':'tv';const d=await(await fetch(`${BASE_URL}/search/${ep}?api_key=${API_KEY}&query=${encodeURIComponent(q)}&page=1`)).json();if(!d.results.length){r.innerHTML='<div class="search-no-results">No results</div>';return;}r.innerHTML='';d.results.forEach(item=>{const added=getList(currentAddType).some(m=>m.id===item.id);const c=document.createElement('div');c.className='search-result-item';const pp=item.poster_path?IMG_URL+item.poster_path:'https://via.placeholder.com/300x450?text=No+Image';const y=(item.first_air_date||item.release_date)?new Date(item.first_air_date||item.release_date).getFullYear():'N/A';const t=item.title||item.name;c.innerHTML=`<img src="${pp}" alt="${t}"><button class="add-btn-small ${added?'added':''}" onclick="event.stopPropagation();toggleAddItem(${item.id},this)">${added?'✓ Added':'+ Add'}</button><div class="search-result-info"><div class="search-result-title">${t}</div><div class="search-result-year">${y}</div></div>`;c.onclick=e=>{if(!e.target.classList.contains('add-btn-small')){toggleAddItem(item.id,c.querySelector('.add-btn-small'));}};r.appendChild(c);});}catch(e){r.innerHTML='<div class="search-no-results">Error</div>';}}
 
-        async function refreshFromGitHub() {
-            showToast('🔄 Checking GitHub...', 'info');
-            await loadMoviesFromGitHub(true);
-            renderMovies();
-            renderGenreFilter();
-            updateMovieCount();
-        }
+        async function toggleAddItem(id,btn){if(btn.classList.contains('added')){setList(currentAddType,getList(currentAddType).filter(m=>m.id!==id));updateCount(currentAddType);currentAddType==='movie'?renderMovies():renderTV();btn.classList.remove('added');btn.textContent='+ Add';showToast('🗑️ Removed','info');}else{try{const ep=currentAddType==='movie'?'movie':'tv';const item=await(await fetch(`${BASE_URL}/${ep}/${id}?api_key=${API_KEY}`)).json();const n={id:item.id,title:item.title||item.name,poster_path:item.poster_path,release_date:item.release_date||item.first_air_date,vote_average:item.vote_average,genres:item.genres?item.genres.map(g=>g.name):[],userRating:null,added:new Date().toISOString()};if(!getList(currentAddType).some(m=>m.id===id)){const l=getList(currentAddType);l.push(n);setList(currentAddType,l);updateCount(currentAddType);currentAddType==='movie'?renderMovies():renderTV();}btn.classList.add('added');btn.textContent='✓ Added';showToast(`✅ Added "${item.title||item.name}"`,'success');}catch(e){showToast('❌ Error','error');}}}
 
-        async function init() {
-            document.getElementById('sortSelect').value = currentSort;
-            document.getElementById('tmdbInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') addMovieManual(); });
-            window.addEventListener('scroll', handleScroll);
-            document.addEventListener('click', (e) => {
-                const buttons = document.getElementById('headerButtons');
-                const toggle = document.querySelector('.mobile-menu-toggle');
-                if (buttons.classList.contains('show') && !buttons.contains(e.target) && !toggle.contains(e.target)) closeMobileMenu();
-            });
-            await loadMoviesFromGitHub(true);
-            renderMovies();
-            renderGenreFilter();
-            updateMovieCount();
-            backfillMissingGenres();
-        }
+        async function addManual(){const id=document.getElementById('manualIdInput').value.trim();const m=document.getElementById('addMessage');if(!id){m.style.color='#ff6b6b';m.textContent='Enter an ID';return;}m.textContent='Loading...';m.style.color='#888';try{const ep=currentAddType==='movie'?'movie':'tv';const r=await fetch(`${BASE_URL}/${ep}/${id}?api_key=${API_KEY}`);if(!r.ok)throw new Error();const item=await r.json();const n={id:item.id,title:item.title||item.name,poster_path:item.poster_path,release_date:item.release_date||item.first_air_date,vote_average:item.vote_average,genres:item.genres?item.genres.map(g=>g.name):[],userRating:null,added:new Date().toISOString()};if(!getList(currentAddType).some(x=>x.id===id)){const l=getList(currentAddType);l.push(n);setList(currentAddType,l);updateCount(currentAddType);currentAddType==='movie'?renderMovies():renderTV();}m.textContent='';closeAddModal();showToast(`✅ Added "${item.title||item.name}"`,'success');}catch(e){m.style.color='#ff6b6b';m.textContent='Not found';}}
 
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-        else init();
+        // Person/Actor search
+        function debouncedPersonSearch(){clearTimeout(personSearchTimeout);personSearchTimeout=setTimeout(searchPerson,500);}
+        async function searchPerson(){const q=document.getElementById('personSearchInput').value.trim();const pr=document.getElementById('personResults');const ps=document.getElementById('personItemsSection');if(q.length<2){pr.innerHTML='';pr.classList.remove('show');ps.style.display='none';return;}pr.innerHTML='<div class="search-loading">Searching...</div>';pr.classList.add('show');ps.style.display='none';try{const d=await(await fetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(q)}&page=1`)).json();if(!d.results.length){pr.innerHTML='<div class="search-no-results">No people found</div>';return;}pr.innerHTML='';d.results.slice(0,5).forEach(p=>{const c=document.createElement('div');c.className='person-result-item';c.onclick=()=>loadPersonItems(p.id,p.name);const img=p.profile_path?`https://image.tmdb.org/t/p/w300${p.profile_path}`:'https://via.placeholder.com/185x185?text=No+Image';c.innerHTML=`<img src="${img}" alt="${p.name}"><div class="person-result-info"><div class="person-result-name">${p.name}</div><div class="person-result-known">${p.known_for_department||'Acting'}</div></div>`;pr.appendChild(c);});}catch(e){pr.innerHTML='<div class="search-no-results">Error</div>';}}
 
-        function onYouTubeIframeAPIReady() { ytApiReady = true; }
-        function updateMovieCount() {
-            const count = movies.length;
-            document.getElementById('movieCount').textContent = `(${count === 1 ? '1 movie' : count + ' movies'})`;
-        }
-        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function handleScroll() {
-            const backToTopBtn = document.getElementById('backToTop');
-            if (window.pageYOffset > 300) backToTopBtn.classList.add('visible');
-            else backToTopBtn.classList.remove('visible');
-        }
+        async function loadPersonItems(personId,personName){currentPersonId=personId;currentPersonName=personName;const mr=document.getElementById('personItemResults');const ps=document.getElementById('personItemsSection');const pt=document.getElementById('personItemsTitle');const ab=document.getElementById('addAllBtn');const pr=document.getElementById('personResults');const pf=document.getElementById('personSearchForm');pr.classList.remove('show');pf.style.display='none';ps.style.display='flex';pt.textContent=`${currentAddType==='movie'?'Movies':'TV Shows'} featuring ${personName}`;mr.innerHTML='<div class="search-loading">Loading...</div>';ab.disabled=true;try{const creditsEp=currentAddType==='movie'?'movie_credits':'tv_credits';const d=await(await fetch(`${BASE_URL}/person/${personId}/${creditsEp}?api_key=${API_KEY}`)).json();const items=currentAddType==='movie'?(d.cast||[]):(d.cast||[]);let unique=[...items].filter((m,i,a)=>a.findIndex(x=>x.id===m.id)===i);unique=applyPersonFilters(unique);unique.sort((a,b)=>{const da=a.release_date||a.first_air_date?new Date(a.release_date||a.first_air_date):new Date(0);const db=b.release_date||b.first_air_date?new Date(b.release_date||b.first_air_date):new Date(0);return db-da;});currentPersonMovies=unique;if(!unique.length){mr.innerHTML='<div class="search-no-results">No results matching filters</div>';ab.disabled=true;return;}mr.innerHTML='';unique.forEach(item=>{const added=getList(currentAddType).some(m=>m.id===item.id);const c=document.createElement('div');c.className='search-result-item';const pp=item.poster_path?IMG_URL+item.poster_path:'https://via.placeholder.com/300x450?text=No+Image';const y=(item.release_date||item.first_air_date)?new Date(item.release_date||item.first_air_date).getFullYear():'N/A';const t=item.title||item.name;c.innerHTML=`<img src="${pp}" alt="${t}"><button class="add-btn-small ${added?'added':''}" onclick="event.stopPropagation();toggleAddItem(${item.id},this)">${added?'✓ Added':'+ Add'}</button><div class="search-result-info"><div class="search-result-title">${t}</div><div class="search-result-year">${y} ${item.vote_average?`• ⭐ ${item.vote_average.toFixed(1)}`:''}</div></div>`;c.onclick=e=>{if(!e.target.classList.contains('add-btn-small')){toggleAddItem(item.id,c.querySelector('.add-btn-small'));}};mr.appendChild(c);});updateAddAllBtn();}catch(e){mr.innerHTML='<div class="search-no-results">Error</div>';ab.disabled=true;}}
 
-        async function backfillMissingGenres() {
-            const moviesWithoutGenres = movies.filter(m => !m.genres || m.genres.length === 0);
-            if (moviesWithoutGenres.length === 0) return;
-            for (const movie of moviesWithoutGenres) {
-                try {
-                    const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
-                    const data = await response.json();
-                    if (data.genres) movie.genres = data.genres.map(g => g.name);
-                    await new Promise(resolve => setTimeout(resolve, 250));
-                } catch (error) { console.error('Error backfilling genres for', movie.title, error); }
-            }
-            localStorage.setItem('myMovies', JSON.stringify(movies));
-            renderGenreFilter();
-        }
+        function applyPersonFilters(items){const yf=document.getElementById('filterYearFrom')?.value;const yt=document.getElementById('filterYearTo')?.value;const mr=document.getElementById('filterMinRating')?.value;const ec=document.getElementById('filterExcludeCompilations')?.checked;const ed=document.getElementById('filterExcludeDocumentaries')?.checked;const ea=document.getElementById('filterExcludeAdded')?.checked;return items.filter(m=>{const y=(m.release_date||m.first_air_date)?new Date(m.release_date||m.first_air_date).getFullYear():null;const r=m.vote_average||0;const t=(m.title||m.name||'').toLowerCase();if(yf&&y&&y<parseInt(yf))return false;if(yt&&y&&y>parseInt(yt))return false;if(mr&&r<parseFloat(mr))return false;if(ec&&(t.includes('compilation')||t.includes('best of')||t.includes('collection')))return false;if(ed&&(t.includes('documentary')||t.includes('making of')))return false;if(ea&&getList(currentAddType).some(x=>x.id===m.id))return false;return true;});}
+        function clearPersonFilters(){document.getElementById('filterYearFrom').value='';document.getElementById('filterYearTo').value='';document.getElementById('filterMinRating').value='';document.getElementById('filterExcludeCompilations').checked=false;document.getElementById('filterExcludeDocumentaries').checked=false;document.getElementById('filterExcludeAdded').checked=false;if(currentPersonId)loadPersonItems(currentPersonId,currentPersonName);}
+        function updateAddAllBtn(){const b=document.getElementById('addAllBtn');const n=currentPersonMovies.filter(m=>!getList(currentAddType).some(x=>x.id===m.id));b.disabled=!n.length;b.textContent=n.length?`Add All (${n.length})`:'All Added ✓';}
+        async function addAllVisibleItems(){const b=document.getElementById('addAllBtn');const toAdd=currentPersonMovies.filter(m=>!getList(currentAddType).some(x=>x.id===m.id));if(!toAdd.length)return;b.disabled=true;b.textContent='Adding...';for(const m of toAdd){try{const ep=currentAddType==='movie'?'movie':'tv';const item=await(await fetch(`${BASE_URL}/${ep}/${m.id}?api_key=${API_KEY}`)).json();if(!getList(currentAddType).some(x=>x.id===item.id)){const n={id:item.id,title:item.title||item.name,poster_path:item.poster_path,release_date:item.release_date||item.first_air_date,vote_average:item.vote_average,genres:item.genres?item.genres.map(g=>g.name):[],userRating:null,added:new Date().toISOString()};const l=getList(currentAddType);l.push(n);setList(currentAddType,l);}const el=document.querySelector(`[data-movie-id="${m.id}"]`);if(el){const btn=el.querySelector('.add-btn-small');if(btn){btn.classList.add('added');btn.textContent='✓ Added';}}}catch(e){}}updateCount(currentAddType);currentAddType==='movie'?renderMovies():renderTV();renderGF(currentAddType);updateAddAllBtn();showToast(`✅ Added ${toAdd.length}`,'success');}
 
-        function getAllGenres() {
-            const genreSet = new Set();
-            movies.forEach(movie => { if (movie.genres && Array.isArray(movie.genres)) movie.genres.forEach(g => genreSet.add(g)); });
-            return Array.from(genreSet).sort();
-        }
+        // Details
+        async function showDetails(id,type){const modal=document.getElementById('detailsModal');const c=document.getElementById('detailsContent');c.innerHTML='<p style="text-align:center;padding:40px;color:#888;">Loading...</p>';modal.classList.add('active');try{const ep=type==='movie'?'movie':'tv';const item=await(await fetch(`${BASE_URL}/${ep}/${id}?api_key=${API_KEY}`)).json();let wikiLink='';try{const eid=await(await fetch(`${BASE_URL}/${ep}/${id}/external_ids?api_key=${API_KEY}`)).json();if(eid.wikidata_id){try{const wd=await(await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${eid.wikidata_id}.json`)).json();const ent=Object.values(wd.entities)[0];if(ent?.sitelinks?.enwiki)wikiLink=`https://en.wikipedia.org/wiki/${ent.sitelinks.enwiki.title}`;}catch(e){}}}catch(e){}const credits=await(await fetch(`${BASE_URL}/${ep}/${id}/credits?api_key=${API_KEY}`)).json();const local=getList(type).find(m=>m.id===id);const ur=local?local.userRating:null;const year=(item.first_air_date||item.release_date)?new Date(item.first_air_date||item.release_date).getFullYear():'N/A';const rating=item.vote_average?item.vote_average.toFixed(1):'N/A';const rt=type==='movie'?(item.runtime?`${item.runtime} min`:''):(item.episode_run_time?.length?`${item.episode_run_time[0]} min/ep`:'');const actors=(credits.cast||[]).slice(0,8);let ah='';if(actors.length){ah='<div class="movie-actors"><span class="movie-actors-label">Starring:</span>';actors.forEach((a,i)=>{const sn=a.name.replace(/'/g,"\\'");const sp=a.profile_path?a.profile_path.replace(/'/g,"\\'"):'';ah+=`<span class="actor-chip" onclick="event.stopPropagation();showActorDetails(${a.id},'${sn}','${sp}','${(a.character||'').replace(/'/g,"\\'")}')"> ${a.name}</span>`;if(i<actors.length-1)ah+='<span class="actor-separator">•</span>';});ah+='</div>';}let sh='';for(let i=1;i<=5;i++){sh+=`<span class="star ${ur&&i<=ur?'filled':''}" onclick="setUserRating(${id},${i},'${type}')" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i<=(ur||0)?'★':'☆'}</span>`;}let ti='';if(type==='tv'){const s=item.number_of_seasons||0,e=item.number_of_episodes||0,st=item.status||'',n=item.networks?.length?item.networks[0].name:'';ti=`<div style="color:#888;font-size:14px;margin-top:10px;">${s?`${s} season${s>1?'s':''}`:''}${e?` • ${e} episode${e>1?'s':''}`:''}${st?` • ${st}`:''}${n?` • ${n}`:''}</div>`;}const wh=wikiLink?`<div style="margin-top:10px;"><a href="${wikiLink}" target="_blank" style="color:#4dd0e1;text-decoration:none;font-size:14px;border-bottom:1px dotted #4dd0e1;">Wikipedia</a></div>`:'<div style="margin-top:10px;"><span style="color:#666;font-size:14px;">Wikipedia</span></div>';c.innerHTML=`${item.poster_path?`<img src="${IMG_ORIG}${item.poster_path}" alt="${item.title||item.name}">`:''}<h2>${item.title||item.name}</h2><div class="movie-meta"><span>📅 ${year}</span><span class="movie-rating">⭐ ${rating}/10 (TMDB)</span>${rt?`<span>⏱️ ${rt}</span>`:''}</div>${ti}${wh}${item.genres?.length?`<div style="color:#888;font-size:14px;">${item.genres.map(g=>g.name).join(' • ')}</div>`:''}${ah}<div class="movie-synopsis"><strong>Synopsis:</strong><br>${item.overview||'No synopsis available.'}</div><div class="user-rating-section"><div class="user-rating-label">Your Rating:</div><div class="star-rating" id="starRating">${sh}<span class="rating-text" id="ratingText">${ur?`You rated this ${ur}/5`:'Not rated yet'}</span>${ur?`<button class="clear-rating" onclick="clearUserRating(${id},'${type}')">Clear</button>`:''}</div></div><button class="delete-btn" onclick="deleteItem(${id},'${type}')">Remove from Collection</button>`;}catch(e){c.innerHTML='<p style="text-align:center;color:#ff6b6b;">Error</p>';}}
 
-        function renderGenreFilter() {
-            const bar = document.getElementById('genreFilterBar');
-            const dropdown = document.getElementById('genreDropdown');
-            const genres = getAllGenres();
-            
-            if (bar) {
-                bar.innerHTML = '<span class="genre-filter-label">🎭 Genres:</span>';
-                const allChip = document.createElement('button');
-                allChip.className = `genre-chip ${currentGenreFilter === 'all' ? 'active' : ''}`;
-                allChip.dataset.genre = 'all';
-                allChip.onclick = () => filterByGenre('all');
-                allChip.textContent = 'All';
-                bar.appendChild(allChip);
-                genres.forEach(genre => {
-                    const chip = document.createElement('button');
-                    chip.className = `genre-chip ${currentGenreFilter === genre ? 'active' : ''}`;
-                    chip.dataset.genre = genre;
-                    chip.onclick = () => filterByGenre(genre);
-                    chip.textContent = genre;
-                    bar.appendChild(chip);
-                });
-            }
-            if (dropdown) {
-                const currentValue = dropdown.value;
-                dropdown.innerHTML = '<option value="all">🎭 All Genres</option>';
-                genres.forEach(genre => {
-                    const option = document.createElement('option');
-                    option.value = genre;
-                    option.textContent = genre;
-                    dropdown.appendChild(option);
-                });
-                dropdown.value = currentGenreFilter;
-            }
-        }
+        function setUserRating(id,r,t){const l=getList(t);const i=l.find(m=>m.id===id);if(!i)return;i.userRating=r;setList(t,l);document.querySelectorAll('#starRating .star').forEach((s,x)=>{s.classList.toggle('filled',x<r);s.textContent=x<r?'★':'☆';});document.getElementById('ratingText').textContent=`You rated this ${r}/5`;const d=document.getElementById('starRating');if(!d.querySelector('.clear-rating')){const b=document.createElement('button');b.className='clear-rating';b.textContent='Clear';b.onclick=()=>clearUserRating(id,t);d.appendChild(b);}t==='movie'?renderMovies():renderTV();}
+        function clearUserRating(id,t){const l=getList(t);const i=l.find(m=>m.id===id);if(!i)return;i.userRating=null;setList(t,l);showDetails(id,t);}
+        function previewRating(v){document.querySelectorAll('#starRating .star').forEach((s,i)=>s.classList.toggle('hover-preview',i<v));}
+        function clearPreview(){document.querySelectorAll('#starRating .star').forEach(s=>s.classList.remove('hover-preview'));}
+        function deleteItem(id,t){if(confirm('Remove from collection?')){setList(t,getList(t).filter(m=>m.id!==id));updateCount(t);t==='movie'?renderMovies():renderTV();closeDetailsModal();showToast('🗑️ Removed','info');}}
+        function showActorDetails(id,name,profile,char){const m=document.getElementById('actorModal');const d=document.getElementById('actorDetails');const img=profile?`https://image.tmdb.org/t/p/w300${profile}`:'https://via.placeholder.com/300x300?text=No+Image';const ch=char&&char.trim()?`<div class="actor-character">as "${char}"</div>`:'';d.innerHTML=`<div class="actor-details"><img src="${img}" alt="${name}"><h2>${name}</h2>${ch}<a href="https://www.themoviedb.org/person/${id}" target="_blank" class="actor-tmdb-link">More details at The Movie Database</a></div>`;m.classList.add('active');}
+        function closeDetailsModal(){document.getElementById('detailsModal').classList.remove('active');}
 
-        function filterByGenre(genre) {
-            currentGenreFilter = genre;
-            document.querySelectorAll('.genre-chip').forEach(chip => chip.classList.toggle('active', chip.dataset.genre === genre));
-            const dropdown = document.getElementById('genreDropdown');
-            if (dropdown) dropdown.value = genre;
-            const notice = document.getElementById('activeFilterNotice');
-            const text = document.getElementById('activeFilterText');
-            if (genre === 'all') notice.classList.remove('show');
-            else { text.textContent = `Genre: ${genre}`; notice.classList.add('show'); }
-            renderMovies();
-        }
-
-        function clearFilters() { filterByGenre('all'); document.getElementById('searchInput').value = ''; }
-
-        function exportAsHTML() {
-            const htmlContent = document.documentElement.outerHTML;
-            const moviesData = JSON.stringify(movies, null, 2);
-            const updatedHTML = htmlContent.replace(/const EMBEDDED_MOVIES = null;/, `const EMBEDDED_MOVIES = ${moviesData};`);
-            const blob = new Blob([updatedHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = `my-movie-collection-${new Date().toISOString().split('T')[0]}.html`;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-            showToast(`📥 Exported ${movies.length} movies as HTML`, 'success');
-        }
-
-        function exportAsJSON() {
-            const data = { version: 1, exportedAt: new Date().toISOString(), movies: movies };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'movies.json';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-            localStorage.setItem('myMoviesData', JSON.stringify({ exportedAt: data.exportedAt, count: movies.length }));
-            showToast(`📄 Exported ${movies.length} movies as movies.json`, 'success');
-            showToast('💡 Upload this file to GitHub as "movies.json" to publish', 'info', 6000);
-        }
-
-        function importJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    let importedMovies = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.movies) ? parsed.movies : null);
-                    if (!importedMovies) throw new Error('Invalid format');
-                    if (confirm(`Import ${importedMovies.length} movies?\n\nThis will REPLACE your current collection.`)) {
-                        movies = importedMovies;
-                        localStorage.setItem('myMovies', JSON.stringify(movies));
-                        renderMovies(); renderGenreFilter(); updateMovieCount();
-                        showToast(`✅ Imported ${importedMovies.length} movies`, 'success');
-                    }
-                } catch (error) { showToast(`❌ Error: ${error.message}`, 'error'); }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            if (tab === 'search') { document.getElementById('searchTab').classList.add('active'); document.getElementById('tmdbSearchInput').focus(); } 
-            else if (tab === 'person') { 
-                document.getElementById('personTab').classList.add('active'); 
-                document.getElementById('personSearchInput').focus();
-                document.getElementById('personMoviesSection').style.display = 'none';
-                document.getElementById('personResults').classList.remove('show');
-                document.getElementById('personSearchForm').style.display = 'block';
-            } else { document.getElementById('manualTab').classList.add('active'); document.getElementById('tmdbInput').focus(); }
-        }
-
-        function debouncedSearch() { clearTimeout(searchTimeout); searchTimeout = setTimeout(searchTMDB, 500); }
-        function debouncedPersonSearch() { clearTimeout(personSearchTimeout); personSearchTimeout = setTimeout(searchPerson, 500); }
-
-        async function searchTMDB() {
-            const query = document.getElementById('tmdbSearchInput').value.trim();
-            const resultsDiv = document.getElementById('searchResults');
-            if (query.length < 2) { resultsDiv.innerHTML = ''; return; }
-            resultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
-            try {
-                const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
-                const data = await response.json();
-                if (data.results.length === 0) { resultsDiv.innerHTML = '<div class="search-no-results">No movies found</div>'; return; }
-                resultsDiv.innerHTML = '';
-                data.results.forEach(movie => {
-                    const isAdded = movies.some(m => m.id === movie.id);
-                    const item = document.createElement('div');
-                    item.className = 'search-result-item';
-                    item.dataset.movieId = movie.id;
-                    updateItemClickHandler(item, movie.id, isAdded);
-                    const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
-                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-                    item.innerHTML = `<img src="${posterPath}" alt="${movie.title}"><button class="add-btn-small ${isAdded ? 'added' : ''}" onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">${isAdded ? '✓ Remove' : '+ Add'}</button><div class="search-result-info"><div class="search-result-title">${movie.title}</div><div class="search-result-year">${year}</div></div>`;
-                    resultsDiv.appendChild(item);
-                });
-            } catch (error) { resultsDiv.innerHTML = '<div class="search-no-results">Error searching TMDB</div>'; }
-        }
-
-        function updateItemClickHandler(item, movieId, isAdded) {
-            item.onclick = (e) => { if (!e.target.classList.contains('add-btn-small')) toggleMovie(movieId, item); };
-        }
-
-        function toggleMovie(movieId, element) {
-            const isAdded = movies.some(m => m.id === movieId);
-            if (isAdded) removeMovieFromCollection(movieId, element);
-            else addMovieFromSearch(movieId, element);
-        }
-
-        async function searchPerson() {
-            const query = document.getElementById('personSearchInput').value.trim();
-            const personResultsDiv = document.getElementById('personResults');
-            const personMoviesSection = document.getElementById('personMoviesSection');
-            if (query.length < 2) { personResultsDiv.innerHTML = ''; personResultsDiv.classList.remove('show'); personMoviesSection.style.display = 'none'; return; }
-            personResultsDiv.innerHTML = '<div class="search-loading">Searching...</div>';
-            personResultsDiv.classList.add('show');
-            personMoviesSection.style.display = 'none';
-            try {
-                const response = await fetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=1`);
-                const data = await response.json();
-                if (data.results.length === 0) { personResultsDiv.innerHTML = '<div class="search-no-results">No people found</div>'; return; }
-                personResultsDiv.innerHTML = '';
-                data.results.slice(0, 5).forEach(person => {
-                    const item = document.createElement('div');
-                    item.className = 'person-result-item';
-                    item.onclick = () => loadPersonMovies(person.id, person.name);
-                    const profilePath = person.profile_path ? `${IMG_URL_PROFILE}${person.profile_path}` : 'https://via.placeholder.com/185x185?text=No+Image';
-                    item.innerHTML = `<img src="${profilePath}" alt="${person.name}"><div class="person-result-info"><div class="person-result-name">${person.name}</div><div class="person-result-known">Known for: ${person.known_for_department || 'Acting'}</div></div>`;
-                    personResultsDiv.appendChild(item);
-                });
-            } catch (error) { personResultsDiv.innerHTML = '<div class="search-no-results">Error searching</div>'; }
-        }
-
-        async function loadPersonMovies(personId, personName) {
-            currentPersonId = personId; currentPersonName = personName;
-            const movieResultsDiv = document.getElementById('personMovieResults');
-            const personMoviesSection = document.getElementById('personMoviesSection');
-            const personMoviesTitle = document.getElementById('personMoviesTitle');
-            const addAllBtn = document.getElementById('addAllBtn');
-            const personResultsDiv = document.getElementById('personResults');
-            const personSearchForm = document.getElementById('personSearchForm');
-            personResultsDiv.classList.remove('show');
-            personSearchForm.style.display = 'none';
-            personMoviesSection.style.display = 'flex';
-            personMoviesTitle.innerHTML = `Movies featuring ${personName}`;
-            movieResultsDiv.innerHTML = '<div class="search-loading">Loading movies...</div>';
-            addAllBtn.disabled = true;
-            try {
-                const response = await fetch(`${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}`);
-                const data = await response.json();
-                const allMovies = [...(data.cast || []), ...(data.crew || [])];
-                let uniqueMovies = allMovies.filter((movie, index, self) => index === self.findIndex(m => m.id === movie.id));
-                uniqueMovies = applyPersonFilters(uniqueMovies);
-                uniqueMovies.sort((a, b) => {
-                    const dateA = a.release_date ? new Date(a.release_date) : new Date(0);
-                    const dateB = b.release_date ? new Date(b.release_date) : new Date(0);
-                    return dateB - dateA;
-                });
-                currentPersonMovies = uniqueMovies;
-                if (uniqueMovies.length === 0) { movieResultsDiv.innerHTML = `<div class="search-no-results">No movies found matching your filters</div>`; addAllBtn.disabled = true; return; }
-                movieResultsDiv.innerHTML = '';
-                uniqueMovies.forEach(movie => {
-                    const isAdded = movies.some(m => m.id === movie.id);
-                    const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-                    const item = document.createElement('div');
-                    item.className = 'search-result-item';
-                    item.dataset.movieId = movie.id;
-                    updateItemClickHandler(item, movie.id, isAdded);
-                    const posterPath = movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/300x450?text=No+Image';
-                    item.innerHTML = `<img src="${posterPath}" alt="${movie.title}"><button class="add-btn-small ${isAdded ? 'added' : ''}" data-movie-id="${movie.id}" onclick="event.stopPropagation(); toggleMovie(${movie.id}, this.parentElement)">${isAdded ? '✓ Remove' : '+ Add'}</button><div class="search-result-info"><div class="search-result-title">${movie.title}</div><div class="search-result-year">${year} ${movie.vote_average ? `• ⭐ ${movie.vote_average.toFixed(1)}` : ''}</div></div>`;
-                    movieResultsDiv.appendChild(item);
-                });
-                updateAddAllButton();
-            } catch (error) { movieResultsDiv.innerHTML = '<div class="search-no-results">Error loading movies</div>'; addAllBtn.disabled = true; }
-        }
-
-        function applyPersonFilters(filmography) {
-            const yearFrom = document.getElementById('filterYearFrom')?.value;
-            const yearTo = document.getElementById('filterYearTo')?.value;
-            const minRating = document.getElementById('filterMinRating')?.value;
-            const excludeCompilations = document.getElementById('filterExcludeCompilations')?.checked;
-            const excludeDocumentaries = document.getElementById('filterExcludeDocumentaries')?.checked;
-            const excludeTV = document.getElementById('filterExcludeTV')?.checked;
-            const excludeAlreadyAdded = document.getElementById('filterExcludeAdded')?.checked;
-            return filmography.filter(movie => {
-                const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
-                const rating = movie.vote_average || 0;
-                const title = movie.title.toLowerCase();
-                if (yearFrom && year && year < parseInt(yearFrom)) return false;
-                if (yearTo && year && year > parseInt(yearTo)) return false;
-                if (minRating && rating < parseFloat(minRating)) return false;
-                if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) return false;
-                if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of') || title.includes('behind the scenes'))) return false;
-                if (excludeTV && movie.media_type === 'tv') return false;
-                if (excludeAlreadyAdded && movies.some(m => m.id === movie.id)) return false;
-                return true;
-            });
-        }
-
-        function showPersonFilters() { document.getElementById('personFilters').classList.toggle('show'); }
-        function clearPersonFilters() {
-            document.getElementById('filterYearFrom').value = '';
-            document.getElementById('filterYearTo').value = '';
-            document.getElementById('filterMinRating').value = '';
-            document.getElementById('filterExcludeCompilations').checked = false;
-            document.getElementById('filterExcludeDocumentaries').checked = false;
-            document.getElementById('filterExcludeTV').checked = false;
-            document.getElementById('filterExcludeAdded').checked = false;
-            if (currentPersonId && currentPersonName) loadPersonMovies(currentPersonId, currentPersonName);
-        }
-
-        function updateAddAllButton() {
-            const addAllBtn = document.getElementById('addAllBtn');
-            const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
-            addAllBtn.disabled = moviesToAdd.length === 0;
-            addAllBtn.textContent = moviesToAdd.length > 0 ? `Add All (${moviesToAdd.length})` : 'All Added ✓';
-        }
-
-        async function addAllVisibleMovies() {
-            const addAllBtn = document.getElementById('addAllBtn');
-            const moviesToAdd = currentPersonMovies.filter(m => !movies.some(existing => existing.id === m.id));
-            if (moviesToAdd.length === 0) return;
-            addAllBtn.disabled = true; addAllBtn.textContent = 'Adding...';
-            for (const movie of moviesToAdd) {
-                try {
-                    const response = await fetch(`${BASE_URL}/movie/${movie.id}?api_key=${API_KEY}`);
-                    const movieData = await response.json();
-                    if (!movies.some(m => m.id === movieData.id)) {
-                        movies.push({ id: movieData.id, title: movieData.title, poster_path: movieData.poster_path, release_date: movieData.release_date, vote_average: movieData.vote_average, genres: movieData.genres ? movieData.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
-                        const item = document.querySelector(`[data-movie-id="${movieData.id}"]`);
-                        if (item) {
-                            const button = item.querySelector('.add-btn-small');
-                            if (button) { button.classList.add('added'); button.textContent = '✓ Remove'; }
-                            updateItemClickHandler(item, movieData.id, true);
-                        }
-                    }
-                } catch (error) { console.error('Error adding movie:', movie.title, error); }
-            }
-            localStorage.setItem('myMovies', JSON.stringify(movies));
-            renderMovies(); renderGenreFilter(); updateMovieCount(); updateAddAllButton();
-            showToast(`✅ Added ${moviesToAdd.length} movies`, 'success');
-        }
-
-        async function addMovieFromSearch(movieId, element) {
-            if (movies.some(m => m.id === movieId)) return;
-            try {
-                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
-                const movie = await response.json();
-                movies.push({ id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date, vote_average: movie.vote_average, genres: movie.genres ? movie.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
-                localStorage.setItem('myMovies', JSON.stringify(movies));
-                renderMovies(); renderGenreFilter(); updateMovieCount();
-                if (element) {
-                    const button = element.querySelector('.add-btn-small');
-                    if (button) { button.classList.add('added'); button.textContent = '✓ Remove'; }
-                    updateItemClickHandler(element, movieId, true);
-                }
-                if (currentPersonMovies.length > 0) updateAddAllButton();
-                showToast(`✅ Added "${movie.title}"`, 'success');
-            } catch (error) { console.error('Add error:', error); }
-        }
-
-        function removeMovieFromCollection(movieId, element) {
-            const movieIndex = movies.findIndex(m => m.id === movieId);
-            if (movieIndex === -1) return;
-            const movieTitle = movies[movieIndex].title;
-            if (confirm(`Remove "${movieTitle}" from your collection?`)) {
-                movies.splice(movieIndex, 1);
-                localStorage.setItem('myMovies', JSON.stringify(movies));
-                renderMovies(); renderGenreFilter(); updateMovieCount();
-                if (element) {
-                    const button = element.querySelector('.add-btn-small');
-                    if (button) { button.classList.remove('added'); button.textContent = '+ Add'; }
-                    updateItemClickHandler(element, movieId, false);
-                }
-                if (currentPersonMovies.length > 0) updateAddAllButton();
-                showToast(`🗑️ Removed "${movieTitle}"`, 'info');
-            }
-        }
-
-        function extractMovieId(input) { const match = input.match(/^(\d+)/); return match ? match[1] : null; }
-
-        async function addMovieManual() {
-            const input = document.getElementById('tmdbInput').value.trim();
-            const messageDiv = document.getElementById('addMessage');
-            if (!input) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Please enter a TMDB reference'; return; }
-            const movieId = extractMovieId(input);
-            if (!movieId) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Invalid TMDB reference'; return; }
-            messageDiv.textContent = 'Loading...'; messageDiv.style.color = '#888888';
-            try {
-                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
-                if (!response.ok) throw new Error('Movie not found');
-                const movie = await response.json();
-                if (movies.some(m => m.id === movie.id)) { messageDiv.style.color = '#ffd700'; messageDiv.textContent = 'Already in your collection!'; return; }
-                movies.push({ id: movie.id, title: movie.title, poster_path: movie.poster_path, release_date: movie.release_date, vote_average: movie.vote_average, genres: movie.genres ? movie.genres.map(g => g.name) : [], userRating: null, added: new Date().toISOString() });
-                localStorage.setItem('myMovies', JSON.stringify(movies));
-                document.getElementById('tmdbInput').value = ''; messageDiv.textContent = '';
-                closeAddModal(); renderMovies(); renderGenreFilter(); updateMovieCount();
-                showToast(`✅ Added "${movie.title}"`, 'success');
-            } catch (error) { messageDiv.style.color = '#ff6b6b'; messageDiv.textContent = 'Error: Movie not found'; }
-        }
-
-        function changeSort() { currentSort = document.getElementById('sortSelect').value; localStorage.setItem('movieSort', currentSort); renderMovies(); }
-
-        function sortMovies(movieList) {
-            const [field, direction] = currentSort.split('-');
-            const multiplier = direction === 'asc' ? 1 : -1;
-            return [...movieList].sort((a, b) => {
-                let valA, valB, hasDateA, hasDateB;
-                switch(field) {
-                    case 'title': return a.title.toLowerCase().localeCompare(b.title.toLowerCase()) * multiplier;
-                    case 'year':
-                        hasDateA = !!a.release_date; hasDateB = !!b.release_date;
-                        if (!hasDateA && !hasDateB) return 0; if (!hasDateA) return 1; if (!hasDateB) return -1;
-                        return (new Date(a.release_date).getFullYear() - new Date(b.release_date).getFullYear()) * multiplier;
-                    case 'rating':
-                        valA = a.userRating || 0; valB = b.userRating || 0;
-                        if (valA === 0 && valB === 0) return 0; if (valA === 0) return 1; if (valB === 0) return -1;
-                        return (valA - valB) * multiplier;
-                    case 'tmdb': return ((a.vote_average || 0) - (b.vote_average || 0)) * multiplier;
-                    case 'added': return (new Date(a.added).getTime() - new Date(b.added).getTime()) * multiplier;
-                    default: return 0;
-                }
-            });
-        }
-
-        function renderMovies() {
-            const grid = document.getElementById('movieGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            let filteredMovies = movies.filter(movie => {
-                const matchesSearch = movie.title.toLowerCase().includes(searchTerm);
-                const matchesGenre = currentGenreFilter === 'all' || (movie.genres && movie.genres.includes(currentGenreFilter));
-                return matchesSearch && matchesGenre;
-            });
-            const sortedMovies = sortMovies(filteredMovies);
-            if (sortedMovies.length === 0) {
-                grid.innerHTML = `<div class="empty-state"><h2>${movies.length === 0 ? 'No movies yet' : 'No matches'}</h2><p>${movies.length === 0 ? 'Click "Add Movie" to start building your collection!' : 'Try adjusting your search or genre filter.'}</p></div>`;
-                return;
-            }
-            sortedMovies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.onclick = () => showMovieDetails(movie.id);
-                const year = movie.release_date ? new Date(movie.release_date).getFullYear() : '';
-                const genresText = movie.genres && movie.genres.length > 0 ? movie.genres.slice(0, 3).join(' • ') : '';
-                let ratingBadge = movie.userRating ? `<div class="movie-card-rating">⭐ ${movie.userRating}/5</div>` : '';
-                card.innerHTML = `<img src="${movie.poster_path ? `${IMG_URL}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}" loading="lazy">${ratingBadge}<div class="movie-card-overlay"><div class="movie-card-title">${movie.title}</div><div class="movie-card-year">${year}</div>${genresText ? `<div class="movie-card-genres">${genresText}</div>` : ''}</div>`;
-                grid.appendChild(card);
-            });
-        }
-
-        async function showMovieDetails(movieId) {
-            currentMovieIdInDetails = movieId;
-            const modal = document.getElementById('detailsModal');
-            const detailsDiv = document.getElementById('movieDetails');
-            detailsDiv.innerHTML = '<p style="text-align: center; padding: 40px; color: #888888;">Loading...</p>';
-            modal.classList.add('active');
-            try {
-                const [movieResponse, creditsResponse] = await Promise.all([
-                    fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`),
-                    fetch(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`)
-                ]);
-                const movie = await movieResponse.json();
-                const credits = await creditsResponse.json();
-                const localMovie = movies.find(m => m.id === movieId);
-                const userRating = localMovie ? localMovie.userRating : null;
-                const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
-                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
-                const topActors = credits.cast ? credits.cast.slice(0, 3) : [];
-                let actorsHTML = '';
-                if (topActors.length > 0) {
-                    actorsHTML = '<div class="movie-actors"><span class="movie-actors-label">Starring:</span>';
-                    topActors.forEach((actor, index) => {
-                        const safeName = actor.name.replace(/'/g, "\\'");
-                        const safeProfile = actor.profile_path ? actor.profile_path.replace(/'/g, "\\'") : '';
-                        actorsHTML += `<span class="actor-chip" onclick="event.stopPropagation(); showActorDetails(${actor.id}, '${safeName}', '${safeProfile}', '${(actor.character || '').replace(/'/g, "\\'")}')">${actor.name}</span>`;
-                        if (index < topActors.length - 1) actorsHTML += '<span class="actor-separator">•</span>';
-                    });
-                    actorsHTML += '</div>';
-                }
-                let starsHTML = '';
-                for (let i = 1; i <= 5; i++) {
-                    const filled = userRating && i <= userRating ? 'filled' : '';
-                    starsHTML += `<span class="star ${filled}" data-value="${i}" onclick="setUserRating(${movieId}, ${i})" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
-                }
-                detailsDiv.innerHTML = `${movie.poster_path ? `<img src="${IMG_URL_ORIGINAL}${movie.poster_path}" alt="${movie.title}">` : ''}<h2>${movie.title}</h2><div class="movie-meta"><span>📅 ${releaseYear}</span><span class="movie-rating">⭐ ${rating}/10 (TMDB)</span>${movie.runtime ? `<span>⏱️ ${movie.runtime} min</span>` : ''}</div>${movie.genres && movie.genres.length > 0 ? `<div style="color: #888888; font-size: 14px;">${movie.genres.map(g => g.name).join(' • ')}</div>` : ''}${actorsHTML}<div class="movie-synopsis"><strong>Synopsis:</strong><br>${movie.overview || 'No synopsis available.'}</div><div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"><button class="btn btn-trailer" onclick="showTrailer(${movie.id}, '${movie.title.replace(/'/g, "\\'")}')">▶️ Watch Trailer</button></div><div class="user-rating-section"><div class="user-rating-label">Your Rating:</div><div class="star-rating" id="starRating">${starsHTML}<span class="rating-text" id="ratingText">${userRating ? `You rated this ${userRating}/5` : 'Not rated yet'}</span>${userRating ? `<button class="clear-rating" onclick="clearUserRating(${movieId})">Clear</button>` : ''}</div></div><button class="delete-btn" onclick="deleteMovie(${movie.id})">Remove from Collection</button>`;
-            } catch (error) { detailsDiv.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading movie details</p>'; }
-        }
-
-        function showActorDetails(actorId, actorName, profilePath, character) {
-            const modal = document.getElementById('actorModal');
-            const detailsDiv = document.getElementById('actorDetails');
-            const profileImg = profilePath ? `${IMG_URL_PROFILE}${profilePath}` : 'https://via.placeholder.com/300x300?text=No+Image';
-            const tmdbLink = `${TMDB_PERSON_URL}${actorId}`;
-            let characterHTML = character && character.trim() !== '' ? `<div class="actor-character">as "${character}"</div>` : '';
-            detailsDiv.innerHTML = `<div class="actor-details"><img src="${profileImg}" alt="${actorName}"><h2>${actorName}</h2>${characterHTML}<a href="${tmdbLink}" target="_blank" rel="noopener" class="actor-tmdb-link">More details at The Movie Database</a></div>`;
-            modal.classList.add('active');
-        }
-
-        function closeActorModal() { document.getElementById('actorModal').classList.remove('active'); }
-
-        async function showTrailer(movieId, movieTitle) {
-            const modal = document.getElementById('trailerModal');
-            const content = document.getElementById('trailerContent');
-            const title = document.getElementById('trailerTitle');
-            title.textContent = `${movieTitle} - Trailer`;
-            content.innerHTML = '<div class="search-loading">Loading trailers...</div>';
-            modal.classList.add('active');
-            ytPlayers = {};
-            try {
-                const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`);
-                const data = await response.json();
-                const allTrailers = data.results.filter(video => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser' || video.type === 'Clip'));
-                allTrailers.sort((a, b) => {
-                    if (a.official && !b.official) return -1;
-                    if (!a.official && b.official) return 1;
-                    if (a.type === 'Trailer' && b.type !== 'Trailer') return -1;
-                    if (a.type !== 'Trailer' && b.type === 'Trailer') return 1;
-                    return 0;
-                });
-                if (allTrailers.length === 0) { content.innerHTML = `<div class="no-trailer"><h3>No trailer available</h3><p>Sorry, no trailer was found for this movie.</p></div>`; return; }
-                let trailersHTML = '';
-                allTrailers.forEach((trailer, index) => {
-                    const youtubeUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
-                    const label = trailer.official ? 'Official ' : '';
-                    const typeLabel = trailer.type === 'Teaser' ? 'Teaser' : 'Trailer';
-                    const uniqueId = `trailer-${movieId}-${index}`;
-                    trailersHTML += `<div class="trailer-item"><div class="trailer-label">${label}${typeLabel}${allTrailers.length > 1 ? ` #${index + 1}` : ''}${trailer.name !== `${movieTitle}` && trailer.name ? ` — ${trailer.name}` : ''}</div><div class="trailer-container" id="container-${uniqueId}"><div id="${uniqueId}"></div></div><div class="trailer-fallback" id="fallback-${uniqueId}" style="display:none;"><a href="${youtubeUrl}" target="_blank" rel="noopener" class="btn btn-trailer-small">▶️ Open in YouTube</a><span class="trailer-fallback-hint">Embedding blocked — click to watch on YouTube</span></div></div>`;
-                });
-                content.innerHTML = trailersHTML;
-                const waitForApi = () => new Promise(resolve => {
-                    if (ytApiReady) return resolve();
-                    const check = setInterval(() => { if (ytApiReady) { clearInterval(check); resolve(); } }, 100);
-                    setTimeout(() => { clearInterval(check); resolve(); }, 5000);
-                });
-                await waitForApi();
-                if (!ytApiReady) return;
-                allTrailers.forEach((trailer, index) => {
-                    const uniqueId = `trailer-${movieId}-${index}`;
-                    const youtubeUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
-                    try {
-                        ytPlayers[uniqueId] = new YT.Player(uniqueId, {
-                            videoId: trailer.key,
-                            playerVars: { autoplay: index === 0 ? 1 : 0, rel: 0, modestbranding: 1 },
-                            events: {
-                                onReady: (event) => { if (index === 0) event.target.playVideo(); },
-                                onStateChange: (event) => { if (event.data === YT.PlayerState.PLAYING) { const fallback = document.getElementById(`fallback-${uniqueId}`); if (fallback) fallback.style.display = 'none'; } },
-                                onError: (event) => handleTrailerError(uniqueId, youtubeUrl, event.data)
-                            }
-                        });
-                    } catch (err) { handleTrailerError(uniqueId, youtubeUrl, 'create-error'); }
-                    setTimeout(() => {
-                        const player = ytPlayers[uniqueId];
-                        if (player && typeof player.getPlayerState === 'function') {
-                            try { const state = player.getPlayerState(); if (state === -1 || state === 5) handleTrailerError(uniqueId, youtubeUrl, 'timeout'); } catch (e) {}
-                        }
-                    }, 6000);
-                });
-            } catch (error) { content.innerHTML = '<div class="no-trailer"><h3>Error loading trailer</h3></div>'; }
-        }
-
-        function handleTrailerError(uniqueId, youtubeUrl, errorCode) {
-            if (ytPlayers[uniqueId]) { try { ytPlayers[uniqueId].destroy(); } catch(e) {} delete ytPlayers[uniqueId]; }
-            const container = document.getElementById(`container-${uniqueId}`);
-            if (container) container.innerHTML = `<div class="no-trailer" style="padding: 40px 20px;"><h3>Embedding blocked</h3><p>Opening trailer on YouTube...</p></div>`;
-            const fallback = document.getElementById(`fallback-${uniqueId}`);
-            if (fallback) fallback.style.display = 'flex';
-            setTimeout(() => window.open(youtubeUrl, '_blank', 'noopener'), 1200);
-        }
-
-        function closeTrailerModal() {
-            const modal = document.getElementById('trailerModal');
-            const content = document.getElementById('trailerContent');
-            modal.classList.remove('active');
-            Object.keys(ytPlayers).forEach(id => { try { ytPlayers[id].destroy(); } catch(e) {} });
-            ytPlayers = {};
-            content.innerHTML = '';
-        }
-
-        function setUserRating(movieId, rating) {
-            const movie = movies.find(m => m.id === movieId);
-            if (!movie) return;
-            movie.userRating = rating;
-            localStorage.setItem('myMovies', JSON.stringify(movies));
-            const stars = document.querySelectorAll('#starRating .star');
-            stars.forEach((star, index) => {
-                if (index < rating) { star.classList.add('filled'); star.textContent = '★'; }
-                else { star.classList.remove('filled'); star.textContent = '☆'; }
-            });
-            document.getElementById('ratingText').textContent = `You rated this ${rating}/5`;
-            const starRatingDiv = document.getElementById('starRating');
-            if (!starRatingDiv.querySelector('.clear-rating')) {
-                const clearBtn = document.createElement('button');
-                clearBtn.className = 'clear-rating'; clearBtn.textContent = 'Clear';
-                clearBtn.onclick = () => clearUserRating(movieId);
-                starRatingDiv.appendChild(clearBtn);
-            }
-            renderMovies();
-        }
-
-        function clearUserRating(movieId) {
-            const movie = movies.find(m => m.id === movieId);
-            if (!movie) return;
-            movie.userRating = null;
-            localStorage.setItem('myMovies', JSON.stringify(movies));
-            showMovieDetails(movieId);
-            renderMovies();
-        }
-
-        function previewRating(hoverValue) {
-            document.querySelectorAll('#starRating .star').forEach((star, index) => {
-                if (index < hoverValue) star.classList.add('hover-preview');
-                else star.classList.remove('hover-preview');
-            });
-        }
-
-        function clearPreview() { document.querySelectorAll('#starRating .star').forEach(star => star.classList.remove('hover-preview')); }
-
-        function deleteMovie(movieId) {
-            if (confirm('Are you sure you want to remove this movie from your collection?')) {
-                movies = movies.filter(m => m.id !== movieId);
-                localStorage.setItem('myMovies', JSON.stringify(movies));
-                closeDetailsModal(); renderMovies(); renderGenreFilter(); updateMovieCount();
-                showToast('🗑️ Movie removed', 'info');
-            }
-        }
-
-        function searchMovies() { renderMovies(); }
-        function openAddModal() { document.getElementById('addModal').classList.add('active'); document.getElementById('tmdbSearchInput').focus(); }
-        function closeAddModal() {
-            document.getElementById('addModal').classList.remove('active');
-            document.getElementById('tmdbInput').value = '';
-            document.getElementById('tmdbSearchInput').value = '';
-            document.getElementById('personSearchInput').value = '';
-            document.getElementById('addMessage').textContent = '';
-            document.getElementById('searchResults').innerHTML = '';
-            document.getElementById('personResults').innerHTML = '';
-            document.getElementById('personResults').classList.remove('show');
-            document.getElementById('personMoviesSection').style.display = 'none';
-            document.getElementById('personSearchForm').style.display = 'block';
-            document.getElementById('personMovieResults').innerHTML = '';
-            currentPersonMovies = []; currentPersonId = null; currentPersonName = null;
-        }
-        function closeDetailsModal() { document.getElementById('detailsModal').classList.remove('active'); currentMovieIdInDetails = null; }
-
-        window.onclick = function(event) { if (event.target.classList.contains('modal')) event.target.classList.remove('active'); }
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active')); });
+        async function init(){document.getElementById('movieSortSelect').value=currentSort.movie;document.getElementById('tvSortSelect').value=currentSort.tv;document.addEventListener('click',e=>{['headerButtons','headerButtonsTV'].forEach(id=>{const b=document.getElementById(id);if(b?.classList.contains('show')&&!b.contains(e.target)&&!e.target.classList.contains('mobile-menu-toggle')){b.classList.remove('show');const t=b.parentElement.querySelector('.mobile-menu-toggle');if(t)t.textContent='☰';}});});await loadFromGitHub(false);updateCount('movie');updateCount('tv');renderMovies();renderTV();renderGF('movie');renderGF('tv');}
+        if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+        document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));});
+        window.onclick=e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('active');};
     </script>
     <script src="https://www.youtube.com/iframe_api"></script>
 </body>
