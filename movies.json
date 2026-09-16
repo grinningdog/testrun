@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-09-16T11:57:10.361Z",
+  "exportedAt": "2026-09-16T12:00:53.715Z",
   "movies": [
     {
       "id": 969681,
@@ -2739,6 +2739,20 @@
       ],
       "userRating": null,
       "added": "2026-08-08T13:51:41.683Z"
+    },
+    {
+      "id": 1101383,
+      "title": "The End of Oak Street",
+      "poster_path": "/fYXqpgPmHMphSF2W30GbTeJVIa5.jpg",
+      "release_date": "2026-08-12",
+      "vote_average": 6.752,
+      "genres": [
+        "Science Fiction",
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": 1,
+      "added": "2026-09-16T12:00:16.589Z"
     }
   ],
   "tvShows": [
