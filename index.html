@@ -245,12 +245,12 @@
             <div class="controls">
                 <input type="text" class="search-input" id="movieSearchInput" placeholder="Search your movies..." oninput="renderMovies()">
                 <select class="sort-select" id="movieSortSelect" onchange="currentSort.movie=this.value; renderMovies();">
+                    <option value="year-desc" selected>Year (Newest)</option>
+                    <option value="year-asc">Year (Oldest)</option>
                     <option value="added-desc">Date Added (Newest)</option>
                     <option value="added-asc">Date Added (Oldest)</option>
                     <option value="title-asc">Title (A-Z)</option>
                     <option value="title-desc">Title (Z-A)</option>
-                    <option value="year-desc">Year (Newest)</option>
-                    <option value="year-asc">Year (Oldest)</option>
                     <option value="rating-desc">My Rating (High)</option>
                     <option value="rating-asc">My Rating (Low)</option>
                     <option value="tmdb-desc">TMDB Rating (High)</option>
@@ -291,12 +291,12 @@
             <div class="controls">
                 <input type="text" class="search-input" id="tvSearchInput" placeholder="Search your TV shows..." oninput="renderTV()">
                 <select class="sort-select" id="tvSortSelect" onchange="currentSort.tv=this.value; renderTV();">
+                    <option value="year-desc" selected>Year (Newest)</option>
+                    <option value="year-asc">Year (Oldest)</option>
                     <option value="added-desc">Date Added (Newest)</option>
                     <option value="added-asc">Date Added (Oldest)</option>
                     <option value="title-asc">Title (A-Z)</option>
                     <option value="title-desc">Title (Z-A)</option>
-                    <option value="year-desc">Year (Newest)</option>
-                    <option value="year-asc">Year (Oldest)</option>
                     <option value="rating-desc">My Rating (High)</option>
                     <option value="rating-asc">My Rating (Low)</option>
                     <option value="tmdb-desc">TMDB Rating (High)</option>
@@ -425,7 +425,7 @@
         let movies = JSON.parse(localStorage.getItem('myMovies')) || [];
         let tvShows = JSON.parse(localStorage.getItem('myTVShows')) || [];
         let currentTab = 'movie';
-        let currentSort = { movie: 'added-desc', tv: 'added-desc' };
+        let currentSort = { movie: 'year-desc', tv: 'year-desc' };
         let currentGenreFilter = { movie: 'all', tv: 'all' };
         let addSearchTimeout, personSearchTimeout;
         let currentAddType = 'movie';
@@ -535,7 +535,7 @@
         }
 
         // ============================================================
-        // SYNC STATUS DISPLAY (FIXED - uses correct capitalization)
+        // SYNC STATUS DISPLAY
         // ============================================================
 
         function updateSyncDisplay(type) {
@@ -555,7 +555,7 @@
         }
 
         // ============================================================
-        // GITHUB SYNC (Smart sync - only overwrite if GitHub has more)
+        // GITHUB SYNC
         // ============================================================
 
         async function loadFromGitHub(show = true) {
@@ -564,7 +564,6 @@
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
 
-                // Smart sync: only overwrite if GitHub has MORE or EQUAL items
                 if (data.movies && Array.isArray(data.movies)) {
                     if (data.movies.length >= movies.length) {
                         movies = data.movies;
@@ -1176,7 +1175,6 @@
                 const itemResponse = await fetch(`${BASE_URL}/${endpoint}/${id}?api_key=${API_KEY}`);
                 const item = await itemResponse.json();
 
-                // Fetch Wikipedia link via Wikidata
                 let wikiLink = '';
                 try {
                     const externalIds = await (await fetch(`${BASE_URL}/${endpoint}/${id}/external_ids?api_key=${API_KEY}`)).json();
@@ -1216,7 +1214,7 @@
 
                 let starsHTML = '';
                 for (let i = 1; i <= 5; i++) {
-                    starsHTML += `<span class="star ${userRating && i <= userRating ? 'filled' : ''}" onclick="setUserRating(${id},${i},'${type}')" onmouseover="previewRating(${i})" onmouseout("clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
+                    starsHTML += `<span class="star ${userRating && i <= userRating ? 'filled' : ''}" onclick="setUserRating(${id},${i},'${type}')" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
                 }
 
                 let tvInfo = '';
