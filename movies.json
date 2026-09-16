@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-09-16T14:36:50.866Z",
+  "exportedAt": "2026-09-16T18:21:17.894Z",
   "movies": [
     {
       "id": 969681,
@@ -3198,7 +3198,7 @@
         "Drama",
         "Crime"
       ],
-      "userRating": null,
+      "userRating": 1,
       "added": "2026-09-16T14:35:13.547Z"
     },
     {
