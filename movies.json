@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-08-08T14:00:54.952Z",
+  "exportedAt": "2026-09-16T11:57:10.361Z",
   "movies": [
     {
       "id": 969681,
@@ -2739,6 +2739,35 @@
       ],
       "userRating": null,
       "added": "2026-08-08T13:51:41.683Z"
+    }
+  ],
+  "tvShows": [
+    {
+      "id": 95480,
+      "title": "Slow Horses",
+      "poster_path": "/AdYr4DjOgXvDUMwu6vEhZy1Rnxk.jpg",
+      "release_date": "2022-04-01",
+      "vote_average": 8,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-16T11:55:06.762Z"
+    },
+    {
+      "id": 3452,
+      "title": "Frasier",
+      "poster_path": "/gYAb6GCVEFsU9hzMCG5rxaxoIv3.jpg",
+      "release_date": "1993-09-16",
+      "vote_average": 7.702,
+      "genres": [
+        "Comedy",
+        "Family"
+      ],
+      "userRating": null,
+      "added": "2026-09-16T11:56:54.335Z"
     }
   ]
 }
