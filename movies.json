@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-09-16T14:30:46.377Z",
+  "exportedAt": "2026-09-16T14:33:36.957Z",
   "movies": [
     {
       "id": 969681,
@@ -3148,6 +3148,19 @@
       ],
       "userRating": null,
       "added": "2026-09-16T14:30:14.024Z"
+    },
+    {
+      "id": 247718,
+      "title": "MobLand",
+      "poster_path": "/abeH7n5pcuQcwYcTxG6DTZvXLP1.jpg",
+      "release_date": "2025-03-30",
+      "vote_average": 8.365,
+      "genres": [
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-16T14:32:17.879Z"
     }
   ]
 }
