@@ -486,10 +486,12 @@
                 updateCount('movie');
                 renderMovies();
                 renderGF('movie');
+                updateSyncDisplay('movie');
             } else {
                 updateCount('tv');
                 renderTV();
                 renderGF('tv');
+                updateSyncDisplay('tv');
             }
         }
 
@@ -533,6 +535,25 @@
         }
 
         // ============================================================
+        // SYNC STATUS DISPLAY
+        // ============================================================
+
+        function updateSyncDisplay(type) {
+            const prefix = type === 'tv' ? 'tv' : '';
+            const statusEl = document.getElementById(`${prefix}syncStatus`);
+            const textEl = document.getElementById(`${prefix}lastUpdatedText`);
+            const count = type === 'tv' ? tvShows.length : movies.length;
+
+            if (statusEl) {
+                statusEl.className = 'sync-status ok';
+                statusEl.textContent = 'OK';
+            }
+            if (textEl) {
+                textEl.textContent = `${count} ${type === 'tv' ? 'shows' : 'movies'} loaded`;
+            }
+        }
+
+        // ============================================================
         // GITHUB SYNC (Smart sync - only overwrite if GitHub has more)
         // ============================================================
 
@@ -562,18 +583,9 @@
                     renderGF('tv');
                 }
 
-                ['', 'tv'].forEach(prefix => {
-                    const statusEl = document.getElementById(`${prefix}syncStatus`);
-                    const textEl = document.getElementById(`${prefix}lastUpdatedText`);
-                    if (statusEl) {
-                        statusEl.className = 'sync-status ok';
-                        statusEl.textContent = 'OK';
-                    }
-                    const count = prefix === 'tv' ? tvShows.length : movies.length;
-                    if (textEl) {
-                        textEl.textContent = `${count} ${prefix === 'tv' ? 'shows' : 'movies'} loaded`;
-                    }
-                });
+                updateSyncDisplay('movie');
+                updateSyncDisplay('tv');
+
                 if (show) showToast('✅ Loaded from GitHub', 'success');
             } catch (error) {
                 console.error(error);
@@ -628,6 +640,8 @@
                     renderTV();
                     renderGF('movie');
                     renderGF('tv');
+                    updateSyncDisplay('movie');
+                    updateSyncDisplay('tv');
                     showToast('✅ Imported', 'success');
                 } catch (error) {
                     showToast(`❌ ${error.message}`, 'error');
@@ -1347,6 +1361,8 @@
             renderTV();
             renderGF('movie');
             renderGF('tv');
+            updateSyncDisplay('movie');
+            updateSyncDisplay('tv');
         }
 
         if (document.readyState === 'loading') {
