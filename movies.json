@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-09-16T13:42:06.484Z",
+  "exportedAt": "2026-09-16T14:10:14.566Z",
   "movies": [
     {
       "id": 969681,
@@ -2782,19 +2782,6 @@
       ],
       "userRating": null,
       "added": "2026-09-16T11:56:54.335Z"
-    },
-    {
-      "id": 1396,
-      "title": "Breaking Bad",
-      "poster_path": "/anFx9aTOOYqgS3v7x3R84Kz67ly.jpg",
-      "release_date": "2008-01-20",
-      "vote_average": 8.95,
-      "genres": [
-        "Drama",
-        "Crime"
-      ],
-      "userRating": null,
-      "added": "2026-09-16T12:14:14.529Z"
     },
     {
       "id": 61244,
