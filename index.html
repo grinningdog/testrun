@@ -535,13 +535,14 @@
         }
 
         // ============================================================
-        // SYNC STATUS DISPLAY
+        // SYNC STATUS DISPLAY (FIXED - uses correct capitalization)
         // ============================================================
 
         function updateSyncDisplay(type) {
-            const prefix = type === 'tv' ? 'tv' : '';
-            const statusEl = document.getElementById(`${prefix}syncStatus`);
-            const textEl = document.getElementById(`${prefix}lastUpdatedText`);
+            const statusId = type === 'tv' ? 'tvSyncStatus' : 'syncStatus';
+            const textId = type === 'tv' ? 'tvLastUpdatedText' : 'lastUpdatedText';
+            const statusEl = document.getElementById(statusId);
+            const textEl = document.getElementById(textId);
             const count = type === 'tv' ? tvShows.length : movies.length;
 
             if (statusEl) {
@@ -1215,7 +1216,7 @@
 
                 let starsHTML = '';
                 for (let i = 1; i <= 5; i++) {
-                    starsHTML += `<span class="star ${userRating && i <= userRating ? 'filled' : ''}" onclick="setUserRating(${id},${i},'${type}')" onmouseover="previewRating(${i})" onmouseout="clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
+                    starsHTML += `<span class="star ${userRating && i <= userRating ? 'filled' : ''}" onclick="setUserRating(${id},${i},'${type}')" onmouseover="previewRating(${i})" onmouseout("clearPreview()">${i <= (userRating || 0) ? '★' : '☆'}</span>`;
                 }
 
                 let tvInfo = '';
