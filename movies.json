@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-09-17T18:47:47.553Z",
+  "exportedAt": "2026-09-17T21:57:15.996Z",
   "movies": [
     {
       "id": 969681,
@@ -104,18 +104,6 @@
         "Adventure",
         "Science Fiction",
         "Thriller"
-      ]
-    },
-    {
-      "id": 37719,
-      "title": "A Night at the Opera",
-      "poster_path": "/A4YDGfJwaG7aMxDVrVJsOHJ7ufK.jpg",
-      "release_date": "1935-11-15",
-      "vote_average": 7.397,
-      "added": "2026-07-30T09:59:14.055Z",
-      "genres": [
-        "Comedy",
-        "Music"
       ]
     },
     {
@@ -2766,6 +2754,1687 @@
       ],
       "userRating": null,
       "added": "2026-09-17T18:41:15.593Z"
+    },
+    {
+      "id": 1263337,
+      "title": "Heart of the Beast",
+      "poster_path": "/1ApfSA8JTqeha3GTFEY8syV4auq.jpg",
+      "release_date": "2026-09-19",
+      "vote_average": 0,
+      "genres": [
+        "Adventure",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:50:54.197Z"
+    },
+    {
+      "id": 877817,
+      "title": "Wolfs",
+      "poster_path": "/vOX1Zng472PC2KnS0B9nRfM8aaZ.jpg",
+      "release_date": "2024-09-20",
+      "vote_average": 6.543,
+      "genres": [
+        "Crime",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:02.132Z"
+    },
+    {
+      "id": 615777,
+      "title": "Babylon",
+      "poster_path": "/wjOHjWCUE0YzDiEzKv8AfqHj3ir.jpg",
+      "release_date": "2022-12-22",
+      "vote_average": 7.336,
+      "genres": [
+        "Drama",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:08.286Z"
+    },
+    {
+      "id": 466272,
+      "title": "Once Upon a Time... in Hollywood",
+      "poster_path": "/8j58iEBw9pOXFD2L0nt0ZXeHviB.jpg",
+      "release_date": "2019-07-24",
+      "vote_average": 7.42,
+      "genres": [
+        "Comedy",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:19.736Z"
+    },
+    {
+      "id": 383498,
+      "title": "Deadpool 2",
+      "poster_path": "/to0spRl1CMDvyUbOnbb4fTk3VAd.jpg",
+      "release_date": "2018-05-15",
+      "vote_average": 7.488,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:25.665Z"
+    },
+    {
+      "id": 354287,
+      "title": "War Machine",
+      "poster_path": "/bU2Q2rCH5VFrJNKSyx6wSmQZFsX.jpg",
+      "release_date": "2017-05-26",
+      "vote_average": 5.618,
+      "genres": [
+        "Comedy",
+        "Drama",
+        "War"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:29.065Z"
+    },
+    {
+      "id": 318846,
+      "title": "The Big Short",
+      "poster_path": "/scVEaJEwP8zUix8vgmMoJJ9Nq0w.jpg",
+      "release_date": "2015-12-11",
+      "vote_average": 7.372,
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:37.047Z"
+    },
+    {
+      "id": 228150,
+      "title": "Fury",
+      "poster_path": "/pfte7wdMobMF4CVHuOxyu6oqeeA.jpg",
+      "release_date": "2014-10-15",
+      "vote_average": 7.544,
+      "genres": [
+        "War",
+        "Drama",
+        "Action"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:42.884Z"
+    },
+    {
+      "id": 109091,
+      "title": "The Counselor",
+      "poster_path": "/aNiLkGnzVb5CorZHKk16w9S4COt.jpg",
+      "release_date": "2013-10-25",
+      "vote_average": 5.291,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:50.770Z"
+    },
+    {
+      "id": 72190,
+      "title": "World War Z",
+      "poster_path": "/aCnVdvExw6UWSeQfr0tUH3jr4qG.jpg",
+      "release_date": "2013-06-19",
+      "vote_average": 6.851,
+      "genres": [
+        "Action",
+        "Horror",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:52.709Z"
+    },
+    {
+      "id": 76203,
+      "title": "12 Years a Slave",
+      "poster_path": "/xdANQijuNrJaw1HA61rDccME4Tm.jpg",
+      "release_date": "2013-10-18",
+      "vote_average": 7.927,
+      "genres": [
+        "Drama",
+        "History"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:54.098Z"
+    },
+    {
+      "id": 1321694,
+      "title": "8",
+      "poster_path": "/59FU0Yt9u4WuKa9bMTTzTgHGhRD.jpg",
+      "release_date": "2012-03-03",
+      "vote_average": 5.25,
+      "genres": [
+        "Drama",
+        "History",
+        "TV Movie"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:57.725Z"
+    },
+    {
+      "id": 64689,
+      "title": "Killing Them Softly",
+      "poster_path": "/heaz45kpFa4Oa7iLis0OBas68ls.jpg",
+      "release_date": "2012-07-30",
+      "vote_average": 6.026,
+      "genres": [
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:51:58.951Z"
+    },
+    {
+      "id": 63472,
+      "title": "His Way",
+      "poster_path": "/oYRZr4CsZiSNSQSvodFUVRXnpLJ.jpg",
+      "release_date": "2011-03-04",
+      "vote_average": 6.333,
+      "genres": [
+        "Documentary"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:11.865Z"
+    },
+    {
+      "id": 16869,
+      "title": "Inglourious Basterds",
+      "poster_path": "/aupnPtagH9JVBuMrGEanf4iqXEQ.jpg",
+      "release_date": "2009-08-02",
+      "vote_average": 8.216,
+      "genres": [
+        "Drama",
+        "Thriller",
+        "War"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:17.730Z"
+    },
+    {
+      "id": 4512,
+      "title": "The Assassination of Jesse James by the Coward Robert Ford",
+      "poster_path": "/xMKn6EQS7eR5ubhPJbw5pQSBZMw.jpg",
+      "release_date": "2007-09-20",
+      "vote_average": 7.064,
+      "genres": [
+        "Drama",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:41.771Z"
+    },
+    {
+      "id": 298,
+      "title": "Ocean's Thirteen",
+      "poster_path": "/pBsZs4zYUiUTemqbikTZ76iQRaU.jpg",
+      "release_date": "2007-06-05",
+      "vote_average": 6.731,
+      "genres": [
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:42.856Z"
+    },
+    {
+      "id": 787,
+      "title": "Mr. & Mrs. Smith",
+      "poster_path": "/kjD700RtyhveN3ZbOnSvUSne0Qj.jpg",
+      "release_date": "2005-06-07",
+      "vote_average": 6.694,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:47.910Z"
+    },
+    {
+      "id": 163,
+      "title": "Ocean's Twelve",
+      "poster_path": "/pE5anFf7nf6ah7V3VRezQ1KSovi.jpg",
+      "release_date": "2004-12-09",
+      "vote_average": 6.565,
+      "genres": [
+        "Thriller",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:50.991Z"
+    },
+    {
+      "id": 652,
+      "title": "Troy",
+      "poster_path": "/a07wLy4ONfpsjnBqMwhlWTJTcm.jpg",
+      "release_date": "2004-05-13",
+      "vote_average": 7.19,
+      "genres": [
+        "Action",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:52:52.444Z"
+    },
+    {
+      "id": 161,
+      "title": "Ocean's Eleven",
+      "poster_path": "/hQQCdZrsHtZyR6NbKH2YyCqd2fR.jpg",
+      "release_date": "2001-12-07",
+      "vote_average": 7.466,
+      "genres": [
+        "Thriller",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:11.669Z"
+    },
+    {
+      "id": 6073,
+      "title": "The Mexican",
+      "poster_path": "/5GqF6rVjUW6CVTuj7w1A2JE49AF.jpg",
+      "release_date": "2001-03-01",
+      "vote_average": 5.954,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Crime",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:14.843Z"
+    },
+    {
+      "id": 297,
+      "title": "Meet Joe Black",
+      "poster_path": "/fDPAjvfPMomkKF7cMRmL5Anak61.jpg",
+      "release_date": "1998-11-12",
+      "vote_average": 7.37,
+      "genres": [
+        "Fantasy",
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:25.796Z"
+    },
+    {
+      "id": 492,
+      "title": "Being John Malkovich",
+      "poster_path": "/31FGQu3OnwdmS4COquENe0vMZc0.jpg",
+      "release_date": "1999-10-29",
+      "vote_average": 7.42,
+      "genres": [
+        "Comedy",
+        "Drama",
+        "Fantasy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:26.923Z"
+    },
+    {
+      "id": 63,
+      "title": "Twelve Monkeys",
+      "poster_path": "/gt3iyguaCIw8DpQZI1LIN5TohM2.jpg",
+      "release_date": "1995-12-29",
+      "vote_average": 7.613,
+      "genres": [
+        "Science Fiction",
+        "Thriller",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:33.854Z"
+    },
+    {
+      "id": 819,
+      "title": "Sleepers",
+      "poster_path": "/yUpiEk2EojS9ZEXb3nIQonQCYYF.jpg",
+      "release_date": "1996-10-18",
+      "vote_average": 7.596,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:35.805Z"
+    },
+    {
+      "id": 807,
+      "title": "Se7en",
+      "poster_path": "/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
+      "release_date": "1995-09-22",
+      "vote_average": 8.381,
+      "genres": [
+        "Crime",
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:38.190Z"
+    },
+    {
+      "id": 319,
+      "title": "True Romance",
+      "poster_path": "/39lXk6ud6KiJgGbbWI2PUKS7y2.jpg",
+      "release_date": "1993-09-09",
+      "vote_average": 7.538,
+      "genres": [
+        "Action",
+        "Crime",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:45.973Z"
+    },
+    {
+      "id": 10909,
+      "title": "Kalifornia",
+      "poster_path": "/aXyA3UvVaXBoX2zq9zH7NcK5rKT.jpg",
+      "release_date": "1993-06-24",
+      "vote_average": 6.586,
+      "genres": [
+        "Thriller",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:47.550Z"
+    },
+    {
+      "id": 1541,
+      "title": "Thelma & Louise",
+      "poster_path": "/7D2DqmIKpPlkCU0RLVdlKLKR7XZ.jpg",
+      "release_date": "1991-05-24",
+      "vote_average": 7.595,
+      "genres": [
+        "Drama",
+        "Crime",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:53:57.751Z"
+    },
+    {
+      "id": 15938,
+      "title": "Room Service",
+      "poster_path": "/yQIpSvrEuZiDNtq2SABny5VCSIr.jpg",
+      "release_date": "1938-09-21",
+      "vote_average": 6.53,
+      "genres": [
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:55:28.165Z"
+    },
+    {
+      "id": 22553,
+      "title": "At the Circus",
+      "poster_path": "/dJsDjHYfOemGvVtHTdivU0Tl0YK.jpg",
+      "release_date": "1939-10-20",
+      "vote_average": 6.394,
+      "genres": [
+        "Comedy",
+        "Music"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:55:29.165Z"
+    },
+    {
+      "id": 22575,
+      "title": "Go West",
+      "poster_path": "/di0laTicoduEdp1WS10T8Poss7r.jpg",
+      "release_date": "1940-12-06",
+      "vote_average": 6.557,
+      "genres": [
+        "Comedy",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:55:32.262Z"
+    },
+    {
+      "id": 26182,
+      "title": "The Big Store",
+      "poster_path": "/7ChMr4aLGShMkuYcEFr7FLzjm5F.jpg",
+      "release_date": "1941-06-20",
+      "vote_average": 6.253,
+      "genres": [
+        "Comedy",
+        "Music"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:55:34.620Z"
+    },
+    {
+      "id": 26940,
+      "title": "A Night in Casablanca",
+      "poster_path": "/iltVdhtFkIyHuZDfJi9I1UAHD9D.jpg",
+      "release_date": "1946-05-10",
+      "vote_average": 6.829,
+      "genres": [
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:55:35.228Z"
+    },
+    {
+      "id": 37719,
+      "title": "A Night at the Opera",
+      "poster_path": "/A4YDGfJwaG7aMxDVrVJsOHJ7ufK.jpg",
+      "release_date": "1935-11-15",
+      "vote_average": 7.391,
+      "genres": [
+        "Comedy",
+        "Music"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:56:27.920Z"
+    },
+    {
+      "id": 212,
+      "title": "Arsenic and Old Lace",
+      "poster_path": "/xG1GEEQGgExKl0WT5sRo1Arst5D.jpg",
+      "release_date": "1944-09-01",
+      "vote_average": 7.6,
+      "genres": [
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T18:57:49.333Z"
+    },
+    {
+      "id": 55441,
+      "title": "Fancy Pants",
+      "poster_path": "/zGdQJlatFeexcPU82UTSnnq9jns.jpg",
+      "release_date": "1950-07-19",
+      "vote_average": 5.8,
+      "genres": [
+        "Music",
+        "Comedy",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:00:21.026Z"
+    },
+    {
+      "id": 103165,
+      "title": "My Favorite Spy",
+      "poster_path": "/4hG2j4IaAOLdoa0OhPWqPVfjW1x.jpg",
+      "release_date": "1951-12-25",
+      "vote_average": 6,
+      "genres": [
+        "Action",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:00:23.678Z"
+    },
+    {
+      "id": 24512,
+      "title": "The Lemon Drop Kid",
+      "poster_path": "/uG5m1LHHUWBvhpYvABQloUlPfkW.jpg",
+      "release_date": "1951-04-02",
+      "vote_average": 6.5,
+      "genres": [
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:00:25.485Z"
+    },
+    {
+      "id": 260,
+      "title": "The 39 Steps",
+      "poster_path": "/oC81jK6aAug4MA0xzYVngHmjsZS.jpg",
+      "release_date": "1935-06-06",
+      "vote_average": 7.304,
+      "genres": [
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:41.416Z"
+    },
+    {
+      "id": 940,
+      "title": "The Lady Vanishes",
+      "poster_path": "/c1t9LB76LvEARPanfEzXmkm7fwY.jpg",
+      "release_date": "1938-10-07",
+      "vote_average": 7.4,
+      "genres": [
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:46.368Z"
+    },
+    {
+      "id": 223,
+      "title": "Rebecca",
+      "poster_path": "/1qz3qUOHnVy7dL7M7G8jSErxE4b.jpg",
+      "release_date": "1940-03-23",
+      "vote_average": 7.9,
+      "genres": [
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:47.114Z"
+    },
+    {
+      "id": 25670,
+      "title": "Foreign Correspondent",
+      "poster_path": "/n0WX6eIdIliKB66MI2MWZ3wHsoJ.jpg",
+      "release_date": "1940-08-16",
+      "vote_average": 6.963,
+      "genres": [
+        "Thriller",
+        "Mystery",
+        "Action"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:49.189Z"
+    },
+    {
+      "id": 24197,
+      "title": "Mr. & Mrs. Smith",
+      "poster_path": "/lIFBvhh9EbQpwkYa135dQvMHXSj.jpg",
+      "release_date": "1941-01-31",
+      "vote_average": 5.877,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:50.958Z"
+    },
+    {
+      "id": 11462,
+      "title": "Suspicion",
+      "poster_path": "/clWNlzlbyaEoIK63lcFjqBmXoQz.jpg",
+      "release_date": "1941-11-14",
+      "vote_average": 7.109,
+      "genres": [
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:54.730Z"
+    },
+    {
+      "id": 4174,
+      "title": "Spellbound",
+      "poster_path": "/dPAox7jGScLBvxKLeRptJIBF7v.jpg",
+      "release_date": "1945-10-31",
+      "vote_average": 7.4,
+      "genres": [
+        "Drama",
+        "Crime",
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:57.603Z"
+    },
+    {
+      "id": 303,
+      "title": "Notorious",
+      "poster_path": "/e7DHQGgivZyMvM4z7mA7gMNvOHg.jpg",
+      "release_date": "1946-08-21",
+      "vote_average": 7.7,
+      "genres": [
+        "Drama",
+        "Crime",
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:58.168Z"
+    },
+    {
+      "id": 1580,
+      "title": "Rope",
+      "poster_path": "/9ar6rxLDB8kagAnXZKn6h9smscr.jpg",
+      "release_date": "1948-02-01",
+      "vote_average": 7.93,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:02:59.761Z"
+    },
+    {
+      "id": 845,
+      "title": "Strangers on a Train",
+      "poster_path": "/ihC083U7ef56Ui4x0P0dobojrZ1.jpg",
+      "release_date": "1951-06-27",
+      "vote_average": 7.657,
+      "genres": [
+        "Crime",
+        "Thriller",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:05.902Z"
+    },
+    {
+      "id": 521,
+      "title": "Dial M for Murder",
+      "poster_path": "/2gDCAgl2iBQNuJuk6p2xtuS1ewg.jpg",
+      "release_date": "1954-05-29",
+      "vote_average": 8.001,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:06.812Z"
+    },
+    {
+      "id": 567,
+      "title": "Rear Window",
+      "poster_path": "/ILVF0eJxHMddjxeQhswFtpMtqx.jpg",
+      "release_date": "1954-08-01",
+      "vote_average": 8.3,
+      "genres": [
+        "Thriller",
+        "Mystery",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:09.879Z"
+    },
+    {
+      "id": 381,
+      "title": "To Catch a Thief",
+      "poster_path": "/cbMRkBGBgo3aLJK2M4MyicvkPLQ.jpg",
+      "release_date": "1955-08-03",
+      "vote_average": 7.262,
+      "genres": [
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:13.579Z"
+    },
+    {
+      "id": 574,
+      "title": "The Man Who Knew Too Much",
+      "poster_path": "/gy8YBRjCQRIT9x9G9F5fpnFD4xw.jpg",
+      "release_date": "1956-05-16",
+      "vote_average": 7.429,
+      "genres": [
+        "Thriller",
+        "Mystery",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:15.329Z"
+    },
+    {
+      "id": 426,
+      "title": "Vertigo",
+      "poster_path": "/15uOEfqBNTVtDUT7hGBVCka0rZz.jpg",
+      "release_date": "1958-05-28",
+      "vote_average": 8.1,
+      "genres": [
+        "Mystery",
+        "Romance",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:17.753Z"
+    },
+    {
+      "id": 213,
+      "title": "North by Northwest",
+      "poster_path": "/kNOFPQrel9YFCVzI0DF8FnCEpCw.jpg",
+      "release_date": "1959-08-06",
+      "vote_average": 7.962,
+      "genres": [
+        "Thriller",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:18.392Z"
+    },
+    {
+      "id": 539,
+      "title": "Psycho",
+      "poster_path": "/yz4QVqPx3h1hD1DfqqQkCq3rmxW.jpg",
+      "release_date": "1960-06-22",
+      "vote_average": 8.4,
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:20.751Z"
+    },
+    {
+      "id": 571,
+      "title": "The Birds",
+      "poster_path": "/eClg8QPg8mwB6INIC4pyR5pAbDr.jpg",
+      "release_date": "1963-03-28",
+      "vote_average": 7.511,
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:29.231Z"
+    },
+    {
+      "id": 506,
+      "title": "Marnie",
+      "poster_path": "/nRRy4VO2A3Py7wiZBPz11PAlogp.jpg",
+      "release_date": "1964-07-17",
+      "vote_average": 7.102,
+      "genres": [
+        "Thriller",
+        "Mystery",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:03:30.241Z"
+    },
+    {
+      "id": 43595,
+      "title": "She Done Him Wrong",
+      "poster_path": "/kwxAUj8tf9kO2ESAriD8foYN28q.jpg",
+      "release_date": "1933-02-09",
+      "vote_average": 5.864,
+      "genres": [
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:03.906Z"
+    },
+    {
+      "id": 23101,
+      "title": "Topper",
+      "poster_path": "/4HEIYO1WVb1fYOBaHnfWrSJnPHm.jpg",
+      "release_date": "1937-07-16",
+      "vote_average": 6.7,
+      "genres": [
+        "Comedy",
+        "Fantasy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:27.867Z"
+    },
+    {
+      "id": 900,
+      "title": "Bringing Up Baby",
+      "poster_path": "/vTNNOtemaYmtx3k2NpsLMRJKEwZ.jpg",
+      "release_date": "1938-02-18",
+      "vote_average": 7.507,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:29.961Z"
+    },
+    {
+      "id": 14675,
+      "title": "The Awful Truth",
+      "poster_path": "/2VtsJoxvjpcMpwh0gweS8IMfHxO.jpg",
+      "release_date": "1937-10-21",
+      "vote_average": 7.2,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:31.294Z"
+    },
+    {
+      "id": 54430,
+      "title": "Topper Takes a Trip",
+      "poster_path": "/7eNvEGuEIgnn1dwuVBpoQRYfhxH.jpg",
+      "release_date": "1938-12-29",
+      "vote_average": 6.586,
+      "genres": [
+        "Comedy",
+        "Fantasy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:34.086Z"
+    },
+    {
+      "id": 24965,
+      "title": "Gunga Din",
+      "poster_path": "/opkVdHbKWJeCXzgFLba2geEIDak.jpg",
+      "release_date": "1939-01-26",
+      "vote_average": 6.503,
+      "genres": [
+        "Adventure",
+        "War",
+        "Action",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:37.255Z"
+    },
+    {
+      "id": 43832,
+      "title": "Only Angels Have Wings",
+      "poster_path": "/lqcwiWancAkjtAQPHr9V3SfJjBM.jpg",
+      "release_date": "1939-05-15",
+      "vote_average": 7.3,
+      "genres": [
+        "Romance",
+        "Adventure",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:38.168Z"
+    },
+    {
+      "id": 3085,
+      "title": "His Girl Friday",
+      "poster_path": "/lu86Y9zTPH3neCiUzLzHCEFHf7f.jpg",
+      "release_date": "1940-01-18",
+      "vote_average": 7.394,
+      "genres": [
+        "Comedy",
+        "Romance",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:43.496Z"
+    },
+    {
+      "id": 41463,
+      "title": "My Favorite Wife",
+      "poster_path": "/zOeDeZnjqYcvRnMBcfb7omgH15v.jpg",
+      "release_date": "1940-05-17",
+      "vote_average": 7.009,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:44.760Z"
+    },
+    {
+      "id": 981,
+      "title": "The Philadelphia Story",
+      "poster_path": "/dKUubjvxO78XDts6VP1Ggcp4R9O.jpg",
+      "release_date": "1940-12-05",
+      "vote_average": 7.5,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:05:50.046Z"
+    },
+    {
+      "id": 19490,
+      "title": "The Bishop's Wife",
+      "poster_path": "/2sMpffmvoJlW7WBcvyHTPR9DEsj.jpg",
+      "release_date": "1947-12-25",
+      "vote_average": 7.1,
+      "genres": [
+        "Comedy",
+        "Fantasy",
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:07.296Z"
+    },
+    {
+      "id": 32294,
+      "title": "Mr. Blandings Builds His Dream House",
+      "poster_path": "/smKM575W3FLvWHna5YaWWeN5po8.jpg",
+      "release_date": "1948-03-25",
+      "vote_average": 6.951,
+      "genres": [
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:12.267Z"
+    },
+    {
+      "id": 8356,
+      "title": "An Affair to Remember",
+      "poster_path": "/jwbWglYHbjqUu8M9DjTYzTOFklt.jpg",
+      "release_date": "1957-07-11",
+      "vote_average": 7.375,
+      "genres": [
+        "Drama",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:21.837Z"
+    },
+    {
+      "id": 22874,
+      "title": "Indiscreet",
+      "poster_path": "/sv4ao2ceHx2Ii1I2SsAmCqr7k6K.jpg",
+      "release_date": "1958-07-16",
+      "vote_average": 6.633,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:23.998Z"
+    },
+    {
+      "id": 9660,
+      "title": "Operation Petticoat",
+      "poster_path": "/pIsm8JvpFZidVxKexv5UgoCjwpZ.jpg",
+      "release_date": "1959-12-05",
+      "vote_average": 7.238,
+      "genres": [
+        "Comedy",
+        "War",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:25.924Z"
+    },
+    {
+      "id": 12708,
+      "title": "That Touch of Mink",
+      "poster_path": "/eEG29x9cljGKL2GPmRK9IByyL9e.jpg",
+      "release_date": "1962-06-14",
+      "vote_average": 6.5,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:29.184Z"
+    },
+    {
+      "id": 4808,
+      "title": "Charade",
+      "poster_path": "/qqaPjC5FQidtKY65jbAKZPiOTaS.jpg",
+      "release_date": "1963-12-01",
+      "vote_average": 7.655,
+      "genres": [
+        "Comedy",
+        "Mystery",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T19:06:34.310Z"
+    },
+    {
+      "id": 745,
+      "title": "The Sixth Sense",
+      "poster_path": "/vOyfUXNFSnaTk7Vk5AjpsKTUWsu.jpg",
+      "release_date": "1999-08-06",
+      "vote_average": 7.954,
+      "genres": [
+        "Mystery",
+        "Thriller",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:51:38.312Z"
+    },
+    {
+      "id": 918,
+      "title": "Blind Date",
+      "poster_path": "/cLb3akSpZhU5qkmCO46IHfJtcs0.jpg",
+      "release_date": "1987-03-27",
+      "vote_average": 6.004,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:30.252Z"
+    },
+    {
+      "id": 562,
+      "title": "Die Hard",
+      "poster_path": "/7Bjd8kfmDSOzpmhySpEhkUyK2oH.jpg",
+      "release_date": "1988-07-15",
+      "vote_average": 7.8,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:33.882Z"
+    },
+    {
+      "id": 9494,
+      "title": "Look Who's Talking",
+      "poster_path": "/uVM0D7Q6U9H6xMSZmMdfwECih5h.jpg",
+      "release_date": "1989-10-12",
+      "vote_average": 6.291,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:38.609Z"
+    },
+    {
+      "id": 1573,
+      "title": "Die Hard 2",
+      "poster_path": "/ybki0UWO3OPhaM6MSniuKC7sy1R.jpg",
+      "release_date": "1990-07-03",
+      "vote_average": 6.967,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:39.199Z"
+    },
+    {
+      "id": 9356,
+      "title": "Look Who's Talking Too",
+      "poster_path": "/m409mVHmvDOZJltNzHJYigUthsW.jpg",
+      "release_date": "1990-12-14",
+      "vote_average": 5.518,
+      "genres": [
+        "Romance",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:42.810Z"
+    },
+    {
+      "id": 9586,
+      "title": "The Bonfire of the Vanities",
+      "poster_path": "/pdrPrygZ5dVKi8UxrUXMmq1k2iO.jpg",
+      "release_date": "1990-12-21",
+      "vote_average": 5.61,
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:45.373Z"
+    },
+    {
+      "id": 30815,
+      "title": "Mortal Thoughts",
+      "poster_path": "/3Py7bFBsRjMVdOI5IlNSz6aa385.jpg",
+      "release_date": "1991-04-19",
+      "vote_average": 5.672,
+      "genres": [
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:47.207Z"
+    },
+    {
+      "id": 9292,
+      "title": "Hudson Hawk",
+      "poster_path": "/2AiR7HZuIOUdJp6LYOEOA8z7pF3.jpg",
+      "release_date": "1991-05-23",
+      "vote_average": 5.73,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:48.797Z"
+    },
+    {
+      "id": 12647,
+      "title": "Billy Bathgate",
+      "poster_path": "/zDC0bY6IvGIf1SrDipLZJxR0Z2d.jpg",
+      "release_date": "1991-11-01",
+      "vote_average": 5.787,
+      "genres": [
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:51.447Z"
+    },
+    {
+      "id": 9319,
+      "title": "The Last Boy Scout",
+      "poster_path": "/glPswihcZYoAQ4YM2uJF4UACy8T.jpg",
+      "release_date": "1991-12-13",
+      "vote_average": 6.844,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:53.162Z"
+    },
+    {
+      "id": 11074,
+      "title": "Striking Distance",
+      "poster_path": "/1bLazrQWJQhO6u58vJZXJZ3ZFDh.jpg",
+      "release_date": "1993-09-17",
+      "vote_average": 5.925,
+      "genres": [
+        "Crime",
+        "Action",
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:52:58.779Z"
+    },
+    {
+      "id": 680,
+      "title": "Pulp Fiction",
+      "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+      "release_date": "1994-09-10",
+      "vote_average": 8.48,
+      "genres": [
+        "Thriller",
+        "Crime",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:01.341Z"
+    },
+    {
+      "id": 1572,
+      "title": "Die Hard: With a Vengeance",
+      "poster_path": "/buqmCdFQEWwEpL3agGgg2GVjN2d.jpg",
+      "release_date": "1995-05-19",
+      "vote_average": 7.284,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:07.294Z"
+    },
+    {
+      "id": 9333,
+      "title": "Last Man Standing",
+      "poster_path": "/2cWqlkXaKKdl32Waep4FwCQnyH0.jpg",
+      "release_date": "1996-09-20",
+      "vote_average": 6.373,
+      "genres": [
+        "Action",
+        "Crime",
+        "Drama",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:09.009Z"
+    },
+    {
+      "id": 18,
+      "title": "The Fifth Element",
+      "poster_path": "/fPtlCO1yQtnoLHOwKtWz7db6RGU.jpg",
+      "release_date": "1997-05-02",
+      "vote_average": 7.591,
+      "genres": [
+        "Science Fiction",
+        "Action",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:17.006Z"
+    },
+    {
+      "id": 8838,
+      "title": "Mercury Rising",
+      "poster_path": "/60AAso6I2TzQCy2SjqtzPni8csA.jpg",
+      "release_date": "1998-04-03",
+      "vote_average": 6.294,
+      "genres": [
+        "Action",
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:19.772Z"
+    },
+    {
+      "id": 1414301,
+      "title": "Armageddon: Target Earth",
+      "poster_path": "/5kRvnn351hoawjLm1mlqaRRiaxR.jpg",
+      "release_date": "1998-01-01",
+      "vote_average": 9,
+      "genres": [],
+      "userRating": null,
+      "added": "2026-09-17T21:53:21.278Z"
+    },
+    {
+      "id": 9882,
+      "title": "The Siege",
+      "poster_path": "/gbeeWu8rYaIYMyq9ayN1AepjNxP.jpg",
+      "release_date": "1998-11-06",
+      "vote_average": 6.291,
+      "genres": [
+        "Drama",
+        "Action",
+        "Thriller",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:25.301Z"
+    },
+    {
+      "id": 95,
+      "title": "Armageddon",
+      "poster_path": "/eTM3qtGhDU8cvjpoa6KEt5E2auU.jpg",
+      "release_date": "1998-07-01",
+      "vote_average": 6.833,
+      "genres": [
+        "Action",
+        "Science Fiction",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:33.988Z"
+    },
+    {
+      "id": 2069,
+      "title": "The Whole Nine Yards",
+      "poster_path": "/rDV7ntPLY0ZDBT722Odsi80nFrn.jpg",
+      "release_date": "2000-02-18",
+      "vote_average": 6.47,
+      "genres": [
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:39.843Z"
+    },
+    {
+      "id": 9741,
+      "title": "Unbreakable",
+      "poster_path": "/mLuehrGLiK5zFCyRmDDOH6gbfPf.jpg",
+      "release_date": "2000-11-22",
+      "vote_average": 7.146,
+      "genres": [
+        "Thriller",
+        "Drama",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:53:42.813Z"
+    },
+    {
+      "id": 2026,
+      "title": "Hostage",
+      "poster_path": "/vjhLmtjO2pMQXRgkxcwZoq2Ma8n.jpg",
+      "release_date": "2005-03-09",
+      "vote_average": 6.359,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:00.098Z"
+    },
+    {
+      "id": 187,
+      "title": "Sin City",
+      "poster_path": "/i66G50wATMmPrvpP95f0XP6ZdVS.jpg",
+      "release_date": "2005-04-01",
+      "vote_average": 7.464,
+      "genres": [
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:01.656Z"
+    },
+    {
+      "id": 186,
+      "title": "Lucky Number Slevin",
+      "poster_path": "/x21s3p5wPww534nYj1cWakTcqz4.jpg",
+      "release_date": "2006-02-24",
+      "vote_average": 7.475,
+      "genres": [
+        "Drama",
+        "Thriller",
+        "Crime",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:10.463Z"
+    },
+    {
+      "id": 2207,
+      "title": "16 Blocks",
+      "poster_path": "/cBLqMVfTZpuKmMQKDLKusb93dbR.jpg",
+      "release_date": "2006-03-01",
+      "vote_average": 6.46,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:12.817Z"
+    },
+    {
+      "id": 1571,
+      "title": "Live Free or Die Hard",
+      "poster_path": "/31TT47YjBl7a7uvJ3ff1nrirXhP.jpg",
+      "release_date": "2007-06-20",
+      "vote_average": 6.642,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:29.203Z"
+    },
+    {
+      "id": 8944,
+      "title": "What Just Happened",
+      "poster_path": "/o88aPDDMtdwQsPyXqSKhu98jjru.jpg",
+      "release_date": "2008-10-17",
+      "vote_average": 5.441,
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:36.367Z"
+    },
+    {
+      "id": 23742,
+      "title": "Cop Out",
+      "poster_path": "/qA31i7FPVDHezuoevx3497CvZd4.jpg",
+      "release_date": "2010-02-26",
+      "vote_average": 5.554,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:36.954Z"
+    },
+    {
+      "id": 27578,
+      "title": "The Expendables",
+      "poster_path": "/j09ZkH6R4JWVylBcDai1laCmGw7.jpg",
+      "release_date": "2010-08-07",
+      "vote_average": 6.252,
+      "genres": [
+        "Thriller",
+        "Adventure",
+        "Action"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:40.843Z"
+    },
+    {
+      "id": 39514,
+      "title": "RED",
+      "poster_path": "/8eeK3OB5PeSRQD7BpZcGZKkehG.jpg",
+      "release_date": "2010-10-13",
+      "vote_average": 6.707,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:42.924Z"
+    },
+    {
+      "id": 70586,
+      "title": "Setup",
+      "poster_path": "/h74bol6GYG6eyXIAZVGmQBraI8c.jpg",
+      "release_date": "2011-10-17",
+      "vote_average": 4.848,
+      "genres": [
+        "Action",
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:45.070Z"
+    },
+    {
+      "id": 59967,
+      "title": "Looper",
+      "poster_path": "/sNjL6SqErDBE8OUZlrDLkexfsCj.jpg",
+      "release_date": "2012-09-26",
+      "vote_average": 6.917,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:54:55.725Z"
+    },
+    {
+      "id": 47964,
+      "title": "A Good Day to Die Hard",
+      "poster_path": "/qJ0csDXAVFMsNn0cRcjy6W6PxAK.jpg",
+      "release_date": "2013-02-06",
+      "vote_average": 5.326,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:02.599Z"
+    },
+    {
+      "id": 146216,
+      "title": "RED 2",
+      "poster_path": "/tbksijr6g340yFWRgI4JfwrtM9h.jpg",
+      "release_date": "2013-07-18",
+      "vote_average": 6.53,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:08.113Z"
+    },
+    {
+      "id": 189,
+      "title": "Sin City: A Dame to Kill For",
+      "poster_path": "/50kALxDX4mmzIRljbNbPY0u4cie.jpg",
+      "release_date": "2014-08-20",
+      "vote_average": 6.401,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:09.171Z"
+    },
+    {
+      "id": 326425,
+      "title": "Extraction",
+      "poster_path": "/1Cn5pxPi5XedW0oH0Xr6GibmmVZ.jpg",
+      "release_date": "2015-12-18",
+      "vote_average": 4.511,
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:19.990Z"
+    },
+    {
+      "id": 381288,
+      "title": "Split",
+      "poster_path": "/lli31lYTFpvxVBeFHWoe5PMfW5s.jpg",
+      "release_date": "2017-01-19",
+      "vote_average": 7.341,
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:26.043Z"
+    },
+    {
+      "id": 345915,
+      "title": "Once Upon a Time in Venice",
+      "poster_path": "/5rr7tQfzS0ARqEea3W9SNSFGRzb.jpg",
+      "release_date": "2017-06-08",
+      "vote_average": 5.219,
+      "genres": [
+        "Action",
+        "Comedy",
+        "Thriller",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:29.519Z"
+    },
+    {
+      "id": 395990,
+      "title": "Death Wish",
+      "poster_path": "/g0eEEZAqMf98ULQnoiORuazjOpn.jpg",
+      "release_date": "2018-03-01",
+      "vote_average": 6.238,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:36.070Z"
+    },
+    {
+      "id": 450465,
+      "title": "Glass",
+      "poster_path": "/svIDTNUoajS8dLEo7EosxvyAsgJ.jpg",
+      "release_date": "2019-01-16",
+      "vote_average": 6.665,
+      "genres": [
+        "Thriller",
+        "Drama",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:41.573Z"
+    },
+    {
+      "id": 504562,
+      "title": "Motherless Brooklyn",
+      "poster_path": "/2wm20cbkH1L8nA54Gtwfgz2hTqo.jpg",
+      "release_date": "2019-10-31",
+      "vote_average": 6.683,
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:50.888Z"
+    },
+    {
+      "id": 724989,
+      "title": "Hard Kill",
+      "poster_path": "/ugZW8ocsrfgI95pnQ7wrmKDxIe.jpg",
+      "release_date": "2020-09-04",
+      "vote_average": 4.941,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:55.115Z"
+    },
+    {
+      "id": 651571,
+      "title": "Breach",
+      "poster_path": "/13B6onhL6FzSN2KaNeQeMML05pS.jpg",
+      "release_date": "2020-12-17",
+      "vote_average": 4.144,
+      "genres": [
+        "Science Fiction",
+        "Action",
+        "Horror"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:55:58.397Z"
+    },
+    {
+      "id": 864116,
+      "title": "A Day to Die",
+      "poster_path": "/8Kce1utfytAG5m1PbtVoDzmDZJH.jpg",
+      "release_date": "2022-03-04",
+      "vote_average": 5.682,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Crime",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:56:15.902Z"
+    },
+    {
+      "id": 921360,
+      "title": "Wire Room",
+      "poster_path": "/b9ykj4v8ykjRoGB7SpI1OuxblNU.jpg",
+      "release_date": "2022-09-02",
+      "vote_average": 6.1,
+      "genres": [
+        "Action",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:56:26.656Z"
+    },
+    {
+      "id": 921355,
+      "title": "Assassin",
+      "poster_path": "/7N0BJPs616SSwE4hVs0jjWuiy5k.jpg",
+      "release_date": "2023-03-31",
+      "vote_average": 5.143,
+      "genres": [
+        "Action",
+        "Thriller",
+        "Science Fiction",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-09-17T21:56:35.770Z"
     }
   ],
   "tvShows": [
