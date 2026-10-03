@@ -105,7 +105,7 @@
             width: 100%;
             border-radius: 8px;
             border: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            
         }
 
         /* Caption styling */
@@ -144,10 +144,25 @@
 
         <!-- VIDEO SECTION -->
         <div class="video-wrapper">
-           <video autoplay loop muted playsinline style="border: none; outline: none; display: block; max-width: 100%;">
-  <source src="brock.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<video 
+    id="slow-video"
+    autoplay 
+    loop 
+    muted 
+    playsinline 
+    onloadeddata="this.playbackRate = 0.2;"
+    style="border: none !important; outline: none !important; box-shadow: none !important; display: block; max-width: 100%;">
+    <source src="brock.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    // Backup enforcer to ensure 20% speed on mobile safari/chrome
+    const video = document.getElementById('slow-video');
+    if (video) {
+      video.playbackRate = 0.2;
+    }
+  </script>
             <div class="caption">Mr Brock knows the storm is getting worse</div>
         </div>
 
