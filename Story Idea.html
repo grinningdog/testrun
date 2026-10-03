@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Brock and the Big Storm</title>
+    <style>
+        /* --- Storybook Styling --- */
+        body {
+            margin: 0;
+            background-color: #f4f1ea; /* Warm paper color */
+            font-family: 'Georgia', 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .book-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        /* Typography */
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1a252f;
+            margin-bottom: 10px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .author-line {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin-bottom: 1.5em;
+            text-align: justify; /* Classic book look */
+        }
+
+        /* Dialogue styling */
+        .dialogue {
+            margin-left: 20px;
+            font-style: italic;
+            color: #34495e;
+        }
+
+        /* --- Media Placeholders --- */
+
+        /* The Image Container for your transparent PNGs */
+        .illustration-frame {
+            margin: 40px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Adjust based on your image size */
+        }
+
+        .story-image {
+            width: 100%;
+            height: auto;
+            /* This blends the fuzzy edges perfectly into the white page */
+            mix-blend-mode: multiply;
+            opacity: 1; /* Fixed: keeps image visible on mobile browsers */
+        }
+
+        /* Right-aligned floating illustration */
+        .illustration-right {
+            float: right;
+            width: 40%;
+            max-width: 350px;
+            margin: 0 0px 0 30px; /* top, right, bottom, left spacing */
+            shape-outside: margin-box; /* text wraps around the margin box */
+        }
+
+        /* Left-aligned floating illustration */
+        .illustration-left {
+            float: left;
+            width: 40%;
+            max-width: 350px;
+            margin: 20px 30px 20px 0; /* top, right, bottom, left spacing */
+            shape-outside: margin-box; /* text wraps around the margin box */
+        }
+
+        /* Video Embed Styling */
+        .video-wrapper {
+            margin: 40px auto;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Caption styling */
+        .caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .book-container { padding: 30px; }
+            h1 { font-size: 2rem; }
+            p { font-size: 1.1rem; text-align: left; }
+            .illustration-right, .illustration-left {
+                float: none;
+                width: 100%;
+                max-width: 100%;
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container">
+
+        <!-- TITLE SECTION -->
+        <h1>Mr Brock and the Big Storm</h1>
+        <div class="author-line">A Winter Tale of "The Sett"</div>
+
+        <!-- STORY CONTENT STARTS HERE -->
+
+        <!-- VIDEO SECTION -->
+        <div class="video-wrapper">
+            <video controls width="100%">
+                <source src="brock.mp4" type="video/mp4">
+                Your browser does not support playing this video.
+            </video>
+            <div class="caption">Mr Brock knows the storm is getting worse</div>
+        </div>
+
+        <p>Mr Brock, the badger looked out of his front door at the gathering storm. The snow was swirling round and beginning to drift, getting deeper by the moment. He closed the door and retreated deep into his home.</p>
+
+        <p class="dialogue">"It’s not looking too good Mrs Brock," he said to his wife. "We’ll need to build up the fire and snuggle down for the night."</p>
+
+        <p class="dialogue">"You’ll also need to keep a watch for any lost souls out in the weather Brock," she replied.</p>
+
+        <p class="dialogue">"Surely nobody would be out on a night like this would they?" he pondered but he decided to keep a careful eye out anyway.</p>
+
+        <p>Mr and Mrs Brock were very happy living in their home. Their children had all grown and moved away. Just far enough to fend for themselves but not so close that they were on top of their parents. The Brocks' home was underground, deep enough so the frost didn’t penetrate and it had a nice wooden door in the stump of an old tree. Above the door was a sign that said ‘The Sett’, which is what most badgers call their home.</p>
+
+        <p>The old tree was in a clearing in the woodland, normally covered in soft leaves but now getting a deeper and deeper carpet of snow.</p>
+
+        <p>Mr Brock had spent part of the summer gathering wood from the surrounding woods. Dragging fallen branches back to the sett so they had lots of firewood to keep themselves warm all winter. Their home was warm and cosy.</p>
+
+        <p>Although he was a kindly old badger Mr Brock knew he had a reputation for being gruff and a little anti-social. All the woodland animals kept their distance because, it was whispered, Mr Brock could be very fierce when he was upset.</p>
+
+        <p class="dialogue">"I wonder…" Mr Brock asked his wife "if it’s worth taking a quick stroll around the clearing to make sure everything is alright."</p>
+
+        <p>Mrs Brock smiled to herself. Brock really was an old softie.</p>
+
+        <p>As he walked back along the passage, Mr Brock put on his scarf that hung on a hook by the front door and pulled on his black and white beret. In truth, the beret matched the colours of his head so closely it was almost indistinguishable but it did keep him warm, and secretly Mr Brock thought it made him look jaunty.</p>
+
+        <p>He closed the door behind him and sniffed the air. <em>Definitely going to get worse tonight</em> he thought. He listened to the night, all sounds muffled by the quiet snow. Nothing was moving. The world was still.</p>
+
+        <p>He quietly started to pace around the perimeter of the clearing, stopping every now and then to sniff the earth and the air. On the far side of the clearing he stopped.</p>
+
+        <p><em>Something...</em> he thought <em>something is nearby.</em></p>
+
+        <p>He stood motionless, surveying the scene, listening, sniffing, all of his senses alert. And then he heard a small voice… and the chattering of teeth.</p>
+
+        <p class="dialogue">"Don’t worry David…" a voice barely above a whisper "we’ll rest for a little while and then we’ll make our way home."</p>
+
+        <p>Mr Brock moved slowly and deliberately, anxious not to cause alarm. Under a blackberry bush he could see a shape covered in snow. The source of the voice, and the chattering teeth.</p>
+
+        <p class="dialogue">"Hello," he said softly "is everything alright?"</p>
+
+        <p>At that moment the chatting stopped and the mound was still. Slowly, very slowly, the mound grew until a head popped up. It was a young rabbit.</p>
+
+        <p class="dialogue">"I’m sorry if we’re on your property sir. My brother and sister and I are just trying to get home but we had to stop to rest."</p>
+
+        <p class="dialogue">"Why aren’t you already at home?" Mr Brock enquired.</p>
+
+        <p class="dialogue">"We were playing in the woods and lost track of time. When it started to snow we set off but it was so cold and deep, we had to stop to rest."</p>
+
+        <p class="dialogue">"Well you’re a silly bunch of rabbits aren’t you. You need to learn how to read the weather. You must listen to your mother better. I’m sure she has told you before."</p>
+
+        <p class="dialogue">"Possibly, but we were having so much fun in the woods…" the young rabbit tailed off but he knew they had been told of the perils of the snow.</p>
+
+        <p class="dialogue">"Come with me. There’s a warm fire and you’ll be nice and dry."</p>
+
+        <p>At once there were three young rabbits shaking themselves off and shivering with the cold.</p>
+
+        <!-- Illustration: Mr Brock discovers the rabbits -->
+        <div class="illustration-frame illustration-right">
+            <img src="badger-rabbits.png"
+                 alt="Mr Brock discovering three young rabbits huddled under a snow-covered blackberry bush"
+                 class="story-image">
+        </div>
+
+        <p class="dialogue">"Come along," called Mr Brock as he crossed the clearing back to his home. The three rabbits followed him closely, keen not to get left behind.</p>
+
+        <p>As he ushered them into the front door he told them to hang up their jackets on the hooks and make their way along the passage. They could feel the warmth coming from the fire.</p>
+
+        <p class="dialogue">"These three young things need some hot chocolate Mrs Brock so we can get them warm inside and out."</p>
+
+        <p class="dialogue">"Well who have we got here?" Mrs Brock replied.</p>
+
+        <p class="dialogue">"My name is Peter…" said the first rabbit "and this is my brother David and my sister Daisy."</p>
+
+        <p>It is a little known fact that all rabbit families have a son called Peter, and this one appeared to be their spokesman.</p>
+
+        <p class="dialogue">"Thank you very much for helping us but our mother will be so worried," Peter frowned "once I’ve warmed up I will go back out and tell her we’re all safe… if you don’t mind them staying till the snow lessens."</p>
+
+        <p>Mr Brock let out a harrumph and said, "Let’s wait and see once you're warm."</p>
+
+        <p class="dialogue">"It’s not too far, we live about three clearings away. By the big rock and the fallen oak tree."</p>
+
+        <p>Mr Brock did know the clearing and he didn’t think it was a suitable journey for the young rabbit. Before he could speak however there was a gentle tapping at the door.</p>
+
+        <p>Along the passageway again with Mr Brock thinking <em>who on earth is out tonight?</em></p>
+
+        <p>As he opened the door a flurry of snow whirled around and standing before him was a red squirrel.</p>
+
+        <p class="dialogue">"I’m sorry to disturb you Mr Brock…" the small squirrel sounded nervous "but my brother and I are trapped in the snowstorm and can’t get home. I saw you were kind to those rabbits and I hoped you might let us share your fire too."</p>
+
+        <p class="dialogue">"Well you’re a very polite young squirrel but…" Mr Brock looked all around the doorway "where’s your brother?"</p>
+
+        <p>As he spoke a small red head with long tufty ears popped down from above the porch. He looked at Mr Brock, upside down, and said "I’m here but I hid because I was so afraid you would chase us off."</p>
+
+        <p class="dialogue">"Nobody would get chased off on a night like this," said Mr Brock kindly and waved them past.</p>
+
+        <p>Just as he was closing the door he noticed a mouse. "Could I come too," he said "I’ve lost my way in the snowdrifts."</p>
+
+        <p>Pulling the door wider Mr Brock gestured the mouse inside. "Hurry down to the fire all of you. You can get nice and warm."</p>
+
+        <p class="dialogue">"Mrs Brock…" he called "we need more hot chocolate!"</p>
+
+        <p>Mrs Brock was in her element, fussing over all the young animals. She was dispensing blankets and hot chocolate, while silently calculating how many muffins she had in the cupboard for toasting later.</p>
+
+        <p>Suddenly Peter’s ears twitched. Like all rabbits, his hearing was highly sensitive.</p>
+
+        <p class="dialogue">"Mr Brock…" he said respectfully "I think someone is outside."</p>
+
+        <p class="dialogue">"Well I’ll go and see young Peter. It seems we’ll have lots of visitors tonight."</p>
+
+        <p>Mr Brock walked up along the corridor leading to his front door. As he opened it there was a flurry of snow and a cold wind. <em>Brrr…</em> he thought <em>It’s definitely getting worse.</em></p>
+
+        <p>He peered out into the cold night but could see nothing moving. As he was about to shut the door he glanced down at the porch floor and there, huddled in a corner was a small deer.</p>
+
+        <p class="dialogue">"Oh my word!" exclaimed the badger "come on in quickly before we both freeze solid. Why are you all alone on a night like this?"</p>
+
+        <p class="dialogue">"I was following my Mum home but I lost sight of her in the snow storm," the small deer replied.</p>
+
+        <p class="dialogue">"What’s your name?" asked Mr Brock.</p>
+
+        <p class="dialogue">"I’m Lily," she replied.</p>
+
+        <p class="dialogue">"Is your mother called Eleanor?" Mr Brock asked.</p>
+
+        <p class="dialogue">"Yes, we live quite near."</p>
+
+        <p class="dialogue">"I know your Mum, and where you live but you won’t be going home tonight. The storm is much too bad. Come on in and get warm by the fire."</p>
+
+        <p>As Mr Brock started to swing the door closed a voice spoke from the gloomy darkness.</p>
+
+        <div class="illustration-frame illustration-left">
+            <img src="bertie.jpg"
+                 alt="Bertie is a fine looking young fox cub"
+                 class="story-image">
+        </div>
+
+        <p class="dialogue">"Mr Brock," it said.</p>
+
+        <p class="dialogue">"Who’s there?"</p>
+
+        <p>A figure stepped forward into the dim light of the hallway.</p>
+
+        <p class="dialogue">"It’s me, Bertie."</p>
+
+        <p>Bertie was a beautiful young fox. No longer a small cub but a long way from fully grown.</p>
+
+        <p>Lily gasped and jumped behind Mr Brock, looking furtively around him but almost fully hidden.</p>
+
+        <p class="dialogue">"I’m sorry to ask Mr Brock but, the storm is so bad and I can’t get home. I wondered if I sleep here in your porch until the storm is over?"</p>
+
+        <p class="dialogue">"Well young Bertie. We have quite a houseful tonight and some of them might be very frightened by sharing their space with a fox."</p>
+
+        <p class="dialogue">"I know…" said Bertie sadly "that’s why I’ll stay in the porch until the storm passes."</p>
+
+        <p>A voice spoke softly from behind Mr Brock. "But if you promised to be on your best behaviour and not eat anyone… maybe you could share the fire."</p>
+
+        <p class="dialogue">"Well Bertie," said the badger "this small deer is prepared to trust you just so that you can be warm and cosy with the rest of us. What do you think of that?"</p>
+
+        <p class="dialogue">"I don’t know what to say," said Bertie "yes, I promise to be well behaved and I certainly wouldn’t want to hurt anyone."</p>
+
+        <p class="dialogue">"Come on in quickly then so I can shut the door."</p>
+
+        <p>Mr Brock led them down the corridor with Lily leading the way and Bertie lagging behind slightly. He was nervous because he knew his whole family had a bad reputation.</p>
+
+        <p>There was a collective intake of breath as Bertie followed Mr Brock into the warm and cosy room. One of the rabbits stepped sideways behind a plump armchair but peeked out.</p>
+
+        <p class="dialogue">"Everyone can be calm," Mr Brock said "it’s a filthy night and I won’t allow anyone to be in peril because we wouldn’t take them in."</p>
+
+        <p>He went on to reassure everyone that Bertie, although a fox, had promised to be on his best behaviour and meant no harm to anyone. Despite the badger’s assurances all the other animals were wary of the young fox. They had all been warned by their mothers that foxes should be kept as far away as possible.</p>
+
+        <p>At that moment Mrs Brock arrived with a huge plate of toasted English muffins with lashings of creamy butter.</p>
+
+        <p class="dialogue">"Come along," she said "Bertie, you and Lily will be the coldest so move closer to the fire. Let’s get you dry and nice and warm."</p>
+
+        <p>There was a lot of shuffling about and everyone made room for the two new arrivals. Most gave the fox a wide berth but David, the rabbit, plonked himself down right next to Bertie. It earned him a glare from Peter, his older brother, and a shy smile from Bertie.</p>
+
+        <p class="dialogue">"We all need to get warm and dry on a night like this," said David as he passed a plate of muffins to Bertie "and this is an extra special night."</p>
+
+        <p class="dialogue">"Thank you…" Bertie replied "I don’t think I would have done well just sheltering in the porch. The snow is really getting deep."</p>
+
+        <p>Soon David and Bertie were deep in conversation about different places they knew in the woods and the best routes through. Max and Philip, the squirrel brothers, started joining in because they knew different routes as they were always high up in the trees.</p>
+
+        <p>Mr Brock went through into the kitchen where his wife was busy making an apple pie for later.</p>
+
+        <p class="dialogue">"There will be a lot of worried Mums in the forest tonight," he said.</p>
+
+        <p>Mrs Brock turned and smiled at him kindly. "You really are an old softie aren’t you?"</p>
+
+        <p class="dialogue">"Well… imagine how we would have felt when our lads were little."</p>
+
+        <p class="dialogue">"Alright, but you make sure you wrap up nice and warm. Wear your hat and I’ll make you some hot chocolate when you get home. And be careful. No heroics."</p>
+
+        <p>Mr Brock stood by the front door putting on his big coat, his scarf and his black and white beret.</p>
+
+        <p class="dialogue">"Why are you going out?" said a voice behind him. He turned and saw Bertie watching him. The young fox looked concerned.</p>
+
+        <p class="dialogue">"I’m just popping out to tell your mothers that you’re safe and warm and you’ll all be home in the morning or when the storm clears."</p>
+
+        <p class="dialogue">"But isn’t that dangerous?" Bertie persisted.</p>
+
+        <p class="dialogue">"I will be fine. I’m a lot more used to this type of weather than you young ones."</p>
+
+        <p class="dialogue">"I should come with you," Bertie started towards the front door.</p>
+
+        <p class="dialogue">"No, no…" Mr Brock smiled at him "I need to you to make sure those rabbits don’t drink all the hot chocolate so I can have some when I get back. Don’t worry, I will be back before you know it."</p>
+
+        <p>With a little wave Mr Brock stepped out and closed the door quickly behind him. Bertie sat on the rug, watching the back of the door as if willing Mr Brock a safe return.</p>
+
+        <p>The air was silent outside and Mr Brock took a moment to sniff deeply in all directions. He knew these woods intimately. He knew every tree, every clearing. He knew where the wild daffodils grew in Spring and where the bluebells turned the woodland floor into a blue carpeted heaven, warmed by the late spring sunshine, dappled by the bigger trees.</p>
+
+        <p>He worked out a route in his mind trying to minimise his journey but making sure he could reach each of the homes of his temporary family.</p>
+
+        <p class="dialogue">"Hmmm…" he said out loud to nobody "it’s close to the road. I’ll need to be especially careful tonight."</p>
+
+        <p>All the animals in the forest knew of the road. It was feared and usually avoided. Cars drove too fast and had no regard for those living alongside in the forest.</p>
+
+        <p>As he set off Mr Brock knew the snow was getting worse. <em>I should have left earlier</em> he thought.</p>
+
+        <p>Trudging through the deep drifts with a blizzard of fresh snow still falling Mr Brock made steady, but slow, progress. His first port of call was at the squirrel brothers house and he could see their mother with her head poking out of a window scanning the tree tops looking for their return.</p>
+
+        <p>He called out and told her they were safe and well but he thought it was safer if they returned after the storm. She was so grateful for the news and would have invited Mr Brock into their home to warm up but the badger was much too big for their warm and cosy nest.</p>
+
+        <p>By coincidence Mrs Mouse lived in the base of the very next tree so Mr Brock was able to deliver the news to her very quickly. Her son Terry was tucked up safely and would be back in the morning or when the storm passed.</p>
+
+        <p>Mrs Mouse offered to give the badger some food to cover her son’s overnight stay but Mr Brock assured her they had plenty of food stored up and even a gang of young ones would get through it all.</p>
+
+        <p><em>Come along Brock</em> thought Mr Brock <em>the sooner you get done, the sooner you can put your feet up in front on the fire and enjoy your hot chocolate.</em> He smiled to himself because he knew that hot chocolate was his greatest pleasure. <em>As I’m sure it is for everyone</em> he told himself.</p>
+
+        <p>The rabbit family were next and again, he found Mr Rabbit standing on the threshold of their burrow looking out into the night. As Mr Brock started telling him what was happening Mrs Rabbit appeared too and was very grateful. They offered a hot drink and a warm by their fire but Mr Brock knew it would not do for him to get too comfortable.</p>
+
+        <p>Lily’s family lived nearby so that was an easy trip.</p>
+
+        <p>Just the Fox family left but Mr Brock paused for a moment. He must have unconsciously left it till last. He knew he had nothing to fear from the Foxes. Mr Brock was old and tough, he’s seen many a winter and seen off many a fox. If anything the Foxes were more wary of Mr Brock.</p>
+
+        <p>No, what gave Mr Brock a pause for thought was the road. The Fox family lived the other side of the road and Mr Brock would need to cross it twice if he was to get home safely. Undeterred he set off to a place where he knew the road was safer to cross.</p>
+
+        <p>As he got to the road Mr Brock took a moment to look around himself. He knew cars would have bright lights and, even on this murky, horrible night he would be able to see them in the distance. He looked both ways, back and forth, checking and double checking. He listened, because sometimes you could hear cars and motorbikes a long way off before you could even see them.</p>
+
+        <p>He sniffed the air. There was something on the air that he couldn’t place. Not really a forest scent but not a danger. Sometimes humans dropped rubbish from their cars, leaving an alien scent that didn’t belong. Food wrapped in plastic, cigarette ends, plastic bottles. <em>These humans really don’t deserve the forest</em> he told himself.</p>
+
+        <p>He decided to ignore the unaccustomed scent and double checked the road again before crossing safely. <em>Always check and check again</em> he thought.</p>
+
+        <p>The Fox family lived in a small clearing about two hundred yards from the road. The snow was deeper there and it was slow going for Mr Brock. As he trudged along he heard a voice from the side of the path.</p>
+
+        <p class="dialogue">"What do you want Mr Brock?". It was Mr Fox and he sounded somewhere between suspicious and worried.</p>
+
+        <p>Brock stopped and turned towards the hidden fox. "Your son Bertie got lost in the storm and ended up at my house. He’s quite safe till it passes but I knew you’d be worried about him."</p>
+
+        <p class="dialogue">"We have been," Mr Fox replied "but why would you take him in?"</p>
+
+        <p class="dialogue">"Don’t sound so suspicious Mr Fox. Look at this weather. Are you seriously telling me that, if my son turned up on your doorstep on this awful night, you would take him in?"</p>
+
+        <p class="dialogue">"And anyway…" the badger smiled as he continued "we have a house full tonight. Rabbits, squirrels, a deer and a mouse."</p>
+
+        <p class="dialogue">"and they have all accepted Bertie?" Mr Fox sounded amazed.</p>
+
+        <p class="dialogue">"Last I saw he was deep in conversation with a young rabbit next to a roaring fire. On nights like these we all need to help each other."</p>
+
+        <p class="dialogue">"Thank you Mr Brock. You really are a wise old badger."</p>
+
+        <p class="dialogue">"Old?" said Mr Brock with mock indignation "I’ll have you know I’m in the prime of life!"</p>
+
+        <p>Mr Fox invited Mr Brock into their home. It was warm and cosy and the badger could feel his toes unfreezing. He had just decided he’d better not stay, in case he got too comfortable when Mrs Fox appeared carrying a warm blackberry pie with a big jug of creamy custard.</p>
+
+        <p><em>Well, maybe one slice</em> he thought <em>just to warm me up.</em></p>
+
+        <p>Before too long, after two slices of pie and a cup of hot tea, Mr Brock put on his outdoor coat and beret and set off home. The whole Fox family came to the door to wave him off.</p>
+
+        <p>As he made his way back to the road Mr Brock thought how much he loved the forest and all the woodland creatures. Yes, they had their disagreements but they also looked out for each other.</p>
+
+        <p>Back at the road, Mr Brock did his previous routine of watching for lights, listening and sniffing the air. There it was again, that scent that wasn’t really from the forest but wasn’t human either.</p>
+
+        <p>Once he was satisfied it was safe, he crossed quickly. It didn’t do to dawdle on the road. The scent was stronger the other side. Something buried in the badgers brain suddenly rushed to the front. It was a dog!</p>
+
+        <p>Mr Brock was on high alert. He knew humans sometimes trained dogs to hunt and kill badgers so he was extremely cautious. But… this didn’t seem like a strong dog smell, maybe not a full grown dog.</p>
+
+        <p>Brock moved slowly along the side of the road, sniffing and listening intently. Then he actually heard the sound of shivering. <em>That doesn’t sound good</em> he thought.</p>
+
+        <p>He snuffled into a snow drift that had formed under a road sign and, buried out of sight, he found a small dog. Not a puppy he thought but definitely not an adult, maybe a few months old he decided. Mr Brock had seen lots of dogs being walked by humans in the woods so he knew that this was what the humans called a Labrador. It’s pale blond fur was caked in snow and it’s eyes were closed.</p>
+
+        <p class="dialogue">"Hello…" he said gently "Are you awake?"</p>
+
+        <p>The dog’s eyes shot open in fear as the large badger stood over him.</p>
+
+        <p class="dialogue">"Don’t worry," Mr Brock said in a calm soothing voice "what’s your name?"</p>
+
+        <p>The dog started to move gently and replied politely "My name is Charlie, pleased to meet you sir."</p>
+
+        <p>Mr Brock smiled at the young lad’s manners. Obviously a well brought up chap.</p>
+
+        <p class="dialogue">"Now Charlie, we can’t have you right next to the road because it’s dangerous. So, follow me, there’s a small clear space about 30 feet away and I can have a good look at you."</p>
+
+        <p>He used his powerful claws to dig Charlie out of the snow drift and guided him away from the road. Just a few feet away, the path opened out slightly and Mr Brock took in the full picture. Charlie looked in a bad way but not life threatening. He took off his scarf and wrapped it around Charlie’s neck. Then he took off his thick winter coat and put it over the dog and buttoned in under him.</p>
+
+        <p>He took a half step back and looked at the bedraggled dog. The coat was much too big for Charlie and dragged on the ground. A thought occurred to him and he reached into the coat pocket and pulled out a belt, which he secured around Charlie’s middle to pull the coat up tight.</p>
+
+        <p class="dialogue">"Perfect," he told Charlie and then he took off his prized beret and put it on Charlie’s head, covering his ears and almost his eyes too.</p>
+
+        <p class="dialogue">"That should warm you up a little bit lad. We need to walk for about 15 minutes I’m afraid but when we get there, you’ll have some lovely apple pie and custard and there’s a roaring log fire. Can you do that?"</p>
+
+        <p class="dialogue">"I think so…" Charlie nervously replied, at least he had stopped shivering so much, "but the snow is very deep."</p>
+
+        <p class="dialogue">"I’ll carve a way through and you stay right in my footsteps. If you fall behind, just shout and I’ll come back and get you."</p>
+
+        <p>They set off into the woods. Mr Brock knew it was only a ten minute walk for him but he allowed some extra time. It turned out Charlie was a determined little dog, very tired but determined. He kept up with the badger the whole way and Mr Brock was pleased to see him every time he looked back to check.</p>
+
+        <p>They arrived at "The Sett" shortly and Brock took a moment to look all around and sniff the air. <em>It’s getting worse</em> he thought <em>but it’ll blow over in the morning.</em></p>
+
+        <p class="dialogue">"Before we go inside Charlie I have to tell you that there are a lot of young chaps in there sheltering from the storm. It’s important everyone gets on well together and there is no squabbling."</p>
+
+        <p class="dialogue">"I’m too tired for squabbling… and too grateful you found me."</p>
+
+        <p class="dialogue">"Come on," said Mr Brock "let’s get you inside."</p>
+
+        <p>Mrs Brock came along the hallway just as her husband was taking his coat and scarf off Charlie.</p>
+
+        <p class="dialogue">"Oh my word," she exclaimed "another refugee and you have been outside with your coat on. Come inside quickly and get by the fire."</p>
+
+        <p>All the young animals made way for the new arrivals so they could get close to the fire on the comfy armchairs. Bertie the fox put another log carefully onto the fire and it was soon blazing.</p>
+
+        <p>All the animals stared unashamedly at Charlie. They all knew dogs of course but they had never been this close up to one before.</p>
+
+        <p class="dialogue">"Why are you out in the woods? Don’t dogs live in houses with humans?" David the rabbit asked. His sister Daisy poked him in the ribs for asking a rude question but Charlie didn’t mind.</p>
+
+        <p class="dialogue">"I’m not sure to be honest. I was a Christmas present for a little girl and at first I really missed my Mum, but the little girl played with me lots and we had fun. But after a few weeks the little girl didn’t want to play as much and didn’t like taking me for walks any more. Her Mum and Dad kept telling her off for not cleaning up any mess and not taking me into the garden and that made her even worse. It was like she was just bored of me."</p>
+
+        <p>All the other animals listened intently. They didn’t really know how human families worked but this didn’t sound like their own family lives.</p>
+
+        <p class="dialogue">"And then, this evening, there was a lot of shouting. A really big argument and the man took me out in his car. He stopped in the woods and opened the door. I thought he was taking me for a walk so I got out and then he drove off and left me by the side of the road."</p>
+
+        <p>There was a gasp from the others because everyone knew the road was dangerous.</p>
+
+        <p class="dialogue">"I waited for him to come back but… he didn’t. A few cars went past and they were so fast and so close. A big lorry almost hit me so I moved closer to the big sign. I was too scared of the forest on my own but I was really scared of the road as well."</p>
+
+        <p>Bertie got up and squeezed into the armchair next to Charlie.</p>
+
+        <p class="dialogue">"And now you’re safe, with friends," he said quietly and everyone else nodded.</p>
+
+        <p class="dialogue">"Safe, and with apple pie," announced Mrs Brock as she entered the room. She looked across at Mr Brock and he was ‘resting his eyes’. Bless him she thought he’s a lovely old sweetheart.</p>
+
+        <p>With apple pie and custard dished up to everyone, Charlie joined Mr Brock in a short nap to recover, but in truth he was worried about his future. Had he been abandoned by that family? He could have been killed on the road… and then it dawned on him. He had been abandoned. He was left outside on a freezing night and either the fast cars or the weather might have been the end of him, if it wasn’t for the heroic Mr Brock.</p>
+
+        <p>Everyone gradually dozed off. Mrs Brock came in to clear plates and discovered that David the rabbit had squeezed between Charlie and Bertie with his head resting on Bertie’s lap. The squirrel brothers were each asleep on the arms of Mr Brock’s armchair and Lily the deer was tucked under the badger’s legs.</p>
+
+        <p>She couldn’t see Terry the mouse at first but then she spied him wrapped in Charlie’s tail.</p>
+
+        <p>They were all fast asleep.</p>
+
+        <p><em>"Well it’s been a long evening"</em> she thought but she didn’t want them to sleep too long or they would sleep well tonight. <em>"I’ll give them an hour and see if I can interest anyone in a midnight feast"</em> she said out loud.</p>
+
+        <p class="dialogue">"Yes please," said Peter sleepily. He was curled up on the rug in front of the fire with his sister Daisy.</p>
+
+        <p>Later, as Mrs Brock brought in mugs of warm milk and slices of fruit cake for everyone, they all stretched and woke up. Mrs Brock told them it was a naughty treat because, although it was quite late in the evening, she wanted everyone to sleep well at night.</p>
+
+        <p>While they were eating, Max and Philip had some advice for Bertie.</p>
+
+        <p class="dialogue">"You know you should visit the houses on the edge of the wood don’t you?" Max told him.</p>
+
+        <p class="dialogue">"Why would I go there? There are humans and they don’t like foxes."</p>
+
+        <p class="dialogue">"No, that’s where you’re going wrong Bertie," Philip replied for his brother "the farmer doesn’t like you because you steal his chickens to eat them. The people in the houses have so much food they throw lots away."</p>
+
+        <p class="dialogue">"And in their gardens they leave nuts and seeds on a big platform for us and the birds," Max joined back in.</p>
+
+        <p class="dialogue">"We’ve been there too," chimed in Peter, the rabbit "they grow the most delicious lettuce but we have to be fair and not take too much."</p>
+
+        <p class="dialogue">"I don’t really eat nuts and lettuce though," said Bertie.</p>
+
+        <p class="dialogue">"That’s the beauty of the houses," Max said "they have something called a dustbin and it is full of food. There’s cooked chicken and beef, spaghetti and…."</p>
+
+        <p class="dialogue">"What’s spaghetti?" asked Bertie.</p>
+
+        <p class="dialogue">"I have no idea," laughed Max "but it seems very popular with humans."</p>
+
+        <p class="dialogue">"The best thing is that those houses are down a little lane, a very long way from the busy road," David was keen to show he was just as knowledgeable.</p>
+
+        <p class="dialogue">"and of course, if you had lots of food from the houses, you wouldn’t need to hunt… other woodland folk and we could all be friends."</p>
+
+        <p>There were lots of nods around the fireside but then Charlie spoke up.</p>
+
+        <p class="dialogue">"I think I’ll need those dustbins too because I’ve been abandoned by my family."</p>
+
+        <p class="dialogue">"Haha, we have a plan for you too!" Max and Philip spoke almost together.</p>
+
+        <p class="dialogue">"From up in the trees we have a great view of the woods," Philip said.</p>
+
+        <p class="dialogue">"and every day we used to see a young boy walking his dog, rain or shine," Max took over.</p>
+
+        <p class="dialogue">"the dog was a very old gentleman but the boy really loved him, you could tell," Philip and Max were now ping-ponging between themselves to tell the tale.</p>
+
+        <p class="dialogue">"but now, the boy only walks with his Mum on Saturday and Sunday, so we think his old dog has died."</p>
+
+        <p class="dialogue">"But imagine if they were walking through the woods and a dog just happened to be waiting out on the path for them."</p>
+
+        <p>All the animals were sitting up now, listening carefully to the plan to find Charlie a new home.</p>
+
+        <p class="dialogue">"They would fall in love with you Charlie, you would fall in love with them and you’d get a new home!"</p>
+
+        <p class="dialogue">"But what if they don’t want me?" Charlie asked sadly.</p>
+
+        <p class="dialogue">"Stuff and nonsense," said Lily "how could they not love you?"</p>
+
+        <p class="dialogue">"Absolutely," Max responded "and you know what day it is tomorrow don’t you?"</p>
+
+        <p class="dialogue">"But…"</p>
+
+        <p class="dialogue">"No buts Charlie. Trust us, they will love you."</p>
+
+        <p class="dialogue">"and on that note," Mr Brock said smiling "we all need to get some sleep ready for the big day."</p>
+
+        <p>Everybody got up and took their plates and cups into the kitchen but Mrs Brock bustled everyone back out refusing all offers of help. Mr Brock added some logs to the fire so it wouldn’t go out overnight and gave blankets and pillows to everyone who needed them.</p>
+
+        <p>After washing up Mrs Brock went back into the sitting room and could tell that everyone was already asleep. Bertie the fox was on his side curled up and David the rabbit was next to him resting his head on Bertie’s tummy.</p>
+
+        <p class="dialogue">"The world can be a nice place," she whispered to herself. She went into their bedroom and got into bed next to her husband. She kissed him on the nose while he quietly snored. It had been quite a day for Mr Brock too she thought. Let’s hope tomorrow will be a success.</p>
+
+        <p>The next morning everyone slept a little late, including Mr Brock. There were big bowls of porridge for everyone. It would help fend off the cold although the deep snow was already melting.</p>
+
+        <p>Lily, perhaps the stealthiest woodland animal, went along the path to where the squirrels had said the humans would walk. She kept silent watch. All the other animals took up positions hidden in the undergrowth. Charlie sat in the middle of the path looking, and feeling quite sad.</p>
+
+        <p>Suddenly Lily appeared from nowhere. "They’re coming," she whispered.</p>
+
+        <p>Charlie looked around and saw a woman and her young son walking towards him. He was older than the girl from his last house and he was chatting happily to his mother. Charlie didn’t know whether to face them or face away. Should he stand? Or sit? Or lie down?</p>
+
+        <p>He was so nervous, he decided to sit.</p>
+
+        <p>The boy stopped dead in his tracks while his mother continued walking and talking. She stopped too and faced him. "Are you OK?" she asked him but her son just pointed.</p>
+
+        <p>They both looked at Charlie. Charlie looked back at them both. Charlie knew instantly that these were kind people.</p>
+
+        <p class="dialogue">"Do you think he’s lost?" the boy asked his Mum.</p>
+
+        <p class="dialogue">"He looks a bit bedraggled Alex. Maybe he’s been out all night."</p>
+
+        <p class="dialogue">"Maybe he’s been abandoned," said Alex, already hoping he had.</p>
+
+        <p><em>Yes, I have been</em> thought Charlie and he let out a small affirmative woof.</p>
+
+        <p>The boy, Alex, knelt down next to Charlie and put out a hand, palm down, fingers slightly bent. It was just close enough to be a welcoming gesture but not a threat. Charlie understood and nuzzled the hand and then gently licked it.</p>
+
+        <p>Both Charlie and Alex melted towards each other and the boy put his arm around Charlie’s neck and hugged him tight.</p>
+
+        <p class="dialogue">"Mum?" Alex started.</p>
+
+        <p class="dialogue">"I know what you’re thinking Alex but don’t get your hopes up too much. The chances are he’s just someone’s lost pet."</p>
+
+        <p class="dialogue">"I know but can we take him home and see what happens?"</p>
+
+        <p>The woman looked at her son and the dog. They already looked devoted to each other. Bonded like Super-Glue in less than a minute.</p>
+
+        <p class="dialogue">"There could be someone looking for him in the woods right now Alex. Or he could be chipped."</p>
+
+        <p><em>I’m not chipped</em> Charlie shouted in his mind <em>they were always too busy to organise it.</em></p>
+
+        <p class="dialogue">"OK but, if we walk him the rest of the way home we can see if there is anyone looking for him. Then we can take him to the vet to get his checked over and to see if he’s got a microchip… and then."</p>
+
+        <p class="dialogue">"And then…" his Mum replied "we’ll need to put up posters on lampposts and on trees in the woods, just in case he belongs to someone who misses him."</p>
+
+        <p class="dialogue">"And then…" Alex was beaming like a lighthouse.</p>
+
+        <p class="dialogue">"And then… we’ll see."</p>
+
+        <p>Like most kids, Alex knew ‘we’ll see’ usually meant yes. He reached deep into his overcoat pocket and pulled out a collar and lead.</p>
+
+        <p class="dialogue">"This belonged to my friend Bruno. He died sadly, but he had a lovely life with us. I hope you will too."</p>
+
+        <p><em>You don’t need a lead</em> thought Charlie <em>I would follow you anywhere.</em></p>
+
+        <p>As the three of them walked off Alex asked his Mum "What do you think his name is?"</p>
+
+        <p class="dialogue">"I don’t know. What do you think he looks like?" she replied.</p>
+
+        <p class="dialogue">"Billy? Woody? I don’t know."</p>
+
+        <p>Charlie shouted <em>Charlie</em> in his mind and at that moment there was a loud noise from the woods. A mixture of barking, squeaking and chittering as all the animals shouted Charlie out loud.</p>
+
+        <p>Alex stopped and looked around him but there was nobody to see. He looked down carefully at the dog.</p>
+
+        <p class="dialogue">"Charlie," he said to his Mum. "He looks just like a Charlie."</p>
+
+        <p>Several weeks went past. The vet confirmed Charlie was in good health but didn’t have any identifying microchip. Nobody responded to lost dog posters all through the woods. Maybe the first family saw them but were too ashamed to reply.</p>
+
+        <p>Charlie had his final jabs and the vet told Alex that he thought they had done everything possible to locate Charlie’s original owners. He told Alex that he had microchipped Charlie and registered him as Charlie’s owner. Alex wasn’t ashamed to cry a little as he hugged Charlie.</p>
+
+        <p>For his part Charlie wasn’t idle. It turned out that Alex lived in one of the big houses down the lane and backing on to the woods. Alex’s parents thought it was adorable that Charlie could open a kitchen cupboard and carry a bag of squirrel food into the garden before leaving it at the post of the feed table. In a quiet part of the garden, behind some shrubs, he had dug a hole under the fence allowing access for rabbits to enjoy the vegetable garden.</p>
+
+        <p>All the family was entranced when, just as the sun was going down, Lily appeared in their garden. She quietly munched on some grass and some lettuce before disappearing back into the shrubbery.</p>
+
+        <p>It was a magical moment.</p>
+
+        <p>Charlie was also known to discreetly push over a dustbin at night just before bedtime. He’s never been told, but he felt his family expected him to chase off any fox visitors, so Bertie would wait in the bushes until Charlie came out and they would sit together passing the time of day and discussing news from the woods.</p>
+
+        <p>Charlie and Alex would walk in the woods twice a day, before and after school. Alex was used to Charlie disappearing for a few minutes. He made up a story of Charlie the fearless hunter, stalking the wildlife in the forest.</p>
+
+        <p>In fact, Charlie popped in to see Mr & Mrs Brock for a quick cup of tea and a slice of cake. Charlie was eternally grateful to them for saving him that night and paving the way for his really happy life.</p>
+
+        <p>Sometimes Alex would notice cake crumbs on Charlie’s mouth but he always assumed his friend had mugged some poor picnickers.</p>
+
+        <p>Charlie followed Alex everywhere, he even slept on Alex’s bed. Every day, at precisely the time Alex was leaving school to come home, Charlie would shake himself and go and lie by the front door.</p>
+
+        <p>They were firm friends and both of them were very pleased about that.</p>
+
+        <p style="text-align: center; font-weight: bold; margin-top: 50px;">The End</p>
+
+    </div>
+
+</body>
+</html>
