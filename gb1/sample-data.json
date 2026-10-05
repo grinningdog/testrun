@@ -1,0 +1,455 @@
+{
+  "meta": {
+    "title": "The Griffin Universe Bible",
+    "version": "1.0",
+    "updatedAt": "2026-10-05T00:00:00.000Z"
+  },
+  "characters": [
+    {
+      "id": "char-robby-dorset",
+      "name": "Robby Dorset",
+      "nickname": "Robby",
+      "birthYear": "1941",
+      "deathYear": "",
+      "status": "alive",
+      "description": "Charming, irresistible and worldly young aristocrat from the Dorset family.",
+      "personalityTraits": [
+        "irresistible",
+        "charming",
+        "clever",
+        "adventurous"
+      ],
+      "physicalDescription": "Elegant, charismatic and effortlessly stylish.",
+      "occupation": "Aristocrat / future investigator",
+      "firstAppearance": "The Portofino Papers",
+      "notes": "Origin-story character for a possible Swinging Sixties strand.",
+      "arc": "Young Robby's early adventures and his first meeting with Elspeth Potter.",
+      "coreFear": "Losing the people he loves and the freedom he treasures.",
+      "coreDesire": "Adventure, independence and meaningful relationships.",
+      "relationships": [
+        "rel-robby-elspeth"
+      ],
+      "families": [
+        "Dorset"
+      ],
+      "locations": [
+        "Robby's Apartment"
+      ],
+      "tags": [
+        "Dorset",
+        "1960s",
+        "origin-story",
+        "future-idea"
+      ]
+    },
+    {
+      "id": "char-elspeth-potter",
+      "name": "Elspeth Potter",
+      "nickname": "",
+      "birthYear": "",
+      "deathYear": "",
+      "status": "deceased",
+      "description": "A formidable and influential literary woman who becomes important to Robby and the Griffin family story.",
+      "personalityTraits": [
+        "formidable",
+        "intelligent",
+        "creative"
+      ],
+      "physicalDescription": "",
+      "occupation": "Author / literary figure",
+      "firstAppearance": "The Portofino Papers",
+      "notes": "Adam's famous grandmother; the literary estate later managed by Adam is central to the series.",
+      "arc": "Her legacy shapes Adam's life and the mysteries surrounding the literary estate.",
+      "coreFear": "",
+      "coreDesire": "",
+      "relationships": [
+        "rel-robby-elspeth"
+      ],
+      "families": [
+        "Potter",
+        "Griffin"
+      ],
+      "locations": [],
+      "tags": [
+        "Potter",
+        "Griffin",
+        "literary-estate"
+      ]
+    },
+    {
+      "id": "char-adam-griffin",
+      "name": "Adam Griffin",
+      "nickname": "",
+      "birthYear": "",
+      "deathYear": "",
+      "status": "alive",
+      "description": "A wealthy young man who manages his famous grandmother's literary estate and becomes one half of the central partnership.",
+      "personalityTraits": [
+        "loyal",
+        "cultured",
+        "observant",
+        "determined"
+      ],
+      "physicalDescription": "",
+      "occupation": "Literary estate manager",
+      "firstAppearance": "Blood Relatives",
+      "notes": "One of the principal protagonists of The Inspector Griffin Mysteries.",
+      "arc": "Learning how much of his family's history is hidden beneath the respectable surface.",
+      "coreFear": "Failing the people who depend on him.",
+      "coreDesire": "Protecting Finn and preserving the family legacy on his own terms.",
+      "relationships": [
+        "rel-adam-finn"
+      ],
+      "families": [
+        "Griffin"
+      ],
+      "locations": [
+        "Covent Garden Apartment"
+      ],
+      "tags": [
+        "protagonist",
+        "Griffin",
+        "estate"
+      ]
+    },
+    {
+      "id": "char-finn-williams",
+      "name": "Finn Williams",
+      "nickname": "",
+      "birthYear": "",
+      "deathYear": "",
+      "status": "alive",
+      "description": "Adam's partner and a world-class white-hat hacker with a former MI5 background.",
+      "personalityTraits": [
+        "brilliant",
+        "witty",
+        "protective",
+        "resourceful"
+      ],
+      "physicalDescription": "",
+      "occupation": "White-hat hacker / former MI5",
+      "firstAppearance": "Blood Relatives",
+      "notes": "The other principal protagonist of The Inspector Griffin Mysteries.",
+      "arc": "Balancing his extraordinary technical abilities and past with a quieter life alongside Adam.",
+      "coreFear": "Being unable to protect Adam when it matters.",
+      "coreDesire": "A secure life with Adam without surrendering who he is.",
+      "relationships": [
+        "rel-adam-finn"
+      ],
+      "families": [],
+      "locations": [
+        "Covent Garden Apartment"
+      ],
+      "tags": [
+        "protagonist",
+        "hacker",
+        "former-MI5"
+      ]
+    }
+  ],
+  "books": [
+    {
+      "id": "book-blood-relatives",
+      "title": "Blood Relatives",
+      "chronologyOrder": "1",
+      "publicationOrder": "1",
+      "summary": "The first Inspector Griffin mystery, introducing Adam Griffin and Finn Williams.",
+      "themes": [
+        "family",
+        "inheritance",
+        "secrets"
+      ],
+      "characters": [
+        "char-adam-griffin",
+        "char-finn-williams"
+      ],
+      "timelineEvents": [
+        "event-blood-relatives"
+      ],
+      "locations": [
+        "Covent Garden Apartment"
+      ],
+      "notes": "Book 1 of The Inspector Griffin Mysteries."
+    },
+    {
+      "id": "book-crypto-mystery-weekend",
+      "title": "The Crypto Mystery Weekend",
+      "chronologyOrder": "2",
+      "publicationOrder": "2",
+      "summary": "A country-house mystery involving a flash drive containing access to a cryptocurrency fortune.",
+      "themes": [
+        "cryptocurrency",
+        "country-house-mystery",
+        "technology"
+      ],
+      "characters": [
+        "char-adam-griffin",
+        "char-finn-williams"
+      ],
+      "timelineEvents": [],
+      "locations": [
+        "Blackwater Hall"
+      ],
+      "notes": "Previously referred to by an earlier working title; canonical title is The Crypto Mystery Weekend."
+    }
+  ],
+  "timeline": [
+    {
+      "id": "event-robby-born",
+      "year": "1941",
+      "title": "Robby Dorset born",
+      "description": "Robby Dorset is born.",
+      "characters": [
+        "char-robby-dorset"
+      ],
+      "families": [
+        "Dorset"
+      ],
+      "book": "",
+      "location": "",
+      "tags": [
+        "birth",
+        "Dorset"
+      ]
+    },
+    {
+      "id": "event-grandfather-war",
+      "year": "1945",
+      "title": "Griffin grandfather returns from war",
+      "description": "The Griffin grandfather returns from the Second World War.",
+      "characters": [],
+      "families": [
+        "Griffin"
+      ],
+      "book": "",
+      "location": "",
+      "tags": [
+        "war",
+        "Griffin"
+      ]
+    },
+    {
+      "id": "event-adam-father-born",
+      "year": "1957",
+      "title": "Adam's father born",
+      "description": "Adam Griffin's father is born.",
+      "characters": [],
+      "families": [
+        "Griffin"
+      ],
+      "book": "",
+      "location": "",
+      "tags": [
+        "birth",
+        "Griffin"
+      ]
+    },
+    {
+      "id": "event-robby-elspeth",
+      "year": "1963",
+      "title": "Robby meets Elspeth Potter",
+      "description": "Robby meets Elspeth Potter during the Swinging Sixties.",
+      "characters": [
+        "char-robby-dorset",
+        "char-elspeth-potter"
+      ],
+      "families": [
+        "Dorset",
+        "Potter",
+        "Griffin"
+      ],
+      "book": "book-portofino-papers",
+      "location": "",
+      "tags": [
+        "1960s",
+        "meeting",
+        "origin-story"
+      ]
+    },
+    {
+      "id": "event-blood-relatives",
+      "year": "",
+      "title": "Blood Relatives begins",
+      "description": "The opening novel of The Inspector Griffin Mysteries introduces Adam and Finn.",
+      "characters": [
+        "char-adam-griffin",
+        "char-finn-williams"
+      ],
+      "families": [
+        "Griffin"
+      ],
+      "book": "book-blood-relatives",
+      "location": "Covent Garden Apartment",
+      "tags": [
+        "book-1"
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "id": "loc-maltese-tonys-cafe",
+      "name": "Maltese Tony's Cafe",
+      "type": "cafe",
+      "description": "A recurring London meeting place.",
+      "associatedCharacters": [],
+      "firstAppearance": "",
+      "notes": ""
+    },
+    {
+      "id": "loc-covent-garden-apartment",
+      "name": "Covent Garden Apartment",
+      "type": "home",
+      "description": "Adam and Finn's London base.",
+      "associatedCharacters": [
+        "char-adam-griffin",
+        "char-finn-williams"
+      ],
+      "firstAppearance": "Blood Relatives",
+      "notes": ""
+    },
+    {
+      "id": "loc-robbys-apartment",
+      "name": "Robby's Apartment",
+      "type": "home",
+      "description": "Robby's apartment during his younger years.",
+      "associatedCharacters": [
+        "char-robby-dorset"
+      ],
+      "firstAppearance": "The Portofino Papers",
+      "notes": ""
+    },
+    {
+      "id": "loc-blackwater-hall",
+      "name": "Blackwater Hall",
+      "type": "country house",
+      "description": "A grand country-house hotel setting associated with The Crypto Mystery Weekend.",
+      "associatedCharacters": [
+        "char-adam-griffin",
+        "char-finn-williams"
+      ],
+      "firstAppearance": "The Crypto Mystery Weekend",
+      "notes": "Inspired by the grand country-house-hotel tradition."
+    }
+  ],
+  "families": [
+    {
+      "id": "family-griffin",
+      "name": "Griffin Family",
+      "description": "Adam Griffin's family line.",
+      "members": [
+        {
+          "characterId": "char-adam-griffin",
+          "parentId": "",
+          "spouseId": ""
+        }
+      ],
+      "notes": "Expand as genealogy develops."
+    },
+    {
+      "id": "family-dorset",
+      "name": "Dorset Family",
+      "description": "Robby Dorset's aristocratic family.",
+      "members": [
+        {
+          "characterId": "char-robby-dorset",
+          "parentId": "",
+          "spouseId": ""
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "id": "family-potter",
+      "name": "Potter Family",
+      "description": "Elspeth Potter's family line and literary legacy.",
+      "members": [
+        {
+          "characterId": "char-elspeth-potter",
+          "parentId": "",
+          "spouseId": ""
+        }
+      ],
+      "notes": ""
+    }
+  ],
+  "organisations": [],
+  "relationships": [
+    {
+      "id": "rel-adam-finn",
+      "characterA": "char-adam-griffin",
+      "characterB": "char-finn-williams",
+      "type": "Committed relationship",
+      "startYear": "",
+      "endYear": "",
+      "notes": "Central romantic partnership of the series."
+    },
+    {
+      "id": "rel-robby-elspeth",
+      "characterA": "char-robby-dorset",
+      "characterB": "char-elspeth-potter",
+      "type": "Mentor / friendship",
+      "startYear": "1963",
+      "endYear": "",
+      "notes": "Robby meets Elspeth in 1963."
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme-family",
+      "name": "Family",
+      "description": "Family history, inheritance and hidden loyalties.",
+      "books": [
+        "book-blood-relatives"
+      ]
+    },
+    {
+      "id": "theme-secrets",
+      "name": "Secrets",
+      "description": "Information hidden between generations and partners.",
+      "books": []
+    }
+  ],
+  "mysteries": [
+    {
+      "id": "mystery-blood-relatives",
+      "name": "Blood Relatives",
+      "book": "Blood Relatives",
+      "victim": "",
+      "culprit": "",
+      "motive": "",
+      "clues": [],
+      "resolution": "",
+      "notes": "Populate as the manuscript develops."
+    }
+  ],
+  "secrets": [
+    {
+      "id": "secret-finn-device",
+      "secret": "Finn triggered a terrorist device remotely",
+      "knownBy": [
+        "char-finn-williams"
+      ],
+      "revealedTo": [
+        "char-adam-griffin"
+      ],
+      "book": "",
+      "notes": "Example secret entry."
+    }
+  ],
+  "historicalEvents": [],
+  "futureIdeas": [
+    {
+      "id": "idea-young-robby",
+      "title": "Young Robby series",
+      "status": "possible",
+      "description": "A possible origin-story strand set in the Swinging Sixties.",
+      "notes": "1963. Meets Elspeth Potter. Swinging Sixties. Political scandal.",
+      "tags": [
+        "Robby",
+        "1960s",
+        "origin-story"
+      ]
+    }
+  ],
+  "scratchpad": "Private notes go here..."
+}
