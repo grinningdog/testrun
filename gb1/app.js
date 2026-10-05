@@ -38,7 +38,18 @@ function saveData(){
   catch(e){$("saveStatus").textContent="Storage unavailable";}
 }
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove("show"),2200)}
-function navigate(section){currentSection=section;location.hash=section;render()}
+function closeSidebar(){
+  const sidebar=$("sidebar");
+  const backdrop=$("sidebarBackdrop");
+  if(sidebar) sidebar.classList.remove("open");
+  if(backdrop) backdrop.classList.remove("show");
+}
+function navigate(section){
+  currentSection=section;
+  location.hash=section;
+  render();
+  closeSidebar();
+}
 function renderNav(){
   $("nav").innerHTML=navItems.map(([id,icon,label])=>`<button class="nav-item ${currentSection===id?"active":""}" data-nav="${id}"><span class="nav-icon">${icon}</span>${label}</button>`).join("");
   document.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>navigate(b.dataset.nav));
@@ -299,9 +310,12 @@ function printView(){
 }
 
 $("themeToggle").onclick=()=>{document.body.classList.toggle("light");localStorage.setItem("griffin-theme",document.body.classList.contains("light")?"light":"dark");$("themeToggle").innerHTML=document.body.classList.contains("light")?"☾ <span>Dark mode</span>":"☼ <span>Light mode</span>"}
-function closeSidebar(){$("sidebar").classList.remove("open")}
-function toggleSidebar(){$("sidebar").classList.toggle("open")}
-$("sidebarToggle").onclick=toggleSidebar;
+$("sidebarToggle").onclick=()=>{
+  const sidebar=$("sidebar");
+  const backdrop=$("sidebarBackdrop");
+  const isOpen=sidebar.classList.toggle("open");
+  if(backdrop) backdrop.classList.toggle("show",isOpen);
+};
 $("sidebarBackdrop").onclick=closeSidebar;
 $("backupButton").onclick=()=>exportJSON();
 $("importButton").onclick=()=>$("importFile").click();
@@ -311,8 +325,12 @@ $("printButton").onclick=printView;
 document.querySelectorAll("[data-close-modal]").forEach(x=>x.onclick=closeModal);
 $("modal").addEventListener("click",e=>{if(e.target.dataset.closeModal!==undefined)closeModal()});
 $("globalSearch").oninput=e=>{globalQuery=e.target.value; if(globalQuery.trim())renderSearchResults(searchAll(globalQuery));else render()}
-document.addEventListener("click",e=>{const nav=e.target.closest("[data-nav-section]");if(nav)closeSidebar()});
-document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("globalSearch").focus()}if(e.key==="Escape")closeModal()});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("globalSearch").focus()}if(e.key==="Escape"){closeModal();closeSidebar()}});
+// Mobile safety net: navigation buttons always close the drawer after their click has run.
+document.addEventListener("click",e=>{
+  const nav=e.target.closest("#nav [data-nav]");
+  if(nav) setTimeout(closeSidebar,0);
+},{capture:true});
 window.addEventListener("hashchange",()=>{currentSection=location.hash.slice(1)||"dashboard";render()});
 
 if(localStorage.getItem("griffin-theme")==="light"){$("themeToggle").click()}
