@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Griffin Universe Bible</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Griffin Universe</h2>
+        <button id="close-sidebar" class="icon-btn no-print">&times;</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" data-section="dashboard" class="nav-link active">Dashboard</a>
+        <a href="#" data-section="characters" class="nav-link">Characters</a>
+        <a href="#" data-section="books" class="nav-link">Books</a>
+        <a href="#" data-section="timeline" class="nav-link">Timeline</a>
+        <a href="#" data-section="locations" class="nav-link">Locations</a>
+        <a href="#" data-section="families" class="nav-link">Families</a>
+        <a href="#" data-section="organisations" class="nav-link">Organisations</a>
+        <a href="#" data-section="relationships" class="nav-link">Relationships</a>
+        <a href="#" data-section="themes" class="nav-link">Themes</a>
+        <a href="#" data-section="mysteries" class="nav-link">Mysteries</a>
+        <a href="#" data-section="secrets" class="nav-link">Secrets</a>
+        <a href="#" data-section="historicalEvents" class="nav-link">Historical Events</a>
+        <a href="#" data-section="futureIdeas" class="nav-link">Future Ideas</a>
+        <a href="#" data-section="scratchpad" class="nav-link">Scratchpad</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header id="topbar" class="topbar no-print">
+        <button id="toggle-sidebar" class="icon-btn">&#9776;</button>
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="Search universe (names, notes, ideas...)">
+          <button id="search-btn" class="btn-small">Search</button>
+        </div>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="btn-small">Toggle Theme</button>
+          <button id="import-btn" class="btn-small">Import JSON</button>
+          <input type="file" id="file-input" accept=".json" style="display: none;">
+          <button id="export-btn" class="btn-small">Export JSON</button>
+          <button id="report-btn" class="btn-small">HTML Report</button>
+          <button id="print-btn" class="btn-small">Print / PDF</button>
+        </div>
+      </header>
+
+      <!-- Dynamic Content -->
+      <main id="content" class="content">
+        <!-- Content injected by app.js -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal for Forms -->
+  <div id="modal" class="modal no-print">
+    <div class="modal-content">
+      <span id="close-modal" class="close-modal">&times;</span>
+      <h2 id="modal-title">Edit Entry</h2>
+      <form id="entity-form"></form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Saved!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
