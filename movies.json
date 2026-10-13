@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-13T17:28:58.430Z",
+  "exportedAt": "2026-10-13T19:00:19.897Z",
   "movies": [
     {
       "id": 969681,
@@ -6223,6 +6223,34 @@
       ],
       "userRating": null,
       "added": "2026-10-13T17:28:34.665Z"
+    },
+    {
+      "id": 316835,
+      "title": "A Taste for Murder",
+      "poster_path": "/iQMSIHR6hPN53h7TILztOZuYOcl.jpg",
+      "release_date": "2026-04-07",
+      "vote_average": 7.1,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-10-13T18:59:23.724Z"
+    },
+    {
+      "id": 1426,
+      "title": "Luther",
+      "poster_path": "/hDxOMX8zzH1FiqKWVBzNaYGBkle.jpg",
+      "release_date": "2010-05-04",
+      "vote_average": 7.858,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Mystery"
+      ],
+      "userRating": null,
+      "added": "2026-10-13T18:59:42.042Z"
     }
   ]
 }
