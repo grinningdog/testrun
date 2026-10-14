@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-13T19:00:19.897Z",
+  "exportedAt": "2026-10-14T16:11:39.680Z",
   "movies": [
     {
       "id": 969681,
@@ -4435,6 +4435,76 @@
       ],
       "userRating": null,
       "added": "2026-09-17T21:56:35.770Z"
+    },
+    {
+      "id": 1127384,
+      "title": "Deep Water",
+      "poster_path": "/ZWHxL2ETItcZzeVsVfs6gv3SZ7.jpg",
+      "release_date": "2026-04-30",
+      "vote_average": 7.4,
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-10-14T16:06:45.549Z"
+    },
+    {
+      "id": 619979,
+      "title": "Deep Water",
+      "poster_path": "/6yRMyWwjuhKg6IU66uiZIGhaSc8.jpg",
+      "release_date": "2022-03-17",
+      "vote_average": 5.838,
+      "genres": [
+        "Drama",
+        "Mystery",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-14T16:06:50.098Z"
+    },
+    {
+      "id": 8914,
+      "title": "Deep Blue Sea",
+      "poster_path": "/fyn0zyCI4kIlbDoHH0Hzv09hDC5.jpg",
+      "release_date": "1999-07-28",
+      "vote_average": 6,
+      "genres": [
+        "Action",
+        "Horror",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-10-14T16:06:54.467Z"
+    },
+    {
+      "id": 20416,
+      "title": "The Deep",
+      "poster_path": "/z3HXf0nIN7tvpTF8fxiJrvD603f.jpg",
+      "release_date": "1977-06-17",
+      "vote_average": 6.1,
+      "genres": [
+        "Mystery",
+        "Thriller",
+        "Adventure"
+      ],
+      "userRating": null,
+      "added": "2026-10-14T16:06:59.253Z"
+    },
+    {
+      "id": 8656,
+      "title": "Deep Impact",
+      "poster_path": "/a3vQS7JKqlOb3MdVJHuTCP9s7Mg.jpg",
+      "release_date": "1998-05-08",
+      "vote_average": 6.3,
+      "genres": [
+        "Action",
+        "Drama",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-10-14T16:07:14.001Z"
     }
   ],
   "tvShows": [
