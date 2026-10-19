@@ -378,10 +378,13 @@
                         </div>
                         <div class="filter-row">
                             <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeCompilations"> Exclude compilations
+                                <input type="checkbox" id="filterExcludeDocumentaries" checked> Exclude documentaries
                             </label>
                             <label class="filter-checkbox">
-                                <input type="checkbox" id="filterExcludeDocumentaries"> Exclude documentaries
+                                <input type="checkbox" id="filterExcludeCompilations" checked> Exclude compilations & "best of"
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="filterExcludeTV"> Exclude TV movies
                             </label>
                             <label class="filter-checkbox">
                                 <input type="checkbox" id="filterExcludeAdded" checked> Hide already added
@@ -672,7 +675,6 @@
                                 movies.push(newMovie);
                                 moviesAdded++;
                             } else {
-                                // If new version has a user rating but existing doesn't, update it
                                 if (newMovie.userRating && !existing.userRating) {
                                     Object.assign(existing, newMovie);
                                     moviesUpdated++;
@@ -1090,6 +1092,49 @@
             }
         }
 
+        // ============================================================
+        // IMPROVED FILTER HELPERS - uses genre data + title keywords
+        // ============================================================
+
+        function isDocumentary(item) {
+            // Check genre field first (most reliable)
+            const genres = item.genre_ids || item.genres || [];
+            // TMDB Documentary genre ID is 99
+            if (Array.isArray(genres)) {
+                if (genres.includes(99)) return true;
+                // Also check if any genre object has name "Documentary"
+                if (genres.some(g => (typeof g === 'object' && g.name === 'Documentary'))) return true;
+            }
+            // Fallback: check title (catches things TMDB mislabels)
+            const title = (item.title || item.name || item.original_title || '').toLowerCase();
+            if (title.includes('documentary') || title.includes(' biopic') || title.endsWith(' biopic')) return true;
+            return false;
+        }
+
+        function isCompilation(item) {
+            const title = (item.title || item.name || item.original_title || '').toLowerCase();
+            const compilationKeywords = [
+                'compilation', 'best of', 'greatest hits', 'the essential',
+                'collection', 'anthology', 'director\'s cut collection',
+                'ultimate collection', 'definitive collection',
+                'the complete', 'box set', 'volume 1', 'volume 2', 'volume 3',
+                'vol. 1', 'vol. 2', 'vol. 3', 'the movies of',
+                'the films of', 'marathon', 'retrospective',
+                'double feature', 'triple feature', 'quad feature',
+                'movie marathon', 'film marathon'
+            ];
+            return compilationKeywords.some(keyword => title.includes(keyword));
+        }
+
+        function isTVMovie(item) {
+            // Check if it's marked as a TV movie
+            if (item.media_type === 'tv') return true;
+            // Check for TV movie indicators in title
+            const title = (item.title || item.name || '').toLowerCase();
+            const tvKeywords = ['(tv)', '(tv movie)', 'tv movie', 'made for tv', 'made-for-tv'];
+            return tvKeywords.some(keyword => title.includes(keyword));
+        }
+
         async function loadPersonItems(personId, personName) {
             currentPersonId = personId;
             currentPersonName = personName;
@@ -1161,20 +1206,25 @@
             const yearFrom = document.getElementById('filterYearFrom')?.value;
             const yearTo = document.getElementById('filterYearTo')?.value;
             const minRating = document.getElementById('filterMinRating')?.value;
-            const excludeCompilations = document.getElementById('filterExcludeCompilations')?.checked;
             const excludeDocumentaries = document.getElementById('filterExcludeDocumentaries')?.checked;
+            const excludeCompilations = document.getElementById('filterExcludeCompilations')?.checked;
+            const excludeTV = document.getElementById('filterExcludeTV')?.checked;
             const excludeAdded = document.getElementById('filterExcludeAdded')?.checked;
 
             return items.filter(item => {
                 const year = (item.release_date || item.first_air_date) ? new Date(item.release_date || item.first_air_date).getFullYear() : null;
                 const rating = item.vote_average || 0;
-                const title = (item.title || item.name || '').toLowerCase();
+
                 if (yearFrom && year && year < parseInt(yearFrom)) return false;
                 if (yearTo && year && year > parseInt(yearTo)) return false;
                 if (minRating && rating < parseFloat(minRating)) return false;
-                if (excludeCompilations && (title.includes('compilation') || title.includes('best of') || title.includes('collection'))) return false;
-                if (excludeDocumentaries && (title.includes('documentary') || title.includes('making of'))) return false;
+
+                // Use the improved helper functions
+                if (excludeDocumentaries && isDocumentary(item)) return false;
+                if (excludeCompilations && isCompilation(item)) return false;
+                if (excludeTV && isTVMovie(item)) return false;
                 if (excludeAdded && getList(currentAddType).some(x => x.id === item.id)) return false;
+
                 return true;
             });
         }
@@ -1183,9 +1233,10 @@
             document.getElementById('filterYearFrom').value = '';
             document.getElementById('filterYearTo').value = '';
             document.getElementById('filterMinRating').value = '';
-            document.getElementById('filterExcludeCompilations').checked = false;
-            document.getElementById('filterExcludeDocumentaries').checked = false;
-            document.getElementById('filterExcludeAdded').checked = false;
+            document.getElementById('filterExcludeDocumentaries').checked = true;
+            document.getElementById('filterExcludeCompilations').checked = true;
+            document.getElementById('filterExcludeTV').checked = false;
+            document.getElementById('filterExcludeAdded').checked = true;
             if (currentPersonId) loadPersonItems(currentPersonId, currentPersonName);
         }
 

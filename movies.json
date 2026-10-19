@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-19T12:33:31.149Z",
+  "exportedAt": "2026-10-19T14:34:47.300Z",
   "movies": [
     {
       "id": 969681,
@@ -4757,6 +4757,300 @@
       ],
       "userRating": null,
       "added": "2026-10-19T10:42:56.346Z"
+    },
+    {
+      "id": 1314481,
+      "title": "The Devil Wears Prada 2",
+      "poster_path": "/xTI42pmsP5EDnvsNJPEDubwWBQO.jpg",
+      "release_date": "2026-04-29",
+      "vote_average": 7.033,
+      "genres": [
+        "Comedy",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:30:51.974Z"
+    },
+    {
+      "id": 1098006,
+      "title": "Fountain of Youth",
+      "poster_path": "/4iWjGghUj2uyHo2Hyw8NFBvsNGm.jpg",
+      "release_date": "2025-05-19",
+      "vote_average": 6.23,
+      "genres": [
+        "Adventure",
+        "Action"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:30:59.749Z"
+    },
+    {
+      "id": 974576,
+      "title": "Conclave",
+      "poster_path": "/m5x8D0bZ3eKqIVWZ5y7TnZ2oTVg.jpg",
+      "release_date": "2024-10-25",
+      "vote_average": 7.188,
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:31:02.523Z"
+    },
+    {
+      "id": 476669,
+      "title": "The King's Man",
+      "poster_path": "/iMjSfMUuCkCE7z5fzGtjeDusPD3.jpg",
+      "release_date": "2021-12-22",
+      "vote_average": 6.707,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:31:06.940Z"
+    },
+    {
+      "id": 531219,
+      "title": "Roald Dahl's The Witches",
+      "poster_path": "/betExZlgK0l7CZ9CsCBVcwO1OjL.jpg",
+      "release_date": "2020-10-26",
+      "vote_average": 6.339,
+      "genres": [
+        "Comedy",
+        "Fantasy",
+        "Family"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:31:13.866Z"
+    },
+    {
+      "id": 335988,
+      "title": "Transformers: The Last Knight",
+      "poster_path": "/s5HQf2Gb3lIO2cRcFwNL9sn1o1o.jpg",
+      "release_date": "2017-06-16",
+      "vote_average": 6.063,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:31:20.700Z"
+    },
+    {
+      "id": 162903,
+      "title": "The Fifth Estate",
+      "poster_path": "/pUrL2eacUjAxkOS403DaOyXpgAG.jpg",
+      "release_date": "2013-10-11",
+      "vote_average": 6.007,
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:31:31.997Z"
+    },
+    {
+      "id": 350,
+      "title": "The Devil Wears Prada",
+      "poster_path": "/8912AsVuS7Sj915apArUFbv6F9L.jpg",
+      "release_date": "2006-06-29",
+      "vote_average": 7.434,
+      "genres": [
+        "Drama",
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:32:22.707Z"
+    },
+    {
+      "id": 4147,
+      "title": "Road to Perdition",
+      "poster_path": "/loSpBeirRfTPJ3cMIqpQArstGhh.jpg",
+      "release_date": "2002-07-12",
+      "vote_average": 7.366,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:32:34.066Z"
+    },
+    {
+      "id": 6071,
+      "title": "Kiss of Death",
+      "poster_path": "/2cCxEqeIy6Q8HgVjfT7obOnF5Zi.jpg",
+      "release_date": "1995-04-21",
+      "vote_average": 5.701,
+      "genres": [
+        "Crime",
+        "Thriller",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:32:53.319Z"
+    },
+    {
+      "id": 2075,
+      "title": "Prizzi's Honor",
+      "poster_path": "/5azGfZXuUFYjYfz6etYOdlyLXwL.jpg",
+      "release_date": "1985-06-14",
+      "vote_average": 6.417,
+      "genres": [
+        "Romance",
+        "Comedy",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:33:01.178Z"
+    },
+    {
+      "id": 26827,
+      "title": "Who's That Girl",
+      "poster_path": "/2Yu6ciKKgSWIZAzUg4IrrifO23z.jpg",
+      "release_date": "1987-08-07",
+      "vote_average": 5.5,
+      "genres": [
+        "Comedy",
+        "Romance"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T10:33:04.183Z"
+    },
+    {
+      "id": 888195,
+      "title": "Hot Seat",
+      "poster_path": "/6zoA2yEfKs8hNFlk4AV28VpoT3I.jpg",
+      "release_date": "2022-07-01",
+      "vote_average": 5.1,
+      "genres": [
+        "Thriller",
+        "Action"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:15:42.181Z"
+    },
+    {
+      "id": 619592,
+      "title": "Force of Nature",
+      "poster_path": "/ucktgbaMSaETUDLUBp1ubGD6aNj.jpg",
+      "release_date": "2020-07-02",
+      "vote_average": 5.131,
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:15:50.550Z"
+    },
+    {
+      "id": 451567,
+      "title": "The Soul of War: Making 'Hacksaw Ridge'",
+      "poster_path": "/zpAhD2QUyCz5bifjZUGVTabplMo.jpg",
+      "release_date": "2017-02-21",
+      "vote_average": 8.3,
+      "genres": [
+        "Documentary"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:15:57.636Z"
+    },
+    {
+      "id": 367265,
+      "title": "A Night on Mount Edna",
+      "poster_path": "/zbJQcDn5d6CVT4ExuslNuubyAYj.jpg",
+      "release_date": "1990-12-14",
+      "vote_average": 8,
+      "genres": [
+        "Comedy"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:16:45.553Z"
+    },
+    {
+      "id": 9355,
+      "title": "Mad Max Beyond Thunderdome",
+      "poster_path": "/jJlxcEVVUHnrUeEkQ0077VeHQpb.jpg",
+      "release_date": "1985-06-29",
+      "vote_average": 6.219,
+      "genres": [
+        "Action",
+        "Adventure",
+        "Science Fiction"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:16:52.927Z"
+    },
+    {
+      "id": 38557,
+      "title": "The River",
+      "poster_path": "/bXIlE2QVIarVug9wpyPIz2xiWxf.jpg",
+      "release_date": "1984-12-01",
+      "vote_average": 6.4,
+      "genres": [
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:16:55.760Z"
+    },
+    {
+      "id": 2669,
+      "title": "The Bounty",
+      "poster_path": "/hXFXIc6F4NXI5emWCKcUwqEPjIZ.jpg",
+      "release_date": "1984-05-04",
+      "vote_average": 6.761,
+      "genres": [
+        "Action",
+        "Drama",
+        "History"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:16:56.538Z"
+    },
+    {
+      "id": 11541,
+      "title": "The Year of Living Dangerously",
+      "poster_path": "/y9GIM95xWWU4urqqu0kziby0Ykg.jpg",
+      "release_date": "1982-12-17",
+      "vote_average": 6.7,
+      "genres": [
+        "Romance",
+        "Drama"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T13:16:58.660Z"
+    },
+    {
+      "id": 273248,
+      "title": "The Hateful Eight",
+      "poster_path": "/jIywvdPjia2t3eKYbjVTcwBQlG8.jpg",
+      "release_date": "2015-12-25",
+      "vote_average": 7.756,
+      "genres": [
+        "Drama",
+        "Mystery",
+        "Western"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T14:34:03.531Z"
+    },
+    {
+      "id": 184,
+      "title": "Jackie Brown",
+      "poster_path": "/rOUx7qg4KmEh1juEDwqzbDSL1Nr.jpg",
+      "release_date": "1997-12-25",
+      "vote_average": 7.358,
+      "genres": [
+        "Crime",
+        "Drama",
+        "Thriller"
+      ],
+      "userRating": null,
+      "added": "2026-10-19T14:34:21.862Z"
     }
   ],
   "tvShows": [
@@ -6573,6 +6867,45 @@
       ],
       "userRating": null,
       "added": "2026-10-13T18:59:42.042Z"
+    },
+    {
+      "id": 93911,
+      "title": "Paris Police 1900",
+      "poster_path": "/ipgBsl4xnBOJETWd1C1maa6Jwou.jpg",
+      "release_date": "2021-02-08",
+      "vote_average": 6.6,
+      "genres": [
+        "Drama",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-10-15T11:09:07.124Z"
+    },
+    {
+      "id": 216234,
+      "title": "Paris Police 1905",
+      "poster_path": "/6EPIQ9DpGEkS9ML2Jn9Ap8UmxSP.jpg",
+      "release_date": "2022-12-12",
+      "vote_average": 7.8,
+      "genres": [
+        "Drama",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-10-15T11:09:08.330Z"
+    },
+    {
+      "id": 257166,
+      "title": "Paris Police 1910",
+      "poster_path": "/5MihppAMwyZsgUgl2ET4KhFWsqM.jpg",
+      "release_date": "2026-04-27",
+      "vote_average": 8.4,
+      "genres": [
+        "Drama",
+        "Crime"
+      ],
+      "userRating": null,
+      "added": "2026-10-15T11:09:15.649Z"
     }
   ]
 }
