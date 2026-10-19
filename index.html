@@ -40,6 +40,8 @@
         .btn-secondary:hover { background: #444; }
         .btn-success { background: #2e7d32; }
         .btn-success:hover { background: #1b5e20; }
+        .btn-merge { background: #1565c0; }
+        .btn-merge:hover { background: #0d47a1; }
         .btn-small { padding: 8px 16px; font-size: 14px; }
         .header-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .mobile-menu-toggle { display: none; background: #e50914; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold; }
@@ -234,9 +236,11 @@
                 <div class="header-buttons" id="headerButtons">
                     <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenu();">🔄 Refresh</button>
                     <button class="btn" onclick="openAddModal('movie'); closeMobileMenu();">+ Add Movie</button>
-                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenu();">📄 Export JSON</button>
+                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenu();">📄 Export</button>
                     <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenu();">📤 Import</button>
+                    <button class="btn btn-merge" onclick="document.getElementById('mergeFile').click(); closeMobileMenu();">🔀 Merge</button>
                     <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+                    <input type="file" id="mergeFile" accept=".json" style="display:none;" onchange="mergeJSON(event)">
                 </div>
             </div>
             <select class="genre-dropdown" id="movieGenreDropdown" onchange="filterByGenre(this.value,'movie')">
@@ -281,8 +285,9 @@
                 <div class="header-buttons" id="headerButtonsTV">
                     <button class="btn btn-secondary btn-small" onclick="refreshFromGitHub(); closeMobileMenuTV();">🔄 Refresh</button>
                     <button class="btn" onclick="openAddModal('tv'); closeMobileMenuTV();">+ Add TV Show</button>
-                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenuTV();">📄 Export JSON</button>
+                    <button class="btn btn-success" onclick="exportAsJSON(); closeMobileMenuTV();">📄 Export</button>
                     <button class="btn btn-secondary" onclick="document.getElementById('importFile').click(); closeMobileMenuTV();">📤 Import</button>
+                    <button class="btn btn-merge" onclick="document.getElementById('mergeFile').click(); closeMobileMenuTV();">🔀 Merge</button>
                 </div>
             </div>
             <select class="genre-dropdown" id="tvGenreDropdown" onchange="filterByGenre(this.value,'tv')">
@@ -599,7 +604,7 @@
         }
 
         // ============================================================
-        // EXPORT / IMPORT
+        // EXPORT / IMPORT / MERGE
         // ============================================================
 
         function exportAsJSON() {
@@ -642,7 +647,75 @@
                     renderGF('tv');
                     updateSyncDisplay('movie');
                     updateSyncDisplay('tv');
-                    showToast('✅ Imported', 'success');
+                    showToast('✅ Imported (replaced)', 'success');
+                } catch (error) {
+                    showToast(`❌ ${error.message}`, 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function mergeJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    let moviesAdded = 0, showsAdded = 0, moviesUpdated = 0, showsUpdated = 0;
+
+                    if (data.movies && Array.isArray(data.movies)) {
+                        data.movies.forEach(newMovie => {
+                            const existing = movies.find(m => m.id === newMovie.id);
+                            if (!existing) {
+                                movies.push(newMovie);
+                                moviesAdded++;
+                            } else {
+                                // If new version has a user rating but existing doesn't, update it
+                                if (newMovie.userRating && !existing.userRating) {
+                                    Object.assign(existing, newMovie);
+                                    moviesUpdated++;
+                                }
+                            }
+                        });
+                        localStorage.setItem('myMovies', JSON.stringify(movies));
+                    }
+
+                    if (data.tvShows && Array.isArray(data.tvShows)) {
+                        data.tvShows.forEach(newShow => {
+                            const existing = tvShows.find(s => s.id === newShow.id);
+                            if (!existing) {
+                                tvShows.push(newShow);
+                                showsAdded++;
+                            } else {
+                                if (newShow.userRating && !existing.userRating) {
+                                    Object.assign(existing, newShow);
+                                    showsUpdated++;
+                                }
+                            }
+                        });
+                        localStorage.setItem('myTVShows', JSON.stringify(tvShows));
+                    }
+
+                    updateCount('movie');
+                    updateCount('tv');
+                    renderMovies();
+                    renderTV();
+                    renderGF('movie');
+                    renderGF('tv');
+                    updateSyncDisplay('movie');
+                    updateSyncDisplay('tv');
+
+                    let message = `✅ Merged: `;
+                    if (moviesAdded > 0) message += `+${moviesAdded} movies `;
+                    if (showsAdded > 0) message += `+${showsAdded} shows `;
+                    if (moviesUpdated > 0) message += `(${moviesUpdated} movies updated with ratings) `;
+                    if (showsUpdated > 0) message += `(${showsUpdated} shows updated with ratings) `;
+                    if (moviesAdded === 0 && showsAdded === 0 && moviesUpdated === 0 && showsUpdated === 0) {
+                        message += `Nothing new to add`;
+                    }
+                    showToast(message, 'success', 6000);
                 } catch (error) {
                     showToast(`❌ ${error.message}`, 'error');
                 }
